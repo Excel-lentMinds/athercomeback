@@ -1301,3 +1301,248 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('exportGantt')?.addEventListener('click', () => {
     alert('📥 Timeline export would generate a PNG here.\n\nIn production, this would use html2canvas.');
 });
+
+// ===== ENHANCED LOADING SCREEN =====
+(function initEnhancedLoader() {
+    const loadingProgress = document.getElementById('loadingProgress');
+    const loadingText = document.getElementById('loadingText');
+    const loadingMessages = [
+        'Initializing...',
+        'Loading charts...',
+        'Preparing animations...',
+        'Rendering India map...',
+        'Almost ready...'
+    ];
+
+    let progress = 0;
+    let messageIndex = 0;
+
+    const updateProgress = () => {
+        if (progress < 100) {
+            progress += Math.random() * 15 + 5;
+            if (progress > 100) progress = 100;
+
+            if (loadingProgress) {
+                loadingProgress.style.width = progress + '%';
+            }
+
+            if (loadingText && progress > (messageIndex + 1) * 20) {
+                messageIndex = Math.min(messageIndex + 1, loadingMessages.length - 1);
+                loadingText.textContent = loadingMessages[messageIndex];
+            }
+
+            if (progress < 100) {
+                setTimeout(updateProgress, 200 + Math.random() * 200);
+            }
+        }
+    };
+
+    updateProgress();
+})();
+
+// ===== STICKY NAVIGATION SIDEBAR =====
+(function initNavigation() {
+    const navSidebar = document.getElementById('navSidebar');
+    const navToggle = document.getElementById('navToggle');
+    const navSections = document.querySelectorAll('.nav-section');
+    const navProgressFill = document.getElementById('navProgressFill');
+
+    if (!navSidebar) return;
+
+    // Toggle navigation collapse
+    navToggle?.addEventListener('click', () => {
+        navSidebar.classList.toggle('collapsed');
+        navToggle.textContent = navSidebar.classList.contains('collapsed') ? '◀' : '☰';
+    });
+
+    // Navigation section click handlers
+    navSections.forEach(section => {
+        section.addEventListener('click', () => {
+            const sectionId = section.dataset.section;
+            const targetElement = document.getElementById(sectionId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Update active section on scroll
+    let sections = [];
+    navSections.forEach(navSection => {
+        const sectionId = navSection.dataset.section;
+        const element = document.getElementById(sectionId);
+        if (element) {
+            sections.push({ navSection, element, id: sectionId });
+        }
+    });
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+
+        // Update progress bar
+        if (navProgressFill) {
+            navProgressFill.style.height = scrollPercent + '%';
+        }
+
+        // Update active section
+        sections.forEach(({ navSection, element }) => {
+            const rect = element.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2;
+
+            if (isVisible) {
+                navSections.forEach(ns => ns.classList.remove('active'));
+                navSection.classList.add('active');
+            }
+        });
+    });
+})();
+
+// ===== KEYBOARD SHORTCUTS =====
+(function initKeyboardShortcuts() {
+    const keyboardModal = document.getElementById('keyboardModal');
+    const sections = document.querySelectorAll('.section');
+    let currentSectionIndex = 0;
+
+    // Close keyboard modal function (global)
+    window.closeKeyboardModal = function () {
+        if (keyboardModal) {
+            keyboardModal.classList.remove('visible');
+        }
+    };
+
+    // Keyboard event handler
+    document.addEventListener('keydown', (e) => {
+        // Don't trigger if typing in an input
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+        switch (e.key) {
+            case 'ArrowDown':
+            case 'j':
+                e.preventDefault();
+                if (currentSectionIndex < sections.length - 1) {
+                    currentSectionIndex++;
+                    sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
+                }
+                break;
+
+            case 'ArrowUp':
+            case 'k':
+                e.preventDefault();
+                if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                    sections[currentSectionIndex].scrollIntoView({ behavior: 'smooth' });
+                }
+                break;
+
+            case 'f':
+            case 'F':
+                e.preventDefault();
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+                break;
+
+            case 'm':
+            case 'M':
+                e.preventDefault();
+                const navSidebar = document.getElementById('navSidebar');
+                if (navSidebar) {
+                    navSidebar.classList.toggle('collapsed');
+                }
+                break;
+
+            case '?':
+                e.preventDefault();
+                if (keyboardModal) {
+                    keyboardModal.classList.toggle('visible');
+                }
+                break;
+
+            case 'Escape':
+                if (keyboardModal) {
+                    keyboardModal.classList.remove('visible');
+                }
+                break;
+
+            case 'Home':
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                currentSectionIndex = 0;
+                break;
+
+            case 'End':
+                e.preventDefault();
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                currentSectionIndex = sections.length - 1;
+                break;
+        }
+    });
+
+    // Update current section index on scroll
+    window.addEventListener('scroll', () => {
+        sections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
+                currentSectionIndex = index;
+            }
+        });
+    });
+})();
+
+// ===== SHARE BUTTON =====
+(function initShareFeature() {
+    // Add share button click handler if it exists
+    document.getElementById('shareBtn')?.addEventListener('click', async () => {
+        const shareData = {
+            title: 'Ather Energy - Project Quantum Leap',
+            text: 'Check out Ather Energy\'s Strategic Transformation Blueprint',
+            url: window.location.href
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                console.log('Share cancelled');
+            }
+        } else {
+            // Fallback: copy URL to clipboard
+            navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard! 📋');
+        }
+    });
+})();
+
+// ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+
+// ===== PRINT OPTIMIZATION =====
+window.matchMedia('print').addEventListener('change', (e) => {
+    if (e.matches) {
+        // Hide non-essential elements for printing
+        document.querySelectorAll('.nav-sidebar, .team-branding, .kpi-ribbon').forEach(el => {
+            el.style.display = 'none';
+        });
+    } else {
+        // Restore elements
+        document.querySelectorAll('.nav-sidebar, .team-branding, .kpi-ribbon').forEach(el => {
+            el.style.display = '';
+        });
+    }
+});
+
+console.log('🛵 Project Quantum Leap initialized successfully!');
+console.log('💡 Press ? for keyboard shortcuts');
+
