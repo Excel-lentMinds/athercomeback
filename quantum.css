@@ -2377,14 +2377,49 @@ html {
     color: var(--bg-primary);
 }
 
-/* ===== 3D SCOOTER VIEWER ===== */
+/* ===== ENHANCED 3D SCOOTER VIEWER ===== */
 .scooter-3d-viewer {
     position: relative;
     width: 100%;
-    max-width: 700px;
-    height: 450px;
+    max-width: 800px;
+    height: 500px;
     margin: 0 auto;
-    perspective: 1000px;
+    perspective: 1500px;
+    perspective-origin: 50% 40%;
+}
+
+/* 3D Stage with floor */
+.scooter-3d-viewer::before {
+    content: '';
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%) rotateX(85deg);
+    width: 500px;
+    height: 300px;
+    background: radial-gradient(ellipse at center,
+            rgba(0, 229, 255, 0.15) 0%,
+            rgba(0, 229, 255, 0.05) 40%,
+            transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Floor reflection */
+.scooter-3d-viewer::after {
+    content: '';
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 100px;
+    background: linear-gradient(to bottom,
+            rgba(0, 229, 255, 0.1) 0%,
+            transparent 100%);
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
 }
 
 #scooterCanvas {
@@ -2403,6 +2438,7 @@ html {
     transform-style: preserve-3d;
     transition: transform 0.1s ease-out;
     cursor: grab;
+    z-index: 2;
 }
 
 .scooter-3d-wrapper:active {
@@ -2559,33 +2595,103 @@ html {
     }
 }
 
-/* ===== REALISTIC SCOOTER IMAGE ===== */
+/* ===== REALISTIC 3D SCOOTER IMAGE ===== */
 .ather-scooter-img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 20px 60px rgba(0, 229, 255, 0.4)) drop-shadow(0 5px 20px rgba(0, 0, 0, 0.5));
-    animation: scooterFloat 6s ease-in-out infinite;
+    filter:
+        drop-shadow(0 30px 80px rgba(0, 0, 0, 0.8)) drop-shadow(0 10px 30px rgba(0, 229, 255, 0.3)) drop-shadow(0 0 50px rgba(0, 229, 255, 0.15));
+    animation: scooter3DFloat 6s ease-in-out infinite;
+    transform-style: preserve-3d;
 }
 
-.scooter-glow-effect {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
-    pointer-events: none;
-    animation: glowPulse 3s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
+@keyframes scooter3DFloat {
 
     0%,
     100% {
-        opacity: 0.5;
+        transform: translateY(0) rotateY(0deg) scale(1);
+    }
+
+    25% {
+        transform: translateY(-8px) rotateY(2deg) scale(1.01);
     }
 
     50% {
-        opacity: 1;
+        transform: translateY(-15px) rotateY(0deg) scale(1.02);
     }
+
+    75% {
+        transform: translateY(-8px) rotateY(-2deg) scale(1.01);
+    }
+}
+
+/* Reflection layer under scooter */
+.scooter-glow-effect {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleY(-1) translateY(-20px);
+    width: 80%;
+    height: 60%;
+    background: linear-gradient(to top,
+            transparent 0%,
+            rgba(0, 229, 255, 0.03) 50%,
+            transparent 100%);
+    filter: blur(10px);
+    pointer-events: none;
+    opacity: 0.5;
+    mask-image: linear-gradient(to top, black 0%, transparent 60%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, transparent 60%);
+}
+
+/* Dynamic light beam effect */
+.scooter-3d-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 400px;
+    background: linear-gradient(to bottom,
+            rgba(0, 229, 255, 0.2) 0%,
+            rgba(0, 229, 255, 0.05) 50%,
+            transparent 100%);
+    clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+    pointer-events: none;
+    opacity: 0.6;
+    animation: lightBeam 4s ease-in-out infinite;
+}
+
+@keyframes lightBeam {
+
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: translateX(-50%) scaleX(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translateX(-50%) scaleX(1.2);
+    }
+}
+
+/* Ambient glow around scooter */
+.scooter-3d-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 80%;
+    background: radial-gradient(ellipse at center,
+            rgba(0, 229, 255, 0.08) 0%,
+            transparent 60%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* ===== FLOATING SPECS BADGES ===== */
