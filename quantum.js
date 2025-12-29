@@ -1929,3 +1929,111 @@ console.log('💡 Press ? for keyboard shortcuts');
 
 console.log('✨ Enhanced interactive features loaded!');
 
+// ===== 3D SCOOTER INTERACTION =====
+(function init3DScooter() {
+    const wrapper = document.getElementById('scooter3dWrapper');
+    if (!wrapper) return;
+
+    let isDragging = false;
+    let startX, startY;
+    let rotationX = 0, rotationY = 0;
+    let currentRotationX = 0, currentRotationY = 0;
+    let scale = 1;
+
+    // Mouse events
+    wrapper.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        wrapper.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        const deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+
+        rotationY = currentRotationY + deltaX * 0.5;
+        rotationX = currentRotationX - deltaY * 0.3;
+
+        // Limit X rotation
+        rotationX = Math.max(-30, Math.min(30, rotationX));
+
+        wrapper.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            currentRotationX = rotationX;
+            currentRotationY = rotationY;
+            wrapper.style.cursor = 'grab';
+        }
+    });
+
+    // Touch events for mobile
+    wrapper.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+
+        const deltaX = e.touches[0].clientX - startX;
+        const deltaY = e.touches[0].clientY - startY;
+
+        rotationY = currentRotationY + deltaX * 0.5;
+        rotationX = currentRotationX - deltaY * 0.3;
+        rotationX = Math.max(-30, Math.min(30, rotationX));
+
+        wrapper.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+        if (isDragging) {
+            isDragging = false;
+            currentRotationX = rotationX;
+            currentRotationY = rotationY;
+        }
+    });
+
+    // Scroll to zoom
+    wrapper.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.05 : 0.05;
+        scale = Math.max(0.5, Math.min(1.5, scale + delta));
+        wrapper.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
+    }, { passive: false });
+
+    // Auto rotate when idle
+    let autoRotate = true;
+    let autoRotateInterval;
+
+    function startAutoRotate() {
+        autoRotateInterval = setInterval(() => {
+            if (!isDragging && autoRotate) {
+                rotationY += 0.3;
+                currentRotationY = rotationY;
+                wrapper.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
+            }
+        }, 50);
+    }
+
+    // Start auto-rotate after 3 seconds
+    setTimeout(startAutoRotate, 3000);
+
+    // Stop auto-rotate on user interaction
+    wrapper.addEventListener('mouseenter', () => {
+        autoRotate = false;
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+        autoRotate = true;
+    });
+
+    console.log('🛵 3D Scooter interaction initialized!');
+})();
+

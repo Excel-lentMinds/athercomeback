@@ -2376,3 +2376,181 @@ html {
     background: var(--electric-cyan);
     color: var(--bg-primary);
 }
+
+/* ===== 3D SCOOTER VIEWER ===== */
+.scooter-3d-viewer {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    height: 450px;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+
+#scooterCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.scooter-3d-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+    cursor: grab;
+}
+
+.scooter-3d-wrapper:active {
+    cursor: grabbing;
+}
+
+.ather-scooter-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 20px 40px rgba(0, 229, 255, 0.3));
+    animation: scooterFloat 6s ease-in-out infinite;
+}
+
+@keyframes scooterFloat {
+
+    0%,
+    100% {
+        transform: translateY(0) rotateX(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotateX(2deg);
+    }
+}
+
+/* Wheel Animation */
+.wheel {
+    transform-origin: center;
+    animation: wheelSpin 2s linear infinite paused;
+}
+
+.scooter-3d-wrapper:hover .wheel {
+    animation-play-state: running;
+}
+
+@keyframes wheelSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.scooter-instructions {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    z-index: 10;
+}
+
+.scooter-instructions span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(13, 27, 30, 0.8);
+    border-radius: 2rem;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+/* Component Callouts */
+.component-callouts {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.callout {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    pointer-events: auto;
+}
+
+.callout-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--electric-cyan);
+    border-radius: 50%;
+    animation: calloutPulse 2s ease-in-out infinite;
+    box-shadow: 0 0 20px var(--glow-cyan);
+}
+
+@keyframes calloutPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.3);
+        opacity: 0.7;
+    }
+}
+
+.callout-label {
+    background: rgba(13, 27, 30, 0.95);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--electric-cyan);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.callout:hover .callout-label {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.callout-detail {
+    font-size: 0.625rem;
+    color: var(--ather-green);
+    font-weight: 700;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .scooter-3d-viewer {
+        height: 300px;
+    }
+
+    .scooter-instructions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .component-callouts {
+        display: none;
+    }
+}
