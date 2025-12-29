@@ -1929,111 +1929,391 @@ console.log('💡 Press ? for keyboard shortcuts');
 
 console.log('✨ Enhanced interactive features loaded!');
 
-// ===== 3D SCOOTER INTERACTION =====
-(function init3DScooter() {
-    const wrapper = document.getElementById('scooter3dWrapper');
-    if (!wrapper) return;
+// ===== TRUE 3D ATHER SCOOTER MODEL (Three.js) =====
+(function initTrue3DScooter() {
+    const container = document.getElementById('scooter3dCanvas');
+    if (!container || typeof THREE === 'undefined') {
+        console.log('Three.js not loaded or container not found');
+        return;
+    }
 
+    // Scene setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0f14);
+
+    // Camera
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(4, 2, 5);
+    camera.lookAt(0, 0.5, 0);
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    // Materials
+    const bodyMaterial = new THREE.MeshPhongMaterial({
+        color: 0x1a1a2e,
+        shininess: 100,
+        specular: 0x444444
+    });
+    const accentMaterial = new THREE.MeshPhongMaterial({
+        color: 0x00E5FF,
+        emissive: 0x00E5FF,
+        emissiveIntensity: 0.3,
+        shininess: 150
+    });
+    const wheelMaterial = new THREE.MeshPhongMaterial({
+        color: 0x1a1a1a,
+        shininess: 50
+    });
+    const tireMaterial = new THREE.MeshPhongMaterial({
+        color: 0x222222,
+        shininess: 20
+    });
+    const seatMaterial = new THREE.MeshPhongMaterial({
+        color: 0x111111,
+        shininess: 30
+    });
+    const chromeMaterial = new THREE.MeshPhongMaterial({
+        color: 0xcccccc,
+        shininess: 200,
+        specular: 0xffffff
+    });
+    const lightMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00E5FF
+    });
+    const redLightMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff3333
+    });
+
+    // Create scooter group
+    const scooter = new THREE.Group();
+
+    // === MAIN BODY ===
+    const bodyGeometry = new THREE.BoxGeometry(2.2, 0.5, 0.8);
+    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    body.position.set(0, 0.8, 0);
+    body.castShadow = true;
+    scooter.add(body);
+
+    // Body curved top
+    const bodyTopGeometry = new THREE.CylinderGeometry(0.4, 0.4, 2.2, 16, 1, false, 0, Math.PI);
+    const bodyTop = new THREE.Mesh(bodyTopGeometry, bodyMaterial);
+    bodyTop.rotation.z = Math.PI / 2;
+    bodyTop.position.set(0, 1.05, 0);
+    bodyTop.castShadow = true;
+    scooter.add(bodyTop);
+
+    // === FLOOR PANEL ===
+    const floorGeometry = new THREE.BoxGeometry(1.2, 0.1, 0.5);
+    const floor = new THREE.Mesh(floorGeometry, bodyMaterial);
+    floor.position.set(0, 0.45, 0);
+    scooter.add(floor);
+
+    // === SEAT ===
+    const seatGeometry = new THREE.BoxGeometry(0.9, 0.15, 0.45);
+    const seat = new THREE.Mesh(seatGeometry, seatMaterial);
+    seat.position.set(-0.2, 1.35, 0);
+    seat.castShadow = true;
+    scooter.add(seat);
+
+    // Seat cushion (rounded top)
+    const cushionGeometry = new THREE.CylinderGeometry(0.22, 0.22, 0.9, 16, 1, false, 0, Math.PI);
+    const cushion = new THREE.Mesh(cushionGeometry, seatMaterial);
+    cushion.rotation.z = Math.PI / 2;
+    cushion.position.set(-0.2, 1.42, 0);
+    scooter.add(cushion);
+
+    // === FRONT SECTION ===
+    const frontGeometry = new THREE.BoxGeometry(0.3, 0.8, 0.5);
+    const front = new THREE.Mesh(frontGeometry, bodyMaterial);
+    front.position.set(0.8, 1.1, 0);
+    front.rotation.z = 0.3;
+    scooter.add(front);
+
+    // Dashboard
+    const dashGeometry = new THREE.BoxGeometry(0.25, 0.15, 0.3);
+    const dashboard = new THREE.Mesh(dashGeometry, accentMaterial);
+    dashboard.position.set(0.75, 1.45, 0);
+    scooter.add(dashboard);
+
+    // Dashboard screen
+    const screenGeometry = new THREE.PlaneGeometry(0.18, 0.1);
+    const screenMaterial = new THREE.MeshBasicMaterial({ color: 0x00E5FF, transparent: true, opacity: 0.9 });
+    const screen = new THREE.Mesh(screenGeometry, screenMaterial);
+    screen.position.set(0.88, 1.46, 0);
+    screen.rotation.y = -0.3;
+    scooter.add(screen);
+
+    // === HANDLEBAR ===
+    const handlebarGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.9, 16);
+    const handlebar = new THREE.Mesh(handlebarGeometry, chromeMaterial);
+    handlebar.rotation.z = Math.PI / 2;
+    handlebar.position.set(0.9, 1.7, 0);
+    scooter.add(handlebar);
+
+    // Handle grips
+    const gripGeometry = new THREE.CylinderGeometry(0.04, 0.04, 0.15, 16);
+    const leftGrip = new THREE.Mesh(gripGeometry, accentMaterial);
+    leftGrip.rotation.z = Math.PI / 2;
+    leftGrip.position.set(0.9, 1.7, 0.52);
+    scooter.add(leftGrip);
+
+    const rightGrip = new THREE.Mesh(gripGeometry, accentMaterial);
+    rightGrip.rotation.z = Math.PI / 2;
+    rightGrip.position.set(0.9, 1.7, -0.52);
+    scooter.add(rightGrip);
+
+    // Steering column
+    const steeringGeometry = new THREE.CylinderGeometry(0.04, 0.04, 0.5, 16);
+    const steering = new THREE.Mesh(steeringGeometry, chromeMaterial);
+    steering.rotation.x = -0.3;
+    steering.position.set(0.85, 1.55, 0);
+    scooter.add(steering);
+
+    // === HEADLIGHT ===
+    const headlightGeometry = new THREE.SphereGeometry(0.12, 16, 16, 0, Math.PI);
+    const headlight = new THREE.Mesh(headlightGeometry, lightMaterial);
+    headlight.rotation.y = Math.PI / 2;
+    headlight.position.set(1.0, 1.15, 0);
+    scooter.add(headlight);
+
+    // Headlight glow
+    const headlightGlow = new THREE.PointLight(0x00E5FF, 0.5, 2);
+    headlightGlow.position.set(1.1, 1.15, 0);
+    scooter.add(headlightGlow);
+
+    // === TAIL LIGHT ===
+    const tailGeometry = new THREE.BoxGeometry(0.05, 0.08, 0.3);
+    const taillight = new THREE.Mesh(tailGeometry, redLightMaterial);
+    taillight.position.set(-1.1, 0.9, 0);
+    scooter.add(taillight);
+
+    // === REAR SECTION ===
+    const rearGeometry = new THREE.BoxGeometry(0.4, 0.4, 0.5);
+    const rear = new THREE.Mesh(rearGeometry, bodyMaterial);
+    rear.position.set(-0.9, 0.85, 0);
+    rear.rotation.z = -0.2;
+    scooter.add(rear);
+
+    // === WHEELS ===
+    function createWheel(x, z) {
+        const wheelGroup = new THREE.Group();
+
+        // Tire
+        const tireGeometry = new THREE.TorusGeometry(0.3, 0.1, 16, 32);
+        const tire = new THREE.Mesh(tireGeometry, tireMaterial);
+        tire.rotation.y = Math.PI / 2;
+        tire.castShadow = true;
+        wheelGroup.add(tire);
+
+        // Rim
+        const rimGeometry = new THREE.CylinderGeometry(0.22, 0.22, 0.08, 32);
+        const rim = new THREE.Mesh(rimGeometry, wheelMaterial);
+        rim.rotation.x = Math.PI / 2;
+        wheelGroup.add(rim);
+
+        // Hub (cyan accent)
+        const hubGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.1, 16);
+        const hub = new THREE.Mesh(hubGeometry, accentMaterial);
+        hub.rotation.x = Math.PI / 2;
+        wheelGroup.add(hub);
+
+        // Spokes
+        for (let i = 0; i < 5; i++) {
+            const spokeGeometry = new THREE.BoxGeometry(0.02, 0.18, 0.02);
+            const spoke = new THREE.Mesh(spokeGeometry, chromeMaterial);
+            spoke.rotation.z = (i * Math.PI * 2) / 5;
+            spoke.position.set(Math.cos((i * Math.PI * 2) / 5) * 0.1, Math.sin((i * Math.PI * 2) / 5) * 0.1, 0);
+            wheelGroup.add(spoke);
+        }
+
+        wheelGroup.position.set(x, 0.3, z);
+        return wheelGroup;
+    }
+
+    const frontWheel = createWheel(0.85, 0);
+    const rearWheel = createWheel(-0.85, 0);
+    scooter.add(frontWheel);
+    scooter.add(rearWheel);
+
+    // === FORKS ===
+    const forkGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.6, 16);
+    const frontFork = new THREE.Mesh(forkGeometry, chromeMaterial);
+    frontFork.position.set(0.85, 0.6, 0);
+    frontFork.rotation.z = 0.2;
+    scooter.add(frontFork);
+
+    const rearFork = new THREE.Mesh(forkGeometry, chromeMaterial);
+    rearFork.position.set(-0.85, 0.6, 0);
+    rearFork.rotation.z = -0.2;
+    scooter.add(rearFork);
+
+    // === BATTERY PACK ===
+    const batteryGeometry = new THREE.BoxGeometry(0.6, 0.25, 0.35);
+    const battery = new THREE.Mesh(batteryGeometry, new THREE.MeshPhongMaterial({
+        color: 0x0f3460,
+        shininess: 80
+    }));
+    battery.position.set(0, 0.55, 0);
+    scooter.add(battery);
+
+    // Battery accent line
+    const batteryLineGeometry = new THREE.BoxGeometry(0.62, 0.02, 0.02);
+    const batteryLine = new THREE.Mesh(batteryLineGeometry, accentMaterial);
+    batteryLine.position.set(0, 0.55, 0.18);
+    scooter.add(batteryLine);
+
+    // Position scooter
+    scooter.position.y = -0.3;
+    scene.add(scooter);
+
+    // === GROUND PLANE ===
+    const groundGeometry = new THREE.CircleGeometry(4, 64);
+    const groundMaterial = new THREE.MeshPhongMaterial({
+        color: 0x0a0f14,
+        shininess: 100,
+        transparent: true,
+        opacity: 0.8
+    });
+    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.01;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    // Ground glow ring
+    const ringGeometry = new THREE.RingGeometry(1.5, 2, 64);
+    const ringMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00E5FF,
+        transparent: true,
+        opacity: 0.15,
+        side: THREE.DoubleSide
+    });
+    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 0.01;
+    scene.add(ring);
+
+    // === LIGHTING ===
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
+    scene.add(ambientLight);
+
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+    mainLight.position.set(5, 10, 5);
+    mainLight.castShadow = true;
+    mainLight.shadow.mapSize.width = 2048;
+    mainLight.shadow.mapSize.height = 2048;
+    scene.add(mainLight);
+
+    const fillLight = new THREE.DirectionalLight(0x00E5FF, 0.4);
+    fillLight.position.set(-5, 3, -5);
+    scene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0x6CC24A, 0.3);
+    rimLight.position.set(0, 5, -5);
+    scene.add(rimLight);
+
+    // === ORBIT CONTROLS (Manual Implementation) ===
     let isDragging = false;
-    let startX, startY;
-    let rotationX = 0, rotationY = 0;
-    let currentRotationX = 0, currentRotationY = 0;
-    let scale = 1;
+    let previousMousePosition = { x: 0, y: 0 };
+    let spherical = { theta: 0, phi: Math.PI / 4 };
+    let radius = 6;
+    let targetRadius = 6;
+    let autoRotate = true;
 
-    // Mouse events
-    wrapper.addEventListener('mousedown', (e) => {
+    function updateCamera() {
+        camera.position.x = radius * Math.sin(spherical.theta) * Math.cos(spherical.phi);
+        camera.position.y = radius * Math.sin(spherical.phi) + 0.5;
+        camera.position.z = radius * Math.cos(spherical.theta) * Math.cos(spherical.phi);
+        camera.lookAt(0, 0.5, 0);
+    }
+
+    container.addEventListener('mousedown', (e) => {
         isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        wrapper.style.cursor = 'grabbing';
+        autoRotate = false;
+        previousMousePosition = { x: e.clientX, y: e.clientY };
     });
 
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
 
-        const deltaX = e.clientX - startX;
-        const deltaY = e.clientY - startY;
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
 
-        rotationY = currentRotationY + deltaX * 0.5;
-        rotationX = currentRotationX - deltaY * 0.3;
+        spherical.theta -= deltaX * 0.005;
+        spherical.phi = Math.max(0.2, Math.min(Math.PI / 2.5, spherical.phi + deltaY * 0.005));
 
-        // Limit X rotation
-        rotationX = Math.max(-30, Math.min(30, rotationX));
-
-        wrapper.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
+        updateCamera();
+        previousMousePosition = { x: e.clientX, y: e.clientY };
     });
 
     document.addEventListener('mouseup', () => {
-        if (isDragging) {
-            isDragging = false;
-            currentRotationX = rotationX;
-            currentRotationY = rotationY;
-            wrapper.style.cursor = 'grab';
-        }
+        isDragging = false;
+        setTimeout(() => { autoRotate = true; }, 3000);
     });
 
-    // Touch events for mobile
-    wrapper.addEventListener('touchstart', (e) => {
+    container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        targetRadius = Math.max(3, Math.min(10, targetRadius + e.deltaY * 0.01));
+    });
+
+    // Touch support
+    container.addEventListener('touchstart', (e) => {
         isDragging = true;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
+        autoRotate = false;
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     }, { passive: true });
 
-    document.addEventListener('touchmove', (e) => {
+    container.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
 
-        const deltaX = e.touches[0].clientX - startX;
-        const deltaY = e.touches[0].clientY - startY;
+        const deltaX = e.touches[0].clientX - previousMousePosition.x;
+        const deltaY = e.touches[0].clientY - previousMousePosition.y;
 
-        rotationY = currentRotationY + deltaX * 0.5;
-        rotationX = currentRotationX - deltaY * 0.3;
-        rotationX = Math.max(-30, Math.min(30, rotationX));
+        spherical.theta -= deltaX * 0.005;
+        spherical.phi = Math.max(0.2, Math.min(Math.PI / 2.5, spherical.phi + deltaY * 0.005));
 
-        wrapper.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
+        updateCamera();
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     }, { passive: true });
 
-    document.addEventListener('touchend', () => {
-        if (isDragging) {
-            isDragging = false;
-            currentRotationX = rotationX;
-            currentRotationY = rotationY;
-        }
+    container.addEventListener('touchend', () => {
+        isDragging = false;
+        setTimeout(() => { autoRotate = true; }, 3000);
     });
 
-    // Scroll to zoom
-    wrapper.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        const delta = e.deltaY > 0 ? -0.05 : 0.05;
-        scale = Math.max(0.5, Math.min(1.5, scale + delta));
-        wrapper.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
-    }, { passive: false });
+    // Resize handler
+    window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    });
 
-    // Auto rotate when idle
-    let autoRotate = true;
-    let autoRotateInterval;
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
 
-    function startAutoRotate() {
-        autoRotateInterval = setInterval(() => {
-            if (!isDragging && autoRotate) {
-                rotationY += 0.3;
-                currentRotationY = rotationY;
-                wrapper.style.transform = `perspective(1000px) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
-            }
-        }, 50);
+        // Auto rotate
+        if (autoRotate) {
+            spherical.theta += 0.003;
+        }
+
+        // Smooth zoom
+        radius += (targetRadius - radius) * 0.05;
+
+        // Rotate wheels
+        frontWheel.rotation.x += 0.02;
+        rearWheel.rotation.x += 0.02;
+
+        updateCamera();
+        renderer.render(scene, camera);
     }
 
-    // Start auto-rotate after 3 seconds
-    setTimeout(startAutoRotate, 3000);
-
-    // Stop auto-rotate on user interaction
-    wrapper.addEventListener('mouseenter', () => {
-        autoRotate = false;
-    });
-
-    wrapper.addEventListener('mouseleave', () => {
-        autoRotate = true;
-    });
-
-    console.log('🛵 3D Scooter interaction initialized!');
+    animate();
+    console.log('🛵 True 3D Ather Scooter model initialized!');
 })();
-

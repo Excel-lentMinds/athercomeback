@@ -213,58 +213,33 @@
         <span>Excel-lent Minds</span>
     </div>
 
-    <!-- ========== SECTION 1: HERO WITH 3D ATHER SCOOTER ========== -->
+    <!-- ========== SECTION 1: HERO WITH TRUE 3D ATHER SCOOTER ========== -->
     <section id="hero" class="section section-hero">
         <div class="hero-3d-container">
-            <!-- 3D Scooter Viewer with Real Image -->
+            <!-- True 3D WebGL Scooter Viewer -->
             <div class="scooter-3d-viewer" id="scooter3dViewer">
-
-                <!-- Realistic Ather 450X Image with 3D transforms -->
-                <div class="scooter-3d-wrapper" id="scooter3dWrapper">
-                    <img src="ather-450x.png" alt="Ather 450X Electric Scooter" class="ather-scooter-img"
-                        id="atherScooterImg">
-
-                    <!-- Glow effect layer -->
-                    <div class="scooter-glow-effect"></div>
-                </div>
+                <!-- Three.js WebGL Canvas -->
+                <div id="scooter3dCanvas" class="scooter-3d-canvas"></div>
 
                 <!-- 3D Interaction Instructions -->
                 <div class="scooter-instructions">
-                    <span>🖱️ Drag to rotate</span>
+                    <span>🖱️ Drag to rotate 360°</span>
                     <span>🔍 Scroll to zoom</span>
-                </div>
-
-                <!-- Component Callouts -->
-                <div class="component-callouts">
-                    <div class="callout" style="top: 30%; left: 20%;">
-                        <div class="callout-dot"></div>
-                        <div class="callout-label">Battery Pack<span class="callout-detail">3.7 kWh Li-ion</span></div>
-                    </div>
-                    <div class="callout" style="top: 25%; right: 25%;">
-                        <div class="callout-dot"></div>
-                        <div class="callout-label">7" Touchscreen<span class="callout-detail">Smart Dashboard</span>
-                        </div>
-                    </div>
-                    <div class="callout" style="bottom: 35%; left: 18%;">
-                        <div class="callout-dot"></div>
-                        <div class="callout-label">BLDC Motor<span class="callout-detail">6.4 kW Peak Power</span></div>
-                    </div>
-                    <div class="callout" style="bottom: 30%; right: 20%;">
-                        <div class="callout-dot"></div>
-                        <div class="callout-label">Alloy Wheels<span class="callout-detail">12" Front & Rear</span>
-                        </div>
-                    </div>
-                    <div class="callout" style="top: 50%; left: 50%; transform: translateX(-50%);">
-                        <div class="callout-dot"></div>
-                        <div class="callout-label">Top Speed<span class="callout-detail">90 km/h</span></div>
-                    </div>
+                    <span>📍 Right-click to pan</span>
                 </div>
 
                 <!-- Floating Specs -->
                 <div class="floating-specs">
                     <div class="spec-badge">⚡ 111 km Range</div>
-                    <div class="spec-badge">🔋 0-80% in 4.5 hrs</div>
+                    <div class="spec-badge">🔋 3.7 kWh Battery</div>
                     <div class="spec-badge">🏎️ 0-40 in 3.3s</div>
+                    <div class="spec-badge">🔝 90 km/h Top Speed</div>
+                </div>
+
+                <!-- Model Info -->
+                <div class="model-info">
+                    <h3>ATHER 450X</h3>
+                    <p>Interactive 3D Model</p>
                 </div>
             </div>
 
