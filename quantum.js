@@ -1340,19 +1340,26 @@ document.getElementById('exportGantt')?.addEventListener('click', () => {
     updateProgress();
 })();
 
-// ===== STICKY NAVIGATION SIDEBAR =====
+// ===== HORIZONTAL TOP NAVIGATION BAR =====
 (function initNavigation() {
-    const navSidebar = document.getElementById('navSidebar');
-    const navToggle = document.getElementById('navToggle');
+    const navTopbar = document.getElementById('navTopbar');
+    const navHideBtn = document.getElementById('navHideBtn');
+    const navShowBtn = document.getElementById('navShowBtn');
     const navSections = document.querySelectorAll('.nav-section');
     const navProgressFill = document.getElementById('navProgressFill');
 
-    if (!navSidebar) return;
+    if (!navTopbar) return;
 
-    // Toggle navigation collapse
-    navToggle?.addEventListener('click', () => {
-        navSidebar.classList.toggle('collapsed');
-        navToggle.textContent = navSidebar.classList.contains('collapsed') ? '◀' : '☰';
+    // Hide navigation
+    navHideBtn?.addEventListener('click', () => {
+        navTopbar.classList.add('hidden');
+        navShowBtn?.classList.add('visible');
+    });
+
+    // Show navigation
+    navShowBtn?.addEventListener('click', () => {
+        navTopbar.classList.remove('hidden');
+        navShowBtn?.classList.remove('visible');
     });
 
     // Navigation section click handlers
@@ -1381,9 +1388,9 @@ document.getElementById('exportGantt')?.addEventListener('click', () => {
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrollPercent = (scrollTop / docHeight) * 100;
 
-        // Update progress bar
+        // Update progress bar (horizontal now)
         if (navProgressFill) {
-            navProgressFill.style.height = scrollPercent + '%';
+            navProgressFill.style.width = scrollPercent + '%';
         }
 
         // Update active section
@@ -1396,6 +1403,21 @@ document.getElementById('exportGantt')?.addEventListener('click', () => {
                 navSection.classList.add('active');
             }
         });
+    });
+
+    // H key to toggle navigation
+    document.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        if (e.key === 'h' || e.key === 'H') {
+            e.preventDefault();
+            if (navTopbar.classList.contains('hidden')) {
+                navTopbar.classList.remove('hidden');
+                navShowBtn?.classList.remove('visible');
+            } else {
+                navTopbar.classList.add('hidden');
+                navShowBtn?.classList.add('visible');
+            }
+        }
     });
 })();
 

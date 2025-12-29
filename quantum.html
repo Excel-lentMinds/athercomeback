@@ -49,75 +49,40 @@
         </div>
     </div>
 
-    <!-- Sticky Navigation Sidebar -->
-    <nav class="nav-sidebar" id="navSidebar">
-        <div class="nav-toggle" id="navToggle">☰</div>
-        <div class="nav-content">
-            <div class="nav-section active" data-section="hero">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Hero</span>
+    <!-- Top Navigation Bar -->
+    <nav class="nav-topbar" id="navTopbar">
+        <div class="nav-topbar-inner">
+            <div class="nav-brand">⚡ QUANTUM LEAP</div>
+            <div class="nav-content" id="navContent">
+                <div class="nav-section active" data-section="hero">Hero</div>
+                <div class="nav-section" data-section="researchers">Team</div>
+                <div class="nav-section" data-section="pivot">3-P Pivot</div>
+                <div class="nav-section" data-section="dashboard">Dashboard</div>
+                <div class="nav-section" data-section="whack">Root Cause</div>
+                <div class="nav-section" data-section="capital">Capital</div>
+                <div class="nav-section" data-section="product">Products</div>
+                <div class="nav-section" data-section="b2b">B2B</div>
+                <div class="nav-section" data-section="geography">India Map</div>
+                <div class="nav-section" data-section="data">Data</div>
+                <div class="nav-section" data-section="chess">Competition</div>
+                <div class="nav-section" data-section="risk">Risk</div>
+                <div class="nav-section" data-section="waterfall">Financial</div>
+                <div class="nav-section" data-section="gantt">Timeline</div>
+                <div class="nav-section" data-section="stargate">CTA</div>
             </div>
-            <div class="nav-section" data-section="researchers">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Team</span>
+            <div class="nav-actions">
+                <div class="nav-progress-bar">
+                    <div class="nav-progress-fill" id="navProgressFill"></div>
+                </div>
+                <button class="nav-hide-btn" id="navHideBtn" title="Hide navigation (Press H)">✕</button>
             </div>
-            <div class="nav-section" data-section="pivot">
-                <span class="nav-dot"></span>
-                <span class="nav-label">3-P Pivot</span>
-            </div>
-            <div class="nav-section" data-section="dashboard">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Dashboard</span>
-            </div>
-            <div class="nav-section" data-section="whack">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Root Cause</span>
-            </div>
-            <div class="nav-section" data-section="capital">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Capital</span>
-            </div>
-            <div class="nav-section" data-section="product">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Products</span>
-            </div>
-            <div class="nav-section" data-section="b2b">
-                <span class="nav-dot"></span>
-                <span class="nav-label">B2B</span>
-            </div>
-            <div class="nav-section" data-section="geography">
-                <span class="nav-dot"></span>
-                <span class="nav-label">India Map</span>
-            </div>
-            <div class="nav-section" data-section="data">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Data</span>
-            </div>
-            <div class="nav-section" data-section="chess">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Competition</span>
-            </div>
-            <div class="nav-section" data-section="risk">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Risk</span>
-            </div>
-            <div class="nav-section" data-section="waterfall">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Financial</span>
-            </div>
-            <div class="nav-section" data-section="gantt">
-                <span class="nav-dot"></span>
-                <span class="nav-label">Timeline</span>
-            </div>
-            <div class="nav-section" data-section="cta">
-                <span class="nav-dot"></span>
-                <span class="nav-label">CTA</span>
-            </div>
-        </div>
-        <div class="nav-progress">
-            <div class="nav-progress-fill" id="navProgressFill"></div>
         </div>
     </nav>
+
+    <!-- Show Navigation Button (visible when nav is hidden) -->
+    <button class="nav-show-btn" id="navShowBtn" title="Show navigation">
+        <span>☰</span> Menu
+    </button>
 
     <!-- Keyboard Shortcuts Modal -->
     <div class="keyboard-modal" id="keyboardModal">
