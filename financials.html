@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Projections & Scenario Modeling | Project Volt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://unpkg.com/splitting@1.0.6/dist/splitting.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --electric-green: #00D26A;
+            --charcoal: #1A1A2E;
+            --golden: #FFB800;
+            --light-gray: #F5F5F5;
+            --medium-gray: #6B7280;
+            --dark-gray: #2C2C2C;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            color: var(--dark-gray);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #16213E 50%, var(--charcoal) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('resources/data-visualization-bg.png') center/cover no-repeat;
+            opacity: 0.1;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 12px 48px rgba(0, 210, 106, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .dashboard-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 210, 106, 0.1);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--electric-green), var(--golden));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        .slide-dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-dot.active {
+            background: var(--electric-green);
+            transform: scale(1.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--electric-green), var(--golden));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #E5E7EB;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--electric-green);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 210, 106, 0.3);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--electric-green);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 210, 106, 0.3);
+        }
+
+        .scenario-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .scenario-card.active {
+            border-color: var(--electric-green);
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+        }
+
+        .metric-display {
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+        }
+
+        .breakeven-marker {
+            position: absolute;
+            top: -10px;
+            width: 2px;
+            height: 20px;
+            background: #EF4444;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slide Dots Navigation -->
+    <div class="slide-dots">
+        <div class="slide-dot active" data-section="hero"></div>
+        <div class="slide-dot" data-section="projections"></div>
+        <div class="slide-dot" data-section="bridge"></div>
+        <div class="slide-dot" data-section="scenarios"></div>
+        <div class="slide-dot" data-section="economics"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-xl font-bold">
+                        <span class="text-gradient">Project Volt</span>
+                    </a>
+                    <div class="text-sm text-gray-600">Financial Projections</div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-green-600">Overview</a>
+                    <a href="analysis.html" class="nav-link text-gray-700 hover:text-green-600">Analysis</a>
+                    <a href="framework.html" class="nav-link text-gray-700 hover:text-green-600">Framework</a>
+                    <a href="capital.html" class="nav-link text-gray-700 hover:text-green-600">Capital</a>
+                    <a href="financials.html" class="nav-link text-green-600 font-semibold">Financials</a>
+                    <a href="roadmap.html" class="nav-link text-gray-700 hover:text-green-600">Roadmap</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section min-h-screen flex items-center justify-center relative pt-20">
+        <div class="relative z-10 text-center max-w-6xl mx-auto px-6">
+            <div class="mb-12">
+                <h1 class="text-6xl md:text-8xl font-bold text-white mb-6" data-splitting>
+                    Financial Projections
+                </h1>
+                <div class="text-2xl md:text-3xl text-white/90 mb-8">
+                    <span id="typed-subtitle"></span>
+                </div>
+                <p class="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+                    Comprehensive 5-year financial model built on bottom-up unit economics,
+                    scenario analysis, and sensitivity testing across key strategic variables
+                </p>
+            </div>
+
+            <!-- Key Financial Targets -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-2" id="target-revenue">₹7,200 Cr</div>
+                    <div class="text-sm text-white/80">FY30 Revenue Target</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-2" id="target-ebitda">₹648 Cr</div>
+                    <div class="text-sm text-white/80">FY30 EBITDA</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-2" id="target-margin">9%</div>
+                    <div class="text-sm text-white/80">EBITDA Margin</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-2" id="target-roi">2.6x</div>
+                    <div class="text-sm text-white/80">Capital ROI</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Financial Dashboard -->
+    <section id="projections" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    5-Year Financial Trajectory
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Path to profitability by Q2 FY29 through strategic execution of VOLT framework
+                </p>
+            </div>
+
+            <!-- Interactive Dashboard -->
+            <div class="grid lg:grid-cols-4 gap-6 mb-12">
+                <div class="dashboard-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Revenue Mix FY30</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">B2C Product</span>
+                            <span class="metric-display text-green-600">52.5%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">B2B Fleet</span>
+                            <span class="metric-display text-blue-600">40%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Data/Services</span>
+                            <span class="metric-display text-purple-600">7.5%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Unit Economics</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Blended ASP</span>
+                            <span class="metric-display text-gray-900">₹1.08L</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Contribution/Unit</span>
+                            <span class="metric-display text-green-600">₹24K</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Fixed Cost/Unit</span>
+                            <span class="metric-display text-blue-600">₹15K</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Market Metrics</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Market Share</span>
+                            <span class="metric-display text-green-600">22%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Units Sold</span>
+                            <span class="metric-display text-blue-600">600K</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Fleet Scooters</span>
+                            <span class="metric-display text-purple-600">215K</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Profitability</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Gross Margin</span>
+                            <span class="metric-display text-green-600">22%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">EBITDA Margin</span>
+                            <span class="metric-display text-blue-600">9%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">Net Profit</span>
+                            <span class="metric-display text-purple-600">₹420 Cr</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">Financial Trajectory (FY26-FY30)</h3>
+                <div id="trajectoryChart" style="height: 500px;"></div>
+                <div class="mt-4 text-sm text-gray-600">
+                    <span class="breakeven-marker" style="left: 60%;"></span>
+                    <span class="ml-2">Breakeven Point: Q2 FY29</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Revenue Bridge Analysis -->
+    <section id="bridge" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Revenue Bridge Analysis
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Understanding the components driving 3.3x revenue growth from FY26 to FY30
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="chart-container">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Revenue Components FY26 → FY30</h3>
+                    <div id="revenueBridgeChart" style="height: 500px;"></div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-green-900 mb-3">Growth Drivers</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-800">B2C Volume Growth</span>
+                                <span class="font-bold text-green-900">+₹1,080 Cr</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-800">B2B Fleet Revenue</span>
+                                <span class="font-bold text-green-900">+₹2,760 Cr</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-800">Data Monetization</span>
+                                <span class="font-bold text-green-900">+₹480 Cr</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-800">Accessories & Service</span>
+                                <span class="font-bold text-green-900">+₹420 Cr</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-red-900 mb-3">Headwinds</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-red-800">ASP Decline (Mix Shift)</span>
+                                <span class="font-bold text-red-900">-₹300 Cr</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-red-800">Competitive Pricing</span>
+                                <span class="font-bold text-red-900">-₹180 Cr</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-red-800">Subsidy Reduction</span>
+                                <span class="font-bold text-red-900">-₹240 Cr</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-blue-900 mb-3">Net Impact</h4>
+                        <div class="flex justify-between items-center text-xl">
+                            <span class="text-blue-800 font-bold">Total Growth</span>
+                            <span class="font-bold text-blue-900">+₹5,040 Cr</span>
+                        </div>
+                        <div class="text-sm text-blue-600 mt-2">
+                            233% growth over 4 years (35% CAGR)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Scenario Modeling -->
+    <section id="scenarios" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Scenario Analysis
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Interactive sensitivity analysis across key strategic variables with probability-weighted outcomes
+                </p>
+            </div>
+
+            <!-- Scenario Selector -->
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="scenario-card rounded-xl p-6 active" data-scenario="base">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Base Case</h3>
+                    <p class="text-gray-600 mb-4">55% probability</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Revenue</span>
+                            <span class="font-bold text-gray-900">₹7,200 Cr</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">EBITDA</span>
+                            <span class="font-bold text-green-600">₹648 Cr</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-card rounded-xl p-6" data-scenario="bull">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Bull Case</h3>
+                    <p class="text-gray-600 mb-4">20% probability</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Revenue</span>
+                            <span class="font-bold text-gray-900">₹9,200 Cr</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">EBITDA</span>
+                            <span class="font-bold text-green-600">₹1,104 Cr</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scenario-card rounded-xl p-6" data-scenario="bear">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Bear Case</h3>
+                    <p class="text-gray-600 mb-4">25% probability</p>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Revenue</span>
+                            <span class="font-bold text-gray-900">₹5,400 Cr</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">EBITDA</span>
+                            <span class="font-bold text-yellow-600">₹216 Cr</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">Sensitivity Analysis</h3>
+                <div id="sensitivityChart" style="height: 500px;"></div>
+            </div>
+
+            <!-- Variable Sliders -->
+            <div class="mt-12 grid lg:grid-cols-2 gap-8">
+                <div class="chart-container">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Interactive Variables</h3>
+                    <div class="space-y-6">
+                        <div class="slider-container">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                B2B Fleet CAGR: <span id="b2b-value">120</span>%
+                            </label>
+                            <input type="range" min="80" max="150" value="120" class="slider" id="b2b-slider">
+                        </div>
+
+                        <div class="slider-container">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Supply Chain Savings: <span id="supply-value">25</span>%
+                            </label>
+                            <input type="range" min="15" max="35" value="25" class="slider" id="supply-slider">
+                        </div>
+
+                        <div class="slider-container">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Market Share Target: <span id="share-value">22</span>%
+                            </label>
+                            <input type="range" min="18" max="28" value="22" class="slider" id="share-slider">
+                        </div>
+
+                        <div class="slider-container">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Data Revenue CAGR: <span id="data-value">73</span>%
+                            </label>
+                            <input type="range" min="50" max="100" value="73" class="slider" id="data-slider">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Real-time Impact</h3>
+                    <div class="space-y-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-semibold text-gray-700">Projected Revenue FY30</span>
+                                <span class="metric-display text-2xl text-green-600" id="projected-revenue">₹7,200
+                                    Cr</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full transition-all duration-300"
+                                    style="width: 100%" id="revenue-bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-semibold text-gray-700">Projected EBITDA FY30</span>
+                                <span class="metric-display text-2xl text-blue-600" id="projected-ebitda">₹648 Cr</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 90%"
+                                    id="ebitda-bar"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-semibold text-gray-700">EBITDA Margin</span>
+                                <span class="metric-display text-2xl text-purple-600" id="projected-margin">9.0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full transition-all duration-300"
+                                    style="width: 75%" id="margin-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unit Economics Deep Dive -->
+    <section id="economics" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Unit Economics Evolution
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Transformation from loss-making to profitable unit economics through strategic interventions
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="chart-container">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Unit Economics Improvement</h3>
+                    <div id="unitEconomicsChart" style="height: 500px;"></div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-green-900 mb-3">Revenue Enhancement</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-800">Accessories Attach Rate</span>
+                                <span class="font-bold text-green-900">35% → 55%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-800">Service Revenue/Unit</span>
+                                <span class="font-bold text-green-900">+₹1,500</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-green-800">B2B Premium Pricing</span>
+                                <span class="font-bold text-green-900">+₹2,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-blue-900 mb-3">Cost Optimization</h4>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-blue-800">Supply Chain Savings</span>
+                                <span class="font-bold text-blue-900">₹4,200/unit</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-blue-800">Scale Economies</span>
+                                <span class="font-bold text-blue-900">₹1,500/unit</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-blue-800">Fixed Cost Absorption</span>
+                                <span class="font-bold text-blue-900">₹13,000/unit</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-purple-900 mb-3">Net Transformation</h4>
+                        <div class="flex justify-between items-center text-xl">
+                            <span class="text-purple-800 font-bold">Profit/Unit</span>
+                            <span class="font-bold text-purple-900">-₹11K → +₹9K</span>
+                        </div>
+                        <div class="text-sm text-purple-600 mt-2">
+                            Complete unit economics turnaround
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">
+                    <span class="text-gradient">Project Volt</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    Financial Projections & Scenario Modeling
+                </p>
+                <div class="text-sm text-gray-500">
+                    © 2025 Strategic Analysis Report. Monte Carlo simulations with 10,000 iterations. Sensitivity
+                    analysis across 12 key variables.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Financial projections page specific functionality
+        class FinancialProjections {
+            constructor() {
+                this.baseScenario = {
+                    revenue: 7200,
+                    ebitda: 648,
+                    margin: 9.0
+                };
+                this.init();
+            }
+
+            init() {
+                this.setupScenarioSelector();
+                this.setupSliders();
+                this.initCharts();
+            }
+
+            setupScenarioSelector() {
+                document.querySelectorAll('.scenario-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('active'));
+                        card.classList.add('active');
+
+                        const scenario = card.dataset.scenario;
+                        this.updateScenario(scenario);
+                    });
+                });
+            }
+
+            setupSliders() {
+                const sliders = [
+                    { id: 'b2b-slider', valueId: 'b2b-value', factor: 0.02 },
+                    { id: 'supply-slider', valueId: 'supply-value', factor: 0.015 },
+                    { id: 'share-slider', valueId: 'share-value', factor: 0.025 },
+                    { id: 'data-slider', valueId: 'data-value', factor: 0.01 }
+                ];
+
+                sliders.forEach(slider => {
+                    const element = document.getElementById(slider.id);
+                    const valueElement = document.getElementById(slider.valueId);
+
+                    element.addEventListener('input', (e) => {
+                        const value = parseInt(e.target.value);
+                        valueElement.textContent = value;
+                        this.updateProjections();
+                    });
+                });
+            }
+
+            updateScenario(scenario) {
+                const scenarios = {
+                    base: { revenue: 7200, ebitda: 648, margin: 9.0 },
+                    bull: { revenue: 9200, ebitda: 1104, margin: 12.0 },
+                    bear: { revenue: 5400, ebitda: 216, margin: 4.0 }
+                };
+
+                const data = scenarios[scenario];
+                this.updateDisplay(data);
+            }
+
+            updateProjections() {
+                const b2b = parseInt(document.getElementById('b2b-slider').value);
+                const supply = parseInt(document.getElementById('supply-slider').value);
+                const share = parseInt(document.getElementById('share-slider').value);
+                const data = parseInt(document.getElementById('data-slider').value);
+
+                // Simplified projection model
+                const baseRevenue = 7200;
+                const baseEbitda = 648;
+
+                const revenueMultiplier = 1 + (b2b - 120) * 0.005 + (share - 22) * 0.01;
+                const ebitdaMultiplier = 1 + (supply - 25) * 0.01 + (data - 73) * 0.005;
+
+                const projectedRevenue = Math.round(baseRevenue * revenueMultiplier);
+                const projectedEbitda = Math.round(baseEbitda * ebitdaMultiplier);
+                const projectedMargin = (projectedEbitda / projectedRevenue * 100).toFixed(1);
+
+                this.updateDisplay({
+                    revenue: projectedRevenue,
+                    ebitda: projectedEbitda,
+                    margin: projectedMargin
+                });
+            }
+
+            updateDisplay(data) {
+                document.getElementById('projected-revenue').textContent = `₹${data.revenue.toLocaleString()} Cr`;
+                document.getElementById('projected-ebitda').textContent = `₹${data.ebitda.toLocaleString()} Cr`;
+                document.getElementById('projected-margin').textContent = `${data.margin}%`;
+
+                // Update progress bars
+                const revenueBar = document.getElementById('revenue-bar');
+                const ebitdaBar = document.getElementById('ebitda-bar');
+                const marginBar = document.getElementById('margin-bar');
+
+                revenueBar.style.width = `${Math.min(100, (data.revenue / 10000) * 100)}%`;
+                ebitdaBar.style.width = `${Math.min(100, (data.ebitda / 1500) * 100)}%`;
+                marginBar.style.width = `${Math.min(100, data.margin * 5)}%`;
+            }
+
+            initCharts() {
+                this.initTrajectoryChart();
+                this.initRevenueBridgeChart();
+                this.initSensitivityChart();
+                this.initUnitEconomicsChart();
+            }
+
+            initTrajectoryChart() {
+                const chart = echarts.init(document.getElementById('trajectoryChart'));
+                const option = {
+                    title: {
+                        text: '',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: { type: 'cross' }
+                    },
+                    legend: {
+                        data: ['Revenue', 'EBITDA', 'Net Profit', 'Gross Profit'],
+                        bottom: 10
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '15%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['FY26', 'FY27', 'FY28', 'FY29', 'FY30'],
+                        axisLabel: {
+                            fontWeight: 'bold'
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '₹ Crores',
+                        axisLabel: {
+                            formatter: '₹{value}'
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Revenue',
+                            type: 'line',
+                            smooth: true,
+                            data: [2160, 3200, 4600, 5900, 7200],
+                            lineStyle: { width: 3 },
+                            itemStyle: { color: '#00D26A' },
+                            areaStyle: {
+                                color: {
+                                    type: 'linear',
+                                    x: 0, y: 0, x2: 0, y2: 1,
+                                    colorStops: [
+                                        { offset: 0, color: 'rgba(0, 210, 106, 0.3)' },
+                                        { offset: 1, color: 'rgba(0, 210, 106, 0.05)' }
+                                    ]
+                                }
+                            },
+                            symbol: 'circle',
+                            symbolSize: 8
+                        },
+                        {
+                            name: 'Gross Profit',
+                            type: 'line',
+                            smooth: true,
+                            data: [324, 544, 828, 1180, 1584],
+                            lineStyle: { width: 3 },
+                            itemStyle: { color: '#3B82F6' },
+                            symbol: 'circle',
+                            symbolSize: 8
+                        },
+                        {
+                            name: 'EBITDA',
+                            type: 'line',
+                            smooth: true,
+                            data: [-238, -64, 184, 413, 648],
+                            lineStyle: { width: 3 },
+                            itemStyle: { color: '#F59E0B' },
+                            symbol: 'circle',
+                            symbolSize: 8,
+                            markLine: {
+                                silent: true,
+                                lineStyle: { color: '#EF4444', type: 'dashed', width: 2 },
+                                data: [{ yAxis: 0 }],
+                                label: {
+                                    formatter: 'Breakeven Line',
+                                    position: 'end'
+                                }
+                            }
+                        },
+                        {
+                            name: 'Net Profit',
+                            type: 'line',
+                            smooth: true,
+                            data: [-302, -145, 68, 245, 420],
+                            lineStyle: { width: 3 },
+                            itemStyle: { color: '#8B5CF6' },
+                            symbol: 'circle',
+                            symbolSize: 8,
+                            markPoint: {
+                                data: [
+                                    {
+                                        type: 'min',
+                                        name: 'Min',
+                                        label: { formatter: '₹{c} Cr' }
+                                    },
+                                    {
+                                        type: 'max',
+                                        name: 'Max',
+                                        label: { formatter: '₹{c} Cr' }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                };
+                chart.setOption(option);
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    chart.resize();
+                });
+            }
+
+            initRevenueBridgeChart() {
+                const chart = echarts.init(document.getElementById('revenueBridgeChart'));
+                const option = {
+                    title: {
+                        text: 'Revenue Bridge FY26 → FY30',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: { type: 'shadow' }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['FY26 Base', 'B2C Volume', 'B2B Fleet', 'Data Revenue', 'Accessories', 'ASP Decline', 'Competition', 'Subsidy Cut', 'FY30 Total']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '₹ Crores'
+                    },
+                    series: [{
+                        type: 'bar',
+                        data: [
+                            { value: 2160, itemStyle: { color: '#6B7280' } },
+                            { value: 1080, itemStyle: { color: '#10B981' } },
+                            { value: 2760, itemStyle: { color: '#3B82F6' } },
+                            { value: 480, itemStyle: { color: '#8B5CF6' } },
+                            { value: 420, itemStyle: { color: '#F59E0B' } },
+                            { value: -300, itemStyle: { color: '#EF4444' } },
+                            { value: -180, itemStyle: { color: '#EF4444' } },
+                            { value: -240, itemStyle: { color: '#EF4444' } },
+                            { value: 7200, itemStyle: { color: '#00D26A' } }
+                        ]
+                    }]
+                };
+                chart.setOption(option);
+            }
+
+            initSensitivityChart() {
+                const chart = echarts.init(document.getElementById('sensitivityChart'));
+                const option = {
+                    title: {
+                        text: 'Tornado Diagram - Impact on FY30 EBITDA',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: { type: 'shadow' }
+                    },
+                    xAxis: {
+                        type: 'value',
+                        name: 'EBITDA Impact (₹ Cr)'
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['Data Revenue', 'B2B Mix', 'Supply Chain', 'Volume', 'ASP']
+                    },
+                    series: [
+                        {
+                            name: 'Bear (-20%)',
+                            type: 'bar',
+                            stack: 'total',
+                            data: [-24, -52, -136, -220, -268],
+                            itemStyle: { color: '#EF4444' }
+                        },
+                        {
+                            name: 'Base Case',
+                            type: 'bar',
+                            stack: 'total',
+                            data: [648, 648, 648, 648, 648],
+                            itemStyle: { color: '#6B7280' }
+                        },
+                        {
+                            name: 'Bull (+20%)',
+                            type: 'bar',
+                            stack: 'total',
+                            data: [24, 52, 136, 220, 268],
+                            itemStyle: { color: '#10B981' }
+                        }
+                    ]
+                };
+                chart.setOption(option);
+            }
+
+            initUnitEconomicsChart() {
+                const chart = echarts.init(document.getElementById('unitEconomicsChart'));
+                const option = {
+                    title: {
+                        text: 'Unit Economics Evolution',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['Revenue/Unit', 'Cost/Unit', 'Profit/Unit'],
+                        bottom: 10
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['FY26', 'FY27', 'FY28', 'FY29', 'FY30']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '₹ Thousands'
+                    },
+                    series: [
+                        {
+                            name: 'Revenue/Unit',
+                            type: 'line',
+                            data: [120, 115, 112, 110, 108],
+                            itemStyle: { color: '#00D26A' }
+                        },
+                        {
+                            name: 'Cost/Unit',
+                            type: 'line',
+                            data: [103, 95, 88, 84, 84],
+                            itemStyle: { color: '#EF4444' }
+                        },
+                        {
+                            name: 'Profit/Unit',
+                            type: 'line',
+                            data: [-11, 0, 8, 15, 24],
+                            itemStyle: { color: '#3B82F6' }
+                        }
+                    ]
+                };
+                chart.setOption(option);
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('typed-subtitle')) {
+                new Typed('#typed-subtitle', {
+                    strings: [
+                        'Path to Profitability',
+                        '₹7,200 Cr Revenue by FY30',
+                        'Interactive Scenario Modeling'
+                    ],
+                    typeSpeed: 50,
+                    backSpeed: 30,
+                    backDelay: 2000,
+                    loop: true,
+                    showCursor: true,
+                    cursorChar: '|'
+                });
+            }
+
+            // Initialize financial projections
+            setTimeout(() => {
+                window.financialProjections = new FinancialProjections();
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

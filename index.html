@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Volt: Rewiring Ather's Growth Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://unpkg.com/splitting@1.0.6/dist/splitting.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --electric-green: #00D26A;
+            --charcoal: #1A1A2E;
+            --golden: #FFB800;
+            --light-gray: #F5F5F5;
+            --medium-gray: #6B7280;
+            --dark-gray: #2C2C2C;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #1A1A2E 100%);
+            color: var(--dark-gray);
+            overflow-x: hidden;
+        }
+
+        .hero-bg {
+            background: url('resources/hero-circuit-scooter.png') center/cover no-repeat;
+            position: relative;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8) 0%, rgba(22, 33, 62, 0.7) 100%);
+        }
+
+        .circuit-pattern {
+            background-image:
+                radial-gradient(circle at 25% 25%, rgba(0, 210, 106, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(0, 210, 106, 0.05) 0%, transparent 50%);
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 210, 106, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 210, 106, 0.15);
+            border-color: var(--electric-green);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+        }
+
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            from {
+                box-shadow: 0 0 20px rgba(0, 210, 106, 0.3);
+            }
+
+            to {
+                box-shadow: 0 0 30px rgba(0, 210, 106, 0.6);
+            }
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--electric-green), var(--golden));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--electric-green), var(--golden));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        .slide-dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-dot.active {
+            background: var(--electric-green);
+            transform: scale(1.3);
+        }
+
+        .researcher-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .researcher-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slide Dots Navigation -->
+    <div class="slide-dots">
+        <div class="slide-dot active" data-section="hero"></div>
+        <div class="slide-dot" data-section="overview"></div>
+        <div class="slide-dot" data-section="metrics"></div>
+        <div class="slide-dot" data-section="team"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-blur-md border-b border-white/20">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-white font-bold text-xl">
+                    <span class="text-gradient">Project Volt</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#overview" class="nav-link text-white hover:text-green-400">Overview</a>
+                    <a href="analysis.html" class="nav-link text-white hover:text-green-400">Analysis</a>
+                    <a href="framework.html" class="nav-link text-white hover:text-green-400">Framework</a>
+                    <a href="capital.html" class="nav-link text-white hover:text-green-400">Capital</a>
+                    <a href="financials.html" class="nav-link text-white hover:text-green-400">Financials</a>
+                    <a href="roadmap.html" class="nav-link text-white hover:text-green-400">Roadmap</a>
+                </div>
+                <div class="text-white text-sm">
+                    A Strategic Blueprint for Profitable Scale
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-bg min-h-screen flex items-center justify-center relative">
+        <div class="absolute inset-0 circuit-pattern"></div>
+        <div class="relative z-10 text-center max-w-6xl mx-auto px-6">
+            <div class="mb-8">
+                <h1 class="text-6xl md:text-8xl font-bold text-white mb-6" data-splitting>
+                    Project Volt
+                </h1>
+                <div class="text-2xl md:text-3xl text-white/90 mb-4">
+                    <span id="typed-subtitle"></span>
+                </div>
+                <p class="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+                    A comprehensive data-driven strategic blueprint to transform Ather Energy
+                    from India's most loved EV brand to its most profitable electric mobility company.
+                </p>
+            </div>
+
+            <!-- Key Metrics Preview -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
+                <div class="metric-card rounded-xl p-6 text-center floating-element">
+                    <div class="text-3xl font-bold text-green-600 mb-2" id="metric-1">₹6,500 Cr</div>
+                    <div class="text-sm text-gray-600">Target Revenue FY30</div>
+                </div>
+                <div class="metric-card rounded-xl p-6 text-center floating-element" style="animation-delay: 0.5s">
+                    <div class="text-3xl font-bold text-green-600 mb-2" id="metric-2">2.6x</div>
+                    <div class="text-sm text-gray-600">Capital ROI</div>
+                </div>
+                <div class="metric-card rounded-xl p-6 text-center floating-element" style="animation-delay: 1s">
+                    <div class="text-3xl font-bold text-green-600 mb-2" id="metric-3">40%</div>
+                    <div class="text-sm text-gray-600">B2B Revenue Mix</div>
+                </div>
+                <div class="metric-card rounded-xl p-6 text-center floating-element" style="animation-delay: 1.5s">
+                    <div class="text-3xl font-bold text-green-600 mb-2" id="metric-4">₹140 Cr</div>
+                    <div class="text-sm text-gray-600">Data Revenue</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section id="overview" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    The Strategic Challenge
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                    Ather has built India's most loved EV brand but faces the premium trap—high innovation costs
+                    without the scale to amortize them. The path forward requires sequencing investments to
+                    achieve both innovation leadership and operational efficiency.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6">The Ather Paradox</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div
+                                class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Winning Hearts, Losing Money</h4>
+                                <p class="text-gray-600">₹154 Cr net loss despite ₹1,960 Cr revenue and industry-leading
+                                    72 NPS score</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div
+                                class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Innovation Without Scale</h4>
+                                <p class="text-gray-600">9.5% R&D spend (2x industry) but 35% capacity underutilization
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-2">Cost Disadvantage</h4>
+                                <p class="text-gray-600">₹12,400 cost disadvantage per unit vs TVS despite premium
+                                    positioning</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h4 class="text-xl font-semibold text-gray-900 mb-4">Profitability Gap Analysis</h4>
+                    <div id="profitabilityChart" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Framework Preview -->
+    <section id="framework-preview" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    The VOLT Framework
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    A proprietary 4-lever framework designed specifically for EV companies facing the
+                    scale-profitability trade-off
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div
+                    class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-green-600">V</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">VELOCITY</h3>
+                    <p class="text-gray-600 mb-4">Capital deployment speed with milestone-based release</p>
+                    <div class="text-sm text-green-600 font-semibold">Metric: Capital Velocity Ratio</div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-yellow-600">O</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">OPTIMIZATION</h3>
+                    <p class="text-gray-600 mb-4">Unit economics through cost reduction and product mix</p>
+                    <div class="text-sm text-yellow-600 font-semibold">Metric: Contribution Margin Trajectory</div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-blue-600">L</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">LEVERAGE</h3>
+                    <p class="text-gray-600 mb-4">Ecosystem multipliers through data and partnerships</p>
+                    <div class="text-sm text-blue-600 font-semibold">Metric: Ecosystem Revenue Multiple</div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-purple-600">T</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">TERRITORY</h3>
+                    <p class="text-gray-600 mb-4">Market expansion through segment prioritization</p>
+                    <div class="text-sm text-purple-600 font-semibold">Metric: Market Capture Efficiency</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Insights Preview -->
+    <section id="insights" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Strategic Insights
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Data-driven findings that unlock ₹4,200 per unit savings and transform Ather's economics
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8 border border-green-200">
+                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Supply Chain Integration</h3>
+                    <p class="text-gray-700 mb-4">Vertical integration unlocks ₹4,200 per unit savings through strategic
+                        localization and in-house manufacturing.</p>
+                    <div class="text-2xl font-bold text-green-600">₹252 Cr</div>
+                    <div class="text-sm text-gray-600">Annual savings at target scale</div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8 border border-blue-200">
+                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Fleet-First Strategy</h3>
+                    <p class="text-gray-700 mb-4">B2B fleet business offers 4x better lifetime economics with recurring
+                        revenue model and lower CAC.</p>
+                    <div class="text-2xl font-bold text-blue-600">₹2,880 Cr</div>
+                    <div class="text-sm text-gray-600">Fleet revenue by FY30</div>
+                </div>
+
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-8 border border-purple-200">
+                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Data Monetization</h3>
+                    <p class="text-gray-700 mb-4">16 billion daily data points transform into 5 revenue streams with 4x
+                        ROI on ₹45 Cr investment.</p>
+                    <div class="text-2xl font-bold text-purple-600">₹180 Cr</div>
+                    <div class="text-sm text-gray-600">Data revenue by FY30</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Credentials -->
+    <section id="team" class="py-20 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold mb-6" data-splitting>
+                    Research Team
+                </h2>
+                <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                    Strategic analysis conducted by industry experts with deep expertise in EV markets,
+                    supply chain optimization, and financial modeling
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="researcher-card rounded-xl p-6 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-xl font-bold text-white">DS</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Deepanshu Sharma</h3>
+                    <p class="text-gray-300 text-sm mb-3">Lead Strategic Analyst</p>
+                    <p class="text-gray-400 text-xs">EV Market Dynamics & Competitive Intelligence</p>
+                </div>
+
+                <div class="researcher-card rounded-xl p-6 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-xl font-bold text-white">AS</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Anu Sharma</h3>
+                    <p class="text-gray-300 text-sm mb-3">Financial Model Lead</p>
+                    <p class="text-gray-400 text-xs">Capital Allocation & ROI Optimization</p>
+                </div>
+
+                <div class="researcher-card rounded-xl p-6 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-xl font-bold text-white">MM</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Mrigesh Mohanty</h3>
+                    <p class="text-gray-300 text-sm mb-3">Supply Chain Expert</p>
+                    <p class="text-gray-400 text-xs">Manufacturing & Operations Excellence</p>
+                </div>
+
+                <div class="researcher-card rounded-xl p-6 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-xl font-bold text-white">RB</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Rikshita Barua</h3>
+                    <p class="text-gray-300 text-sm mb-3">Data Strategy Lead</p>
+                    <p class="text-gray-400 text-xs">Analytics & Monetization Framework</p>
+                </div>
+
+                <div class="researcher-card rounded-xl p-6 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-red-400 to-red-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-xl font-bold text-white">KS</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Kunal Saxena</h3>
+                    <p class="text-gray-300 text-sm mb-3">Market Research Lead</p>
+                    <p class="text-gray-400 text-xs">Customer Insights & Persona Development</p>
+                </div>
+
+                <div class="researcher-card rounded-xl p-6 text-center">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-xl font-bold text-white">S</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Shubhangi</h3>
+                    <p class="text-gray-300 text-sm mb-3">Implementation Strategist</p>
+                    <p class="text-gray-400 text-xs">Roadmap & Execution Planning</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-br from-green-600 to-green-700 text-white">
+        <div class="max-w-4xl mx-auto text-center px-6">
+            <h2 class="text-4xl font-bold mb-6">
+                Ready to Transform Ather's Growth Engine?
+            </h2>
+            <p class="text-xl mb-8 opacity-90">
+                Dive deep into the comprehensive strategic analysis that unlocks profitable scale
+                and positions Ather as India's dominant electric mobility company.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="analysis.html"
+                    class="bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    Start Strategic Analysis
+                </a>
+                <a href="framework.html"
+                    class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition-colors">
+                    Explore VOLT Framework
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">
+                    <span class="text-gradient">Project Volt</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    A Data-Driven Strategic Blueprint for Profitable Scale
+                </p>
+                <div class="text-sm text-gray-500">
+                    © 2025 Strategic Analysis Report. All insights based on comprehensive market research and financial
+                    modeling.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

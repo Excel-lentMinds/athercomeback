@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ather Paradox - Situation Analysis | Project Volt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://unpkg.com/splitting@1.0.6/dist/splitting.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --electric-green: #00D26A;
+            --charcoal: #1A1A2E;
+            --golden: #FFB800;
+            --light-gray: #F5F5F5;
+            --medium-gray: #6B7280;
+            --dark-gray: #2C2C2C;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            color: var(--dark-gray);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #16213E 50%, var(--charcoal) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('resources/data-visualization-bg.png') center/cover no-repeat;
+            opacity: 0.1;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 12px 48px rgba(0, 210, 106, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 210, 106, 0.1);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--electric-green), var(--golden));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        .slide-dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-dot.active {
+            background: var(--electric-green);
+            transform: scale(1.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--electric-green), var(--golden));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .matrix-cell {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .matrix-cell:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .data-callout {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-left: 4px solid var(--golden);
+        }
+
+        .competitive-insight {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            border-left: 4px solid #3B82F6;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slide Dots Navigation -->
+    <div class="slide-dots">
+        <div class="slide-dot active" data-section="hero"></div>
+        <div class="slide-dot" data-section="paradox"></div>
+        <div class="slide-dot" data-section="profitability"></div>
+        <div class="slide-dot" data-section="position"></div>
+        <div class="slide-dot" data-section="insights"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-xl font-bold">
+                        <span class="text-gradient">Project Volt</span>
+                    </a>
+                    <div class="text-sm text-gray-600">Situation Analysis</div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-green-600">Overview</a>
+                    <a href="analysis.html" class="nav-link text-green-600 font-semibold">Analysis</a>
+                    <a href="framework.html" class="nav-link text-gray-700 hover:text-green-600">Framework</a>
+                    <a href="capital.html" class="nav-link text-gray-700 hover:text-green-600">Capital</a>
+                    <a href="financials.html" class="nav-link text-gray-700 hover:text-green-600">Financials</a>
+                    <a href="roadmap.html" class="nav-link text-gray-700 hover:text-green-600">Roadmap</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section min-h-screen flex items-center justify-center relative pt-20">
+        <div class="relative z-10 text-center max-w-6xl mx-auto px-6">
+            <div class="mb-12">
+                <h1 class="text-6xl md:text-8xl font-bold text-white mb-6" data-splitting>
+                    The Ather Paradox
+                </h1>
+                <div class="text-2xl md:text-3xl text-white/90 mb-8">
+                    <span id="typed-subtitle"></span>
+                </div>
+                <p class="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+                    Ather has built India's most loved EV brand but is caught in what we call
+                    'The Premium Trap'—high innovation costs without the scale to amortize them.
+                    The path forward isn't about choosing between innovation and efficiency—it's
+                    about sequencing investments to achieve both.
+                </p>
+            </div>
+
+            <!-- Key Metrics Banner -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-2">₹1,960 Cr</div>
+                    <div class="text-sm text-white/80">FY26 Revenue</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-red-400 mb-2">-₹154 Cr</div>
+                    <div class="text-sm text-white/80">Net Loss</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">72</div>
+                    <div class="text-sm text-white/80">NPS Score</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">9.5%</div>
+                    <div class="text-sm text-white/80">R&D Spend</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Paradox Section -->
+    <section id="paradox" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Winning Hearts but Losing Money
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Ather's premium positioning and innovation leadership have created exceptional brand equity,
+                    but operational inefficiencies prevent profitable scaling.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                <div class="insight-card rounded-xl p-8">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Brand Leadership</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Highest NPS in industry (72)</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Premium brand perception</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Technology innovation leader</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>Quality & reliability focus</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="insight-card rounded-xl p-8">
+                    <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Economic Challenges</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span>₹12,400 cost disadvantage vs TVS</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span>35% capacity underutilization</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span>High fixed cost absorption</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span>Supply chain inefficiencies</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="insight-card rounded-xl p-8">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Innovation Trap</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span>9.5% R&D spend (2x industry avg)</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span>High innovation costs</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span>Premium features without scale</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span>Technology moat maintenance</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profitability Gap Analysis -->
+    <section id="profitability" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    The Profitability Gap
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Detailed breakdown of Ather's revenue-to-profit journey reveals structural inefficiencies
+                    that prevent sustainable profitability
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="chart-container">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Revenue to Profit Waterfall</h3>
+                    <div id="profitabilityChart" style="height: 500px;"></div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="data-callout rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3">Key Insight: Cost Structure</h4>
+                        <p class="text-gray-700 mb-4">
+                            <strong>82% of revenue</strong> is consumed by COGS, leaving only 18% gross margin
+                            to cover operating expenses. This is significantly higher than the 70-75% industry
+                            benchmark.
+                        </p>
+                        <div class="text-sm text-gray-600">
+                            Source: Ather FY26 Financial Statements
+                        </div>
+                    </div>
+
+                    <div class="competitive-insight rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-gray-900 mb-3">Competitive Context</h4>
+                        <p class="text-gray-700 mb-4">
+                            TVS achieves <strong>25-28% gross margins</strong> through superior supply chain
+                            integration and scale economies, enabling profitable operations despite lower ASP.
+                        </p>
+                        <div class="text-sm text-gray-600">
+                            Source: Industry Analysis & Benchmarking
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-red-900 mb-3">Critical Finding</h4>
+                        <p class="text-red-800 mb-4">
+                            R&D and Sales & Marketing expenses alone (₹353 Cr) consume the entire
+                            gross profit, leaving no buffer for operational improvements or market expansion.
+                        </p>
+                        <div class="text-sm text-red-600">
+                            Immediate action required on cost structure
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Position Analysis -->
+    <section id="position" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Market Position Radar
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Multi-dimensional comparison reveals Ather's innovation leadership alongside operational gaps
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="chart-container">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Competitive Positioning</h3>
+                    <div id="radarChart" style="height: 500px;"></div>
+                </div>
+
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Innovation-Scale Matrix</h3>
+                        <div class="relative bg-gray-100 rounded-xl p-8" style="height: 400px;">
+                            <!-- Matrix Grid -->
+                            <div class="absolute inset-8 border-2 border-gray-300">
+                                <!-- Quadrant Labels -->
+                                <div class="absolute top-2 left-2 text-sm font-semibold text-gray-600">High
+                                    Innovation<br>Low Efficiency</div>
+                                <div class="absolute top-2 right-2 text-sm font-semibold text-gray-600">High
+                                    Innovation<br>High Efficiency</div>
+                                <div class="absolute bottom-2 left-2 text-sm font-semibold text-gray-600">Low
+                                    Innovation<br>Low Efficiency</div>
+                                <div class="absolute bottom-2 right-2 text-sm font-semibold text-gray-600">Low
+                                    Innovation<br>High Efficiency</div>
+
+                                <!-- Company Positions -->
+                                <div class="absolute top-16 left-16 w-6 h-6 bg-green-500 rounded-full border-2 border-white shadow-lg matrix-cell"
+                                    title="Ather: High Innovation, Low Efficiency"></div>
+                                <div class="absolute top-24 right-24 w-6 h-6 bg-blue-500 rounded-full border-2 border-white shadow-lg matrix-cell"
+                                    title="TVS: Medium Innovation, High Efficiency"></div>
+                                <div class="absolute top-32 left-1/2 w-6 h-6 bg-yellow-500 rounded-full border-2 border-white shadow-lg matrix-cell"
+                                    title="Ola: Medium Innovation, Medium Efficiency"></div>
+                                <div class="absolute bottom-24 right-16 w-6 h-6 bg-gray-500 rounded-full border-2 border-white shadow-lg matrix-cell"
+                                    title="Bajaj: Low Innovation, High Efficiency"></div>
+
+                                <!-- Target Trajectory -->
+                                <svg class="absolute inset-0 pointer-events-none">
+                                    <defs>
+                                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5"
+                                            orient="auto">
+                                            <polygon points="0 0, 10 3.5, 0 7" fill="#00D26A" />
+                                        </marker>
+                                    </defs>
+                                    <path d="M 80 80 Q 200 120 320 160" stroke="#00D26A" stroke-width="3" fill="none"
+                                        marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+                                </svg>
+                            </div>
+
+                            <!-- Axis Labels -->
+                            <div
+                                class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-sm font-semibold text-gray-700">
+                                Operational Efficiency →</div>
+                            <div
+                                class="absolute -left-12 top-1/2 transform -translate-y-1/2 -rotate-90 text-sm font-semibold text-gray-700">
+                                ↑ Innovation Leadership</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                        <h4 class="text-lg font-bold text-green-900 mb-3">Strategic Insight</h4>
+                        <p class="text-green-800 mb-4">
+                            Ather must move diagonally toward top-right quadrant through
+                            <strong>cost-before-capacity</strong> approach—optimizing existing operations
+                            before scaling production.
+                        </p>
+                        <div class="text-sm text-green-600">
+                            Target: High Innovation + High Efficiency by FY30
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Insights -->
+    <section id="insights" class="py-20 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold mb-6" data-splitting>
+                    Strategic Implications
+                </h2>
+                <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                    The paradox reveals three critical areas requiring immediate strategic intervention
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-8 border border-white/20">
+                    <div class="w-16 h-16 bg-red-500 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-white">1</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Cost Structure Crisis</h3>
+                    <p class="text-gray-300 mb-6">
+                        82% COGS ratio is unsustainable for profitable scaling. Supply chain
+                        integration offers ₹4,200/unit savings potential.
+                    </p>
+                    <div class="text-3xl font-bold text-red-400 mb-2">₹12,400</div>
+                    <div class="text-sm text-gray-400">Cost disadvantage per unit vs TVS</div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-8 border border-white/20">
+                    <div class="w-16 h-16 bg-yellow-500 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-white">2</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Scale Economics Gap</h3>
+                    <p class="text-gray-300 mb-6">
+                        35% capacity underutilization prevents fixed cost absorption.
+                        B2B fleet strategy can drive volume with better unit economics.
+                    </p>
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">4.0x</div>
+                    <div class="text-sm text-gray-400">Better B2B lifetime profit vs B2C</div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-8 border border-white/20">
+                    <div class="w-16 h-16 bg-green-500 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-white">3</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Innovation Leverage</h3>
+                    <p class="text-gray-300 mb-6">
+                        9.5% R&D spend creates valuable IP and data assets that can be
+                        monetized through multiple revenue streams.
+                    </p>
+                    <div class="text-3xl font-bold text-green-400 mb-2">₹180 Cr</div>
+                    <div class="text-sm text-gray-400">Data revenue potential by FY30</div>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center">
+                <div class="bg-gradient-to-r from-green-600 to-green-700 rounded-xl p-8 max-w-4xl mx-auto">
+                    <h3 class="text-2xl font-bold mb-4">The Path Forward</h3>
+                    <p class="text-xl mb-6 opacity-90">
+                        Transform from cost-disadvantaged innovator to cost-competitive market leader
+                        through strategic sequencing of supply chain integration, B2B expansion, and data monetization.
+                    </p>
+                    <a href="framework.html"
+                        class="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        Explore VOLT Framework
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">
+                    <span class="text-gradient">Project Volt</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    Situation Analysis: The Ather Paradox
+                </p>
+                <div class="text-sm text-gray-500">
+                    © 2025 Strategic Analysis Report. Data sources: Ather Financial Statements, Industry Benchmarking,
+                    Market Research
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Page-specific initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize typed subtitle
+            if (document.getElementById('typed-subtitle')) {
+                new Typed('#typed-subtitle', {
+                    strings: [
+                        'Winning Hearts but Losing Money',
+                        'The Premium Trap',
+                        'Innovation Without Scale'
+                    ],
+                    typeSpeed: 50,
+                    backSpeed: 30,
+                    backDelay: 2000,
+                    loop: true,
+                    showCursor: true,
+                    cursorChar: '|'
+                });
+            }
+
+            // Initialize profitability chart with animation
+            setTimeout(() => {
+                if (window.projectVolt && window.projectVolt.initProfitabilityChart) {
+                    window.projectVolt.initProfitabilityChart();
+                }
+            }, 500);
+
+            // Initialize radar chart
+            setTimeout(() => {
+                if (window.projectVolt && window.projectVolt.initAnalysisCharts) {
+                    window.projectVolt.initAnalysisCharts();
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

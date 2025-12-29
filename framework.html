@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOLT Strategic Framework | Project Volt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://unpkg.com/splitting@1.0.6/dist/splitting.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --electric-green: #00D26A;
+            --charcoal: #1A1A2E;
+            --golden: #FFB800;
+            --light-gray: #F5F5F5;
+            --medium-gray: #6B7280;
+            --dark-gray: #2C2C2E;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            color: var(--dark-gray);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #16213E 50%, var(--charcoal) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('resources/data-visualization-bg.png') center/cover no-repeat;
+            opacity: 0.1;
+        }
+
+        .volt-letter {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .volt-letter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .volt-letter:hover::before {
+            left: 100%;
+        }
+
+        .volt-letter:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+        }
+
+        .volt-letter.active {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 16px 48px rgba(0, 210, 106, 0.3);
+        }
+
+        .volt-v {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .volt-o {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
+
+        .volt-l {
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+        }
+
+        .volt-t {
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+        }
+
+        .framework-detail {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            height: 0;
+            overflow: hidden;
+        }
+
+        .framework-detail.active {
+            opacity: 1;
+            transform: translateY(0);
+            height: auto;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 210, 106, 0.15);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--electric-green), var(--golden));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        .slide-dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-dot.active {
+            background: var(--electric-green);
+            transform: scale(1.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--electric-green), var(--golden));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .process-step {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -2rem;
+            width: 0;
+            height: 0;
+            border-left: 1rem solid var(--electric-green);
+            border-top: 0.5rem solid transparent;
+            border-bottom: 0.5rem solid transparent;
+            transform: translateY(-50%);
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .question-mapping {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            border-left: 4px solid var(--golden);
+        }
+
+        .methodology-step {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+            border-left: 4px solid #3B82F6;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slide Dots Navigation -->
+    <div class="slide-dots">
+        <div class="slide-dot active" data-section="hero"></div>
+        <div class="slide-dot" data-section="framework"></div>
+        <div class="slide-dot" data-section="mapping"></div>
+        <div class="slide-dot" data-section="methodology"></div>
+        <div class="slide-dot" data-section="metrics"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-xl font-bold">
+                        <span class="text-gradient">Project Volt</span>
+                    </a>
+                    <div class="text-sm text-gray-600">VOLT Framework</div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-green-600">Overview</a>
+                    <a href="analysis.html" class="nav-link text-gray-700 hover:text-green-600">Analysis</a>
+                    <a href="framework.html" class="nav-link text-green-600 font-semibold">Framework</a>
+                    <a href="capital.html" class="nav-link text-gray-700 hover:text-green-600">Capital</a>
+                    <a href="financials.html" class="nav-link text-gray-700 hover:text-green-600">Financials</a>
+                    <a href="roadmap.html" class="nav-link text-gray-700 hover:text-green-600">Roadmap</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section min-h-screen flex items-center justify-center relative pt-20">
+        <div class="relative z-10 text-center max-w-6xl mx-auto px-6">
+            <div class="mb-12">
+                <h1 class="text-6xl md:text-8xl font-bold text-white mb-6" data-splitting>
+                    VOLT Framework
+                </h1>
+                <div class="text-2xl md:text-3xl text-white/90 mb-8">
+                    <span id="typed-subtitle"></span>
+                </div>
+                <p class="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+                    A proprietary 4-lever framework designed specifically for EV companies facing the
+                    scale-profitability trade-off.
+                    Unlike generic strategy frameworks, VOLT accounts for the unique characteristics of the EV industry.
+                </p>
+            </div>
+
+            <!-- Framework Preview -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-2">V</div>
+                    <div class="text-sm text-white/80">VELOCITY</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">O</div>
+                    <div class="text-sm text-white/80">OPTIMIZATION</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">L</div>
+                    <div class="text-sm text-white/80">LEVERAGE</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-purple-400 mb-2">T</div>
+                    <div class="text-sm text-white/80">TERRITORY</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VOLT Framework Interactive -->
+    <section id="framework" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Four Strategic Levers
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Click each letter to explore the strategic components of the VOLT framework
+                </p>
+            </div>
+
+            <!-- Interactive VOLT Letters -->
+            <div class="flex justify-center space-x-8 mb-12">
+                <div class="volt-letter volt-v" data-letter="v">
+                    <span>V</span>
+                </div>
+                <div class="volt-letter volt-o" data-letter="o">
+                    <span>O</span>
+                </div>
+                <div class="volt-letter volt-l" data-letter="l">
+                    <span>L</span>
+                </div>
+                <div class="volt-letter volt-t" data-letter="t">
+                    <span>T</span>
+                </div>
+            </div>
+
+            <!-- Framework Details -->
+            <div id="framework-details">
+                <!-- V - Velocity -->
+                <div class="framework-detail" data-detail="v">
+                    <div class="grid lg:grid-cols-2 gap-12">
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-6">VELOCITY</h3>
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Capital Deployment Speed</h4>
+                            <p class="text-gray-700 mb-6">
+                                Strategic velocity in capital allocation ensures that investments generate returns
+                                quickly while building long-term competitive advantages. This lever focuses on
+                                milestone-based capital release and balancing quick wins with strategic bets.
+                            </p>
+
+                            <div class="space-y-4">
+                                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                    <h5 class="font-semibold text-green-900 mb-2">Quick Wins vs Long-term Bets</h5>
+                                    <p class="text-green-800 text-sm">70% capital to immediate ROI projects, 30% to
+                                        strategic positioning</p>
+                                </div>
+                                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                    <h5 class="font-semibold text-green-900 mb-2">Milestone-based Release</h5>
+                                    <p class="text-green-800 text-sm">Capital deployed in tranches based on performance
+                                        metrics</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Key Metric</h4>
+                            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                                <div class="text-2xl font-bold text-green-600 mb-2">Capital Velocity Ratio</div>
+                                <div class="text-sm text-gray-600 mb-4">
+                                    CVR = Revenue Generated / Capital Deployed / Time Period
+                                </div>
+                                <div class="text-sm text-gray-700">
+                                    Target: CVR > 1.5x annually for quick wins, >0.8x for strategic bets
+                                </div>
+                            </div>
+
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Strategic Questions</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Which investments yield fastest returns?</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>How to sequence capital deployment?</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>What are optimal investment tranches?</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- O - Optimization -->
+                <div class="framework-detail" data-detail="o">
+                    <div class="grid lg:grid-cols-2 gap-12">
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-6">OPTIMIZATION</h3>
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Unit Economics Enhancement</h4>
+                            <p class="text-gray-700 mb-6">
+                                Systematic improvement of per-unit profitability through cost reduction,
+                                product mix optimization, and operational efficiency gains. This lever ensures
+                                that scaling leads to better margins, not just higher volumes.
+                            </p>
+
+                            <div class="space-y-4">
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                    <h5 class="font-semibold text-yellow-900 mb-2">Cost Reduction Levers</h5>
+                                    <p class="text-yellow-800 text-sm">Supply chain integration, localization,
+                                        manufacturing efficiency</p>
+                                </div>
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                    <h5 class="font-semibold text-yellow-900 mb-2">Product Mix Optimization</h5>
+                                    <p class="text-yellow-800 text-sm">Portfolio rebalancing toward higher-margin
+                                        segments</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Key Metric</h4>
+                            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                                <div class="text-2xl font-bold text-yellow-600 mb-2">Contribution Margin Trajectory
+                                </div>
+                                <div class="text-sm text-gray-600 mb-4">
+                                    CMT = (Revenue - Variable Costs) / Revenue × Time Progress
+                                </div>
+                                <div class="text-sm text-gray-700">
+                                    Target: 18% → 24% over 3 years with consistent improvement
+                                </div>
+                            </div>
+
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Strategic Questions</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span>How to reduce per-unit costs?</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span>What is optimal product mix?</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span>Which segments drive profitability?</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- L - Leverage -->
+                <div class="framework-detail" data-detail="l">
+                    <div class="grid lg:grid-cols-2 gap-12">
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-6">LEVERAGE</h3>
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Ecosystem Multipliers</h4>
+                            <p class="text-gray-700 mb-6">
+                                Extracting additional value from existing assets through data monetization,
+                                partnerships, and platform strategies. This lever transforms cost centers
+                                into profit generators and creates sustainable competitive advantages.
+                            </p>
+
+                            <div class="space-y-4">
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <h5 class="font-semibold text-blue-900 mb-2">Data Monetization</h5>
+                                    <p class="text-blue-800 text-sm">Insurance, fleet analytics, carbon credits, smart
+                                        city data</p>
+                                </div>
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <h5 class="font-semibold text-blue-900 mb-2">Partnership Value</h5>
+                                    <p class="text-blue-800 text-sm">Revenue sharing, platform fees, ecosystem
+                                        integration</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Key Metric</h4>
+                            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                                <div class="text-2xl font-bold text-blue-600 mb-2">Ecosystem Revenue Multiple</div>
+                                <div class="text-sm text-gray-600 mb-4">
+                                    ERM = Total Ecosystem Revenue / Core Product Revenue
+                                </div>
+                                <div class="text-sm text-gray-700">
+                                    Target: ERM > 1.25x by FY30 (25% additional revenue)
+                                </div>
+                            </div>
+
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Strategic Questions</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span>What data assets can be monetized?</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span>How to build platform network effects?</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span>Which partnerships create most value?</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- T - Territory -->
+                <div class="framework-detail" data-detail="t">
+                    <div class="grid lg:grid-cols-2 gap-12">
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-6">TERRITORY</h3>
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Market Expansion Strategy</h4>
+                            <p class="text-gray-700 mb-6">
+                                Strategic geographic and segment expansion that maximizes market capture efficiency
+                                while maintaining profitability. This lever ensures sustainable growth through
+                                prioritized market entry and optimized resource allocation.
+                            </p>
+
+                            <div class="space-y-4">
+                                <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                                    <h5 class="font-semibold text-purple-900 mb-2">Segment Prioritization</h5>
+                                    <p class="text-purple-800 text-sm">B2B first, premium B2C, then mass market</p>
+                                </div>
+                                <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                                    <h5 class="font-semibold text-purple-900 mb-2">Geographic Sequencing</h5>
+                                    <p class="text-purple-800 text-sm">Fortress cities → expansion → B2B entry points
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Key Metric</h4>
+                            <div class="bg-gray-50 rounded-lg p-6 mb-6">
+                                <div class="text-2xl font-bold text-purple-600 mb-2">Market Capture Efficiency</div>
+                                <div class="text-sm text-gray-600 mb-4">
+                                    MCE = Market Share Gained / Marketing Spend × Time Period
+                                </div>
+                                <div class="text-sm text-gray-700">
+                                    Target: MCE > 0.15% market share per ₹1 Cr quarterly
+                                </div>
+                            </div>
+
+                            <h4 class="text-xl font-semibold text-gray-900 mb-4">Strategic Questions</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <span>Which markets to enter first?</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <span>How to sequence expansion?</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <span>What drives market penetration?</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Question Mapping -->
+    <section id="mapping" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Strategic Question Mapping
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    How the three core strategic questions map to the VOLT framework components
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-12">
+                <div class="question-mapping rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Question 1: Capital Allocation</h3>
+                    <p class="text-gray-700 mb-6">
+                        "How should Ather allocate ₹2,500 Cr to maximize ROI while achieving profitable scale?"
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                <span class="text-green-600 font-bold text-sm">V</span>
+                            </div>
+                            <span class="text-gray-700">VELOCITY: Investment sequencing and timing</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <span class="text-yellow-600 font-bold text-sm">O</span>
+                            </div>
+                            <span class="text-gray-700">OPTIMIZATION: Cost reduction prioritization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-mapping rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Question 2: B2B vs B2C</h3>
+                    <p class="text-gray-700 mb-6">
+                        "What is the optimal B2B/B2C revenue mix and geographic expansion strategy?"
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                <span class="text-purple-600 font-bold text-sm">T</span>
+                            </div>
+                            <span class="text-gray-700">TERRITORY: Market expansion sequencing</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <span class="text-blue-600 font-bold text-sm">L</span>
+                            </div>
+                            <span class="text-gray-700">LEVERAGE: Fleet platform economics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-mapping rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Question 3: Data Monetization</h3>
+                    <p class="text-gray-700 mb-6">
+                        "How can Ather monetize its data assets to create new revenue streams?"
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                <span class="text-blue-600 font-bold text-sm">L</span>
+                            </div>
+                            <span class="text-gray-700">LEVERAGE: Data value extraction</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                <span class="text-green-600 font-bold text-sm">V</span>
+                            </div>
+                            <span class="text-gray-700">VELOCITY: Data product development speed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Framework Flow Diagram -->
+            <div class="chart-container">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">VOLT Framework Flow</h3>
+                <div class="flex flex-wrap justify-center items-center space-x-4">
+                    <div class="process-step bg-green-100 rounded-lg p-4 border border-green-200">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600 mb-2">V</div>
+                            <div class="text-sm font-semibold text-green-900">VELOCITY</div>
+                            <div class="text-xs text-green-700 mt-1">Capital Speed</div>
+                        </div>
+                    </div>
+                    <div class="process-step bg-yellow-100 rounded-lg p-4 border border-yellow-200">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-yellow-600 mb-2">O</div>
+                            <div class="text-sm font-semibold text-yellow-900">OPTIMIZATION</div>
+                            <div class="text-xs text-yellow-700 mt-1">Unit Economics</div>
+                        </div>
+                    </div>
+                    <div class="process-step bg-blue-100 rounded-lg p-4 border border-blue-200">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-600 mb-2">L</div>
+                            <div class="text-sm font-semibold text-blue-900">LEVERAGE</div>
+                            <div class="text-xs text-blue-700 mt-1">Ecosystem Value</div>
+                        </div>
+                    </div>
+                    <div class="process-step bg-purple-100 rounded-lg p-4 border border-purple-200">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-600 mb-2">T</div>
+                            <div class="text-sm font-semibold text-purple-900">TERRITORY</div>
+                            <div class="text-xs text-purple-700 mt-1">Market Expansion</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-8">
+                    <div class="inline-flex items-center space-x-2 bg-gray-100 rounded-lg px-4 py-2">
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        <span class="text-sm font-semibold text-gray-700">Integrated Strategic Execution</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analysis Methodology -->
+    <section id="methodology" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Analysis Methodology
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Rigorous 5-step analytical process ensuring data-driven insights and validated recommendations
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-6 mb-12">
+                <div class="methodology-step rounded-xl p-6">
+                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white font-bold">1</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">Unit Economics Deep Dive</h3>
+                    <p class="text-sm text-gray-700 mb-4">47 SKU analysis across product portfolio</p>
+                    <div class="text-xs text-blue-600">Revenue, cost, margin analysis</div>
+                </div>
+
+                <div class="methodology-step rounded-xl p-6">
+                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white font-bold">2</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">Customer Cohort Analysis</h3>
+                    <p class="text-sm text-gray-700 mb-4">186K customer data points analyzed</p>
+                    <div class="text-xs text-blue-600">Behavior, LTV, acquisition cost</div>
+                </div>
+
+                <div class="methodology-step rounded-xl p-6">
+                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white font-bold">3</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">Competitive Benchmarking</h3>
+                    <p class="text-sm text-gray-700 mb-4">12 parameters across 3 competitors</p>
+                    <div class="text-xs text-blue-600">TVS, Ola, Bajaj comparison</div>
+                </div>
+
+                <div class="methodology-step rounded-xl p-6">
+                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white font-bold">4</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">Scenario Modeling</h3>
+                    <p class="text-sm text-gray-700 mb-4">Monte Carlo, 10,000 simulations</p>
+                    <div class="text-xs text-blue-600">Risk-adjusted projections</div>
+                </div>
+
+                <div class="methodology-step rounded-xl p-6">
+                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-white font-bold">5</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-3">Implementation Feasibility</h3>
+                    <p class="text-sm text-gray-700 mb-4">Scoring across 5 key criteria</p>
+                    <div class="text-xs text-blue-600">ROI, risk, strategic fit, speed</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">Methodology Process Flow</h3>
+                <div id="methodologyChart" style="height: 400px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unique Metrics -->
+    <section id="metrics" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Unique Framework Metrics
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Novel metrics designed specifically for EV industry dynamics and scaling challenges
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="metric-card rounded-xl p-8">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-green-600">CVR</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Capital Velocity Ratio</h3>
+                    <p class="text-gray-700 mb-4">
+                        Measures how quickly capital generates returns, accounting for time value and risk-adjusted
+                        performance.
+                    </p>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm font-mono text-gray-600 mb-2">Formula:</div>
+                        <div class="text-sm font-mono text-gray-900">
+                            Revenue Generated ÷ Capital Deployed ÷ Time Period
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card rounded-xl p-8">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-blue-600">ERM</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Ecosystem Revenue Multiple</h3>
+                    <p class="text-gray-700 mb-4">
+                        Quantifies additional revenue generated from ecosystem assets beyond core product sales.
+                    </p>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm font-mono text-gray-600 mb-2">Formula:</div>
+                        <div class="text-sm font-mono text-gray-900">
+                            Total Ecosystem Revenue ÷ Core Product Revenue
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card rounded-xl p-8">
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-purple-600">MCE</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Market Capture Efficiency</h3>
+                    <p class="text-gray-700 mb-4">
+                        Measures efficiency of market share gains relative to marketing investment and time.
+                    </p>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm font-mono text-gray-600 mb-2">Formula:</div>
+                        <div class="text-sm font-mono text-gray-900">
+                            Market Share Gained ÷ Marketing Spend × Time
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">
+                    <span class="text-gradient">Project Volt</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    VOLT Strategic Framework for EV Profitability
+                </p>
+                <div class="text-sm text-gray-500">
+                    © 2025 Strategic Analysis Report. Proprietary framework designed for EV industry scaling challenges.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Framework page specific functionality
+        class VOLTFramework {
+            constructor() {
+                this.currentLetter = null;
+                this.init();
+            }
+
+            init() {
+                this.setupLetterInteractions();
+                this.initMethodologyChart();
+            }
+
+            setupLetterInteractions() {
+                document.querySelectorAll('.volt-letter').forEach(letter => {
+                    letter.addEventListener('click', () => {
+                        const letterType = letter.dataset.letter;
+                        this.showFrameworkDetail(letterType);
+                        this.updateLetterStates(letter);
+                    });
+                });
+            }
+
+            showFrameworkDetail(letter) {
+                // Hide all details
+                document.querySelectorAll('.framework-detail').forEach(detail => {
+                    detail.classList.remove('active');
+                });
+
+                // Show selected detail
+                const selectedDetail = document.querySelector(`[data-detail="${letter}"]`);
+                if (selectedDetail) {
+                    setTimeout(() => {
+                        selectedDetail.classList.add('active');
+                    }, 100);
+                }
+
+                this.currentLetter = letter;
+            }
+
+            updateLetterStates(activeLetter) {
+                document.querySelectorAll('.volt-letter').forEach(letter => {
+                    letter.classList.remove('active');
+                });
+
+                document.querySelector(`[data-letter="${activeLetter}"]`).classList.add('active');
+            }
+
+            initMethodologyChart() {
+                const chartElement = document.getElementById('methodologyChart');
+                if (!chartElement) return;
+
+                const chart = echarts.init(chartElement);
+                const option = {
+                    title: {
+                        text: 'Analysis Methodology Process',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: { type: 'shadow' }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['Unit Economics', 'Customer Analysis', 'Competitive Benchmark', 'Scenario Modeling', 'Feasibility Scoring']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: 'Data Points Analyzed'
+                    },
+                    series: [{
+                        type: 'bar',
+                        data: [47, 186000, 36, 10000, 25],
+                        itemStyle: {
+                            color: function (params) {
+                                const colors = ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444'];
+                                return colors[params.dataIndex];
+                            }
+                        },
+                        label: {
+                            show: true,
+                            position: 'top',
+                            formatter: function (params) {
+                                return params.value.toLocaleString();
+                            }
+                        }
+                    }]
+                };
+                chart.setOption(option);
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    chart.resize();
+                });
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('typed-subtitle')) {
+                new Typed('#typed-subtitle', {
+                    strings: [
+                        'A Proprietary 4-Lever Framework',
+                        'Designed for EV Scaling Challenges',
+                        'Velocity • Optimization • Leverage • Territory'
+                    ],
+                    typeSpeed: 50,
+                    backSpeed: 30,
+                    backDelay: 2000,
+                    loop: true,
+                    showCursor: true,
+                    cursorChar: '|'
+                });
+            }
+
+            // Initialize VOLT framework
+            setTimeout(() => {
+                window.voltFramework = new VOLTFramework();
+                // Auto-show first letter
+                document.querySelector('.volt-letter').click();
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>

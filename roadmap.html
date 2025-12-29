@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementation Roadmap & Call to Action | Project Volt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://unpkg.com/splitting@1.0.6/dist/splitting.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --electric-green: #00D26A;
+            --charcoal: #1A1A2E;
+            --golden: #FFB800;
+            --light-gray: #F5F5F5;
+            --medium-gray: #6B7280;
+            --dark-gray: #2C2C2C;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            color: var(--dark-gray);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--charcoal) 0%, #16213E 50%, var(--charcoal) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('resources/team-collaboration.png') center/cover no-repeat;
+            opacity: 0.1;
+        }
+
+        .timeline-container {
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--electric-green), var(--golden));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 50%;
+            padding-right: 3rem;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 50%;
+            padding-left: 3rem;
+            text-align: left;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            width: 20px;
+            height: 20px;
+            background: var(--electric-green);
+            border: 4px solid white;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(0, 210, 106, 0.3);
+            z-index: 10;
+        }
+
+        .checklist-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(4px);
+            background: rgba(0, 210, 106, 0.05);
+        }
+
+        .checklist-item.completed {
+            background: rgba(0, 210, 106, 0.1);
+            border-color: var(--electric-green);
+        }
+
+        .checklist-item.completed .checkbox {
+            background: var(--electric-green);
+            color: white;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #D1D5DB;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 210, 106, 0.15);
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            transform-origin: 50% 50%;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--electric-green), var(--golden));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        .slide-dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .slide-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slide-dot.active {
+            background: var(--electric-green);
+            transform: scale(1.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--electric-green), var(--golden));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .imperative-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .imperative-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 210, 106, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .imperative-card:hover::before {
+            left: 100%;
+        }
+
+        .imperative-card:hover {
+            border-color: var(--electric-green);
+            transform: translateY(-2px);
+        }
+
+        .milestone-badge {
+            background: linear-gradient(135deg, var(--electric-green), var(--golden));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slide Dots Navigation -->
+    <div class="slide-dots">
+        <div class="slide-dot active" data-section="hero"></div>
+        <div class="slide-dot" data-section="quick-wins"></div>
+        <div class="slide-dot" data-section="timeline"></div>
+        <div class="slide-dot" data-section="kpis"></div>
+        <div class="slide-dot" data-section="action"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-xl font-bold">
+                        <span class="text-gradient">Project Volt</span>
+                    </a>
+                    <div class="text-sm text-gray-600">Implementation Roadmap</div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-green-600">Overview</a>
+                    <a href="analysis.html" class="nav-link text-gray-700 hover:text-green-600">Analysis</a>
+                    <a href="framework.html" class="nav-link text-gray-700 hover:text-green-600">Framework</a>
+                    <a href="capital.html" class="nav-link text-gray-700 hover:text-green-600">Capital</a>
+                    <a href="financials.html" class="nav-link text-gray-700 hover:text-green-600">Financials</a>
+                    <a href="roadmap.html" class="nav-link text-green-600 font-semibold">Roadmap</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section min-h-screen flex items-center justify-center relative pt-20">
+        <div class="relative z-10 text-center max-w-6xl mx-auto px-6">
+            <div class="mb-12">
+                <h1 class="text-6xl md:text-8xl font-bold text-white mb-6" data-splitting>
+                    Implementation Roadmap
+                </h1>
+                <div class="text-2xl md:text-3xl text-white/90 mb-8">
+                    <span id="typed-subtitle"></span>
+                </div>
+                <p class="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+                    From immediate quick wins to long-term transformation—a comprehensive execution plan
+                    with clear milestones, accountability, and measurable outcomes
+                </p>
+            </div>
+
+            <!-- Key Timeline Milestones -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-green-400 mb-2">100 Days</div>
+                    <div class="text-sm text-white/80">Quick Wins</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-blue-400 mb-2">Q2 FY29</div>
+                    <div class="text-sm text-white/80">Breakeven</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-purple-400 mb-2">FY30</div>
+                    <div class="text-sm text-white/80">₹7,200 Cr Revenue</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 text-center border border-white/20">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">22%</div>
+                    <div class="text-sm text-white/80">Market Share</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 100-Day Quick Wins -->
+    <section id="quick-wins" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    100-Day Quick Wins
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Immediate actions to build momentum, secure partnerships, and validate strategic direction
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Days 1-30: Foundations -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8 border border-green-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-green-900">Days 1-30</h3>
+                        <span class="milestone-badge">Foundations</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="board-approval">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Board Approval</h4>
+                                    <p class="text-sm text-gray-600">Secure board approval for fleet strategy pivot</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="partnership-team">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Partnership Team</h4>
+                                    <p class="text-sm text-gray-600">Form Swiggy/Zomato partnership team</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="supply-chain">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Supply Chain Negotiations</h4>
+                                    <p class="text-sm text-gray-600">Launch negotiations with top 5 suppliers</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="fleet-specs">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Fleet Model Specs</h4>
+                                    <p class="text-sm text-gray-600">Finalize Ather Dash specifications</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="algorithm-dev">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">AtherSafe Algorithm</h4>
+                                    <p class="text-sm text-gray-600">Kickoff AtherSafe Score development</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-green-100 rounded-lg">
+                        <div class="text-sm font-semibold text-green-900">Milestone</div>
+                        <div class="text-sm text-green-700">Strategic direction locked, teams mobilized</div>
+                    </div>
+                </div>
+
+                <!-- Days 31-60: Partnerships -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8 border border-blue-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-blue-900">Days 31-60</h3>
+                        <span class="milestone-badge">Partnerships</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="swiggy-loi">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Swiggy LOI</h4>
+                                    <p class="text-sm text-gray-600">Sign pilot LOI (5,000 scooters)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="zomato-loi">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Zomato LOI</h4>
+                                    <p class="text-sm text-gray-600">Sign pilot LOI (4,000 scooters)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="insurance-mou">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Insurance MOU</h4>
+                                    <p class="text-sm text-gray-600">ICICI Lombard partnership MOU</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="supply-contracts">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Supply Contracts</h4>
+                                    <p class="text-sm text-gray-600">Agree on term sheets with suppliers</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="plant-selection">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Plant Selection</h4>
+                                    <p class="text-sm text-gray-600">Maharashtra plant site selection</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-blue-100 rounded-lg">
+                        <div class="text-sm font-semibold text-blue-900">Milestone</div>
+                        <div class="text-sm text-blue-700">Key partnerships secured, ₹500 Cr order pipeline</div>
+                    </div>
+                </div>
+
+                <!-- Days 61-100: Execution -->
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-8 border border-purple-200">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-purple-900">Days 61-100</h3>
+                        <span class="milestone-badge">Execution</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="fleet-pilot">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Fleet Pilot</h4>
+                                    <p class="text-sm text-gray-600">Begin fleet pilot operations (500 scooters)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="dashboard-alpha">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">FleetPro Dashboard</h4>
+                                    <p class="text-sm text-gray-600">Alpha launch of FleetPro dashboard</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="experience-centers">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Experience Centers</h4>
+                                    <p class="text-sm text-gray-600">Open 2 new centers (Mumbai, Delhi)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="supply-jv">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Supply Chain JV</h4>
+                                    <p class="text-sm text-gray-600">Announce supply chain joint venture</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checklist-item bg-white rounded-lg p-4 border border-gray-200"
+                            data-task="q1-validation">
+                            <div class="flex items-center space-x-3">
+                                <div class="checkbox">
+                                    <svg class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Q1 Validation</h4>
+                                    <p class="text-sm text-gray-600">Validate Q1 FY27 targets, approve full rollout</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-purple-100 rounded-lg">
+                        <div class="text-sm font-semibold text-purple-900">Milestone</div>
+                        <div class="text-sm text-purple-700">Proof of concept validated, ready for scale</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5-Year Transformation Timeline -->
+    <section id="timeline" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    5-Year Transformation Journey
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Strategic evolution from foundation building to market leadership
+                </p>
+            </div>
+
+            <div class="timeline-container max-w-4xl mx-auto">
+                <div class="timeline-line"></div>
+
+                <!-- FY26: Foundation -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-2xl font-bold text-gray-900">FY26</h3>
+                                <span
+                                    class="text-sm font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">Foundation</span>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">Strategic Pivot & Partnership Building
+                            </h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Fleet pilot launched with 8,000 scooters</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Supply chain JV formation</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span>Data MVP development begins</span>
+                                </li>
+                            </ul>
+                            <div class="mt-4 text-2xl font-bold text-green-600">₹2,160 Cr</div>
+                            <div class="text-sm text-gray-600">Revenue</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FY27: Scale -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-2xl font-bold text-gray-900">FY27</h3>
+                                <span
+                                    class="text-sm font-semibold text-blue-600 bg-blue-100 px-3 py-1 rounded-full">Scale</span>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">Market Expansion & Product Launch</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span>55,000 fleet scooters deployed</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span>15% cost reduction achieved</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                    <span>₹17 Cr data revenue milestone</span>
+                                </li>
+                            </ul>
+                            <div class="mt-4 text-2xl font-bold text-blue-600">₹3,360 Cr</div>
+                            <div class="text-sm text-gray-600">Revenue</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FY28: Optimize -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-2xl font-bold text-gray-900">FY28</h3>
+                                <span
+                                    class="text-sm font-semibold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">Optimize</span>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">Profitability & Efficiency</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <span>120,000 fleet scooters in service</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <span>25% cost reduction achieved</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+                                    <span>Profitable operations begin</span>
+                                </li>
+                            </ul>
+                            <div class="mt-4 text-2xl font-bold text-purple-600">₹4,680 Cr</div>
+                            <div class="text-sm text-gray-600">Revenue</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FY29: Expand -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-2xl font-bold text-gray-900">FY29</h3>
+                                <span
+                                    class="text-sm font-semibold text-yellow-600 bg-yellow-100 px-3 py-1 rounded-full">Expand</span>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">Market Leadership & Growth</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span>215,000 fleet scooters deployed</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span>19% market share achieved</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span>₹115 Cr data revenue</span>
+                                </li>
+                            </ul>
+                            <div class="mt-4 text-2xl font-bold text-yellow-600">₹5,940 Cr</div>
+                            <div class="text-sm text-gray-600">Revenue</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FY30: Lead -->
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-2xl font-bold text-gray-900">FY30</h3>
+                                <span
+                                    class="text-sm font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full">Lead</span>
+                            </div>
+                            <h4 class="text-lg font-semibold text-gray-900 mb-3">Dominant Market Position</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    <span>Market leader in EV segment</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    <span>22% market share</span>
+                                </li>
+                                <li class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    <span>₹180 Cr data revenue</span>
+                                </li>
+                            </ul>
+                            <div class="mt-4 text-2xl font-bold text-red-600">₹7,200 Cr</div>
+                            <div class="text-sm text-gray-600">Revenue</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KPI Dashboard -->
+    <section id="kpis" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold text-gray-900 mb-6" data-splitting>
+                    Success Metrics Dashboard
+                </h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Key performance indicators to track transformation progress and strategic execution
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-4 gap-8 mb-12">
+                <!-- Financial KPIs -->
+                <div class="kpi-card rounded-xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-900">Financial</h3>
+                        <div class="progress-ring w-12 h-12">
+                            <svg class="w-12 h-12">
+                                <circle cx="24" cy="24" r="20" stroke="#E5E7EB" stroke-width="4" fill="none" />
+                                <circle cx="24" cy="24" r="20" stroke="#00D26A" stroke-width="4" fill="none"
+                                    stroke-dasharray="125.6" stroke-dashoffset="25.1" class="progress-ring-circle" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="text-sm text-gray-600">Revenue (FY30)</div>
+                            <div class="text-xl font-bold text-gray-900">₹7,200 Cr</div>
+                            <div class="text-xs text-green-600">Target: ₹7,200 Cr</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">EBITDA Margin</div>
+                            <div class="text-xl font-bold text-gray-900">9%</div>
+                            <div class="text-xs text-green-600">Target: 9%</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">B2B Revenue %</div>
+                            <div class="text-xl font-bold text-gray-900">40%</div>
+                            <div class="text-xs text-green-600">Target: 40%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operational KPIs -->
+                <div class="kpi-card rounded-xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-900">Operational</h3>
+                        <div class="progress-ring w-12 h-12">
+                            <svg class="w-12 h-12">
+                                <circle cx="24" cy="24" r="20" stroke="#E5E7EB" stroke-width="4" fill="none" />
+                                <circle cx="24" cy="24" r="20" stroke="#3B82F6" stroke-width="4" fill="none"
+                                    stroke-dasharray="125.6" stroke-dashoffset="37.7" class="progress-ring-circle" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="text-sm text-gray-600">Units Sold (Annual)</div>
+                            <div class="text-xl font-bold text-gray-900">600K</div>
+                            <div class="text-xs text-blue-600">Target: 600K</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">Fleet Scooters</div>
+                            <div class="text-xl font-bold text-gray-900">215K</div>
+                            <div class="text-xs text-blue-600">Target: 215K</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">Capacity Utilization</div>
+                            <div class="text-xl font-bold text-gray-900">92%</div>
+                            <div class="text-xs text-blue-600">Target: 92%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategic KPIs -->
+                <div class="kpi-card rounded-xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-900">Strategic</h3>
+                        <div class="progress-ring w-12 h-12">
+                            <svg class="w-12 h-12">
+                                <circle cx="24" cy="24" r="20" stroke="#E5E7EB" stroke-width="4" fill="none" />
+                                <circle cx="24" cy="24" r="20" stroke="#8B5CF6" stroke-width="4" fill="none"
+                                    stroke-dasharray="125.6" stroke-dashoffset="50.2" class="progress-ring-circle" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="text-sm text-gray-600">Market Share</div>
+                            <div class="text-xl font-bold text-gray-900">22%</div>
+                            <div class="text-xs text-purple-600">Target: 22%</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">NPS Score</div>
+                            <div class="text-xl font-bold text-gray-900">78</div>
+                            <div class="text-xs text-purple-600">Target: 78</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">Fleet Partners</div>
+                            <div class="text-xl font-bold text-gray-900">30</div>
+                            <div class="text-xs text-purple-600">Target: 30</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Innovation KPIs -->
+                <div class="kpi-card rounded-xl p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-gray-900">Innovation</h3>
+                        <div class="progress-ring w-12 h-12">
+                            <svg class="w-12 h-12">
+                                <circle cx="24" cy="24" r="20" stroke="#E5E7EB" stroke-width="4" fill="none" />
+                                <circle cx="24" cy="24" r="20" stroke="#F59E0B" stroke-width="4" fill="none"
+                                    stroke-dasharray="125.6" stroke-dashoffset="62.8" class="progress-ring-circle" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="text-sm text-gray-600">Data Revenue</div>
+                            <div class="text-xl font-bold text-gray-900">₹180 Cr</div>
+                            <div class="text-xs text-yellow-600">Target: ₹180 Cr</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">Data Products Live</div>
+                            <div class="text-xl font-bold text-gray-900">5</div>
+                            <div class="text-xs text-yellow-600">Target: 5</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-600">R&D Investment</div>
+                            <div class="text-xl font-bold text-gray-900">8.5%</div>
+                            <div class="text-xs text-yellow-600">Target: 8.5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Tracking -->
+            <div class="chart-container">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">Transformation Progress</h3>
+                <div id="progressChart" style="height: 400px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section id="action" class="py-20 bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold mb-6" data-splitting>
+                    Three Strategic Imperatives
+                </h2>
+                <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                    The path to transforming Ather from India's most loved EV brand to its most profitable electric
+                    mobility company
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                <div class="imperative-card bg-white/10 backdrop-blur-md rounded-xl p-8 border border-white/20">
+                    <div class="w-16 h-16 bg-green-500 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-white">1</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Cost Before Capacity</h3>
+                    <p class="text-gray-300 mb-6">
+                        Prioritize supply chain integration (22% of capital) before expanding production capacity.
+                        This unlocks ₹4,200/unit savings and delivers 3.2x ROI.
+                    </p>
+                    <div class="text-3xl font-bold text-green-400 mb-2">₹4,200</div>
+                    <div class="text-sm text-gray-400">Per unit savings potential</div>
+                </div>
+
+                <div class="imperative-card bg-white/10 backdrop-blur-md rounded-xl p-8 border border-white/20">
+                    <div class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-white">2</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">B2B as Profit Engine</h3>
+                    <p class="text-gray-300 mb-6">
+                        Build Fleet-as-a-Service to 40% of revenue by FY30. This generates ₹2,880 Cr recurring revenue
+                        with 4x better customer lifetime value than B2C.
+                    </p>
+                    <div class="text-3xl font-bold text-blue-400 mb-2">₹2,880 Cr</div>
+                    <div class="text-sm text-gray-400">Fleet revenue by FY30</div>
+                </div>
+
+                <div class="imperative-card bg-white/10 backdrop-blur-md rounded-xl p-8 border border-white/20">
+                    <div class="w-16 h-16 bg-purple-500 rounded-lg flex items-center justify-center mb-6">
+                        <span class="text-2xl font-bold text-white">3</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Data as Competitive Moat</h3>
+                    <p class="text-gray-300 mb-6">
+                        Launch 5 data revenue streams by FY28. This generates ₹180 Cr new revenue with just
+                        ₹45 Cr investment—delivering 4x return on capital.
+                    </p>
+                    <div class="text-3xl font-bold text-purple-400 mb-2">₹180 Cr</div>
+                    <div class="text-sm text-gray-400">Data revenue by FY30</div>
+                </div>
+            </div>
+
+            <!-- Final Recommendation -->
+            <div class="bg-gradient-to-r from-green-600 to-green-700 rounded-xl p-12 text-center">
+                <h3 class="text-3xl font-bold mb-6">Expected Outcome</h3>
+                <div class="grid md:grid-cols-4 gap-6 mb-8">
+                    <div>
+                        <div class="text-3xl font-bold mb-2">₹7,200 Cr</div>
+                        <div class="text-sm opacity-90">Revenue FY30</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold mb-2">₹648 Cr</div>
+                        <div class="text-sm opacity-90">EBITDA FY30</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold mb-2">22%</div>
+                        <div class="text-sm opacity-90">Market Share</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold mb-2">Q2 FY29</div>
+                        <div class="text-sm opacity-90">Breakeven</div>
+                    </div>
+                </div>
+                <p class="text-xl mb-8 opacity-90">
+                    Ather has built India's most innovative EV brand. The next chapter isn't about more innovation—
+                    it's about profitable scale. By executing the VOLT strategy, Ather can transform from a beloved
+                    startup to India's dominant electric mobility company.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="index.html"
+                        class="bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        Start Strategic Analysis
+                    </a>
+                    <a href="financials.html"
+                        class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition-colors">
+                        View Financial Model
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">
+                    <span class="text-gradient">Project Volt</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    Implementation Roadmap & Strategic Execution Plan
+                </p>
+                <div class="text-sm text-gray-500">
+                    © 2025 Strategic Analysis Report. Execution framework designed for measurable outcomes and
+                    sustainable growth.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Roadmap page specific functionality
+        class RoadmapManager {
+            constructor() {
+                this.completedTasks = new Set();
+                this.init();
+            }
+
+            init() {
+                this.setupChecklistInteractions();
+                this.initProgressChart();
+                this.animateProgressRings();
+            }
+
+            setupChecklistInteractions() {
+                document.querySelectorAll('.checklist-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const taskId = item.dataset.task;
+                        this.toggleTask(taskId, item);
+                    });
+                });
+            }
+
+            toggleTask(taskId, element) {
+                const checkbox = element.querySelector('.checkbox svg');
+
+                if (this.completedTasks.has(taskId)) {
+                    // Uncomplete task
+                    this.completedTasks.delete(taskId);
+                    element.classList.remove('completed');
+                    checkbox.classList.add('hidden');
+                } else {
+                    // Complete task
+                    this.completedTasks.add(taskId);
+                    element.classList.add('completed');
+                    checkbox.classList.remove('hidden');
+                }
+
+                this.updateProgress();
+            }
+
+            updateProgress() {
+                const totalTasks = document.querySelectorAll('.checklist-item').length;
+                const completedTasks = this.completedTasks.size;
+                const progress = (completedTasks / totalTasks) * 100;
+
+                // Update progress rings (simplified for demo)
+                document.querySelectorAll('.progress-ring-circle').forEach(circle => {
+                    const circumference = 2 * Math.PI * 20;
+                    const offset = circumference - (progress / 100) * circumference;
+                    circle.style.strokeDashoffset = offset;
+                });
+            }
+
+            animateProgressRings() {
+                document.querySelectorAll('.progress-ring-circle').forEach((circle, index) => {
+                    const circumference = 2 * Math.PI * 20;
+                    const progress = [80, 75, 70, 65][index] || 70; // Different progress for different KPIs
+                    const offset = circumference - (progress / 100) * circumference;
+
+                    setTimeout(() => {
+                        circle.style.strokeDashoffset = offset;
+                    }, index * 200);
+                });
+            }
+
+            initProgressChart() {
+                const chart = echarts.init(document.getElementById('progressChart'));
+                const option = {
+                    title: {
+                        text: 'Transformation Progress by Year',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['Revenue Progress', 'Profitability', 'Market Position'],
+                        bottom: 10
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ['FY26', 'FY27', 'FY28', 'FY29', 'FY30']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: 'Progress %',
+                        max: 100
+                    },
+                    series: [
+                        {
+                            name: 'Revenue Progress',
+                            type: 'line',
+                            data: [30, 45, 65, 82, 100],
+                            itemStyle: { color: '#00D26A' },
+                            areaStyle: { color: 'rgba(0, 210, 106, 0.1)' }
+                        },
+                        {
+                            name: 'Profitability',
+                            type: 'line',
+                            data: [0, 15, 50, 85, 100],
+                            itemStyle: { color: '#3B82F6' },
+                            areaStyle: { color: 'rgba(59, 130, 246, 0.1)' }
+                        },
+                        {
+                            name: 'Market Position',
+                            type: 'line',
+                            data: [20, 35, 55, 75, 100],
+                            itemStyle: { color: '#8B5CF6' },
+                            areaStyle: { color: 'rgba(139, 92, 246, 0.1)' }
+                        }
+                    ]
+                };
+                chart.setOption(option);
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.getElementById('typed-subtitle')) {
+                new Typed('#typed-subtitle', {
+                    strings: [
+                        '100-Day Quick Wins',
+                        '5-Year Transformation',
+                        'From Strategy to Execution'
+                    ],
+                    typeSpeed: 50,
+                    backSpeed: 30,
+                    backDelay: 2000,
+                    loop: true,
+                    showCursor: true,
+                    cursorChar: '|'
+                });
+            }
+
+            // Initialize roadmap manager
+            setTimeout(() => {
+                window.roadmapManager = new RoadmapManager();
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Allocation Strategy | Project Volt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --electric-green: #00D26A;
+            --charcoal: #1A1A2E;
+            --golden: #FFB800;
+            --light-gray: #F5F5F5;
+            --medium-gray: #6B7280;
+            --dark-gray: #2C2C2C;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            color: var(--dark-gray);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 12px 48px rgba(0, 210, 106, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--electric-green), var(--golden));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-xl font-bold">
+                        <span class="text-gradient">Project Volt</span>
+                    </a>
+                    <div class="text-sm text-gray-600">Capital Allocation</div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-green-600">Overview</a>
+                    <a href="analysis.html" class="nav-link text-gray-700 hover:text-green-600">Analysis</a>
+                    <a href="framework.html" class="nav-link text-gray-700 hover:text-green-600">Framework</a>
+                    <a href="capital.html" class="nav-link text-green-600 font-semibold">Capital</a>
+                    <a href="financials.html" class="nav-link text-gray-700 hover:text-green-600">Financials</a>
+                    <a href="roadmap.html" class="nav-link text-gray-700 hover:text-green-600">Roadmap</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6">Capital Allocation Strategy</h1>
+            <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                Strategic deployment of ₹2,500 Cr to maximize ROI while achieving profitable scale
+            </p>
+        </div>
+    </section>
+
+    <!-- Capital ROI Frontier -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Capital ROI Frontier</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Risk-return analysis of strategic investment opportunities
+                </p>
+            </div>
+
+            <div class="chart-container">
+                <div id="roiFrontierChart" style="height: 500px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Allocation -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Investment Allocation</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Strategic distribution across cost reduction, revenue expansion, and technology moat
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="chart-container">
+                    <div id="allocationChart" style="height: 400px;"></div>
+                </div>
+
+                <div class="chart-container">
+                    <div id="sunburstChart" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Scorecard -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Investment Scorecard</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Multi-criteria evaluation across ROI, risk, strategic fit, and speed to impact
+                </p>
+            </div>
+
+            <div class="chart-container">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="text-left py-3 px-4 font-semibold text-gray-900">Investment Area</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">ROI (30%)</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Risk-Adjusted (25%)</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Strategic Fit (25%)</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Speed (20%)</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Score</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Rank</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">Supply Chain Integration</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">9.6</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">8.5</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">8.0</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">7.0</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold text-lg">8.4</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">#1</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">Capacity Expansion P1</td>
+                                <td class="text-center py-3 px-4 text-blue-600 font-bold">8.7</td>
+                                <td class="text-center py-3 px-4 text-blue-600 font-bold">7.5</td>
+                                <td class="text-center py-3 px-4 text-blue-600 font-bold">9.0</td>
+                                <td class="text-center py-3 px-4 text-blue-600 font-bold">6.0</td>
+                                <td class="text-center py-3 px-4 text-blue-600 font-bold text-lg">7.9</td>
+                                <td class="text-center py-3 px-4 text-blue-600 font-bold">#2</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">Fleet Model R&D</td>
+                                <td class="text-center py-3 px-4 text-purple-600 font-bold">8.1</td>
+                                <td class="text-center py-3 px-4 text-purple-600 font-bold">7.0</td>
+                                <td class="text-center py-3 px-4 text-purple-600 font-bold">9.5</td>
+                                <td class="text-center py-3 px-4 text-purple-600 font-bold">5.5</td>
+                                <td class="text-center py-3 px-4 text-purple-600 font-bold text-lg">7.6</td>
+                                <td class="text-center py-3 px-4 text-purple-600 font-bold">#3</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">AtherStack Pro</td>
+                                <td class="text-center py-3 px-4 text-gray-600 font-bold">6.9</td>
+                                <td class="text-center py-3 px-4 text-gray-600 font-bold">6.0</td>
+                                <td class="text-center py-3 px-4 text-gray-600 font-bold">8.5</td>
+                                <td class="text-center py-3 px-4 text-gray-600 font-bold">4.0</td>
+                                <td class="text-center py-3 px-4 text-gray-600 font-bold text-lg">6.4</td>
+                                <td class="text-center py-3 px-4 text-gray-600 font-bold">#4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">
+                    <span class="text-gradient">Project Volt</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    Capital Allocation Strategy & Investment Optimization
+                </p>
+                <div class="text-sm text-gray-500">
+                    © 2025 Strategic Analysis Report. Investment recommendations based on comprehensive ROI and risk
+                    analysis.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Capital page specific functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // ROI Frontier Scatter Plot
+            const roiChart = echarts.init(document.getElementById('roiFrontierChart'));
+            const roiOption = {
+                title: {
+                    text: 'Capital ROI Frontier (Bubble Size = Capital Required)',
+                    left: 'center'
+                },
+                tooltip: {
+                    formatter: function (params) {
+                        return params.data[3] + '<br/>' +
+                            'Risk: ' + params.data[0] + '/10<br/>' +
+                            'ROI: ' + params.data[1] + 'x<br/>' +
+                            'Capital: ₹' + params.data[2] + ' Cr';
+                    }
+                },
+                xAxis: {
+                    name: 'Implementation Risk (1-10)',
+                    nameLocation: 'middle',
+                    nameGap: 30
+                },
+                yAxis: {
+                    name: '5-Year ROI Multiple',
+                    nameLocation: 'middle',
+                    nameGap: 40
+                },
+                series: [{
+                    type: 'scatter',
+                    data: [
+                        [4, 3.2, 550, 'Supply Chain Integration'],
+                        [5, 2.9, 450, 'Capacity Expansion P1'],
+                        [6, 2.7, 350, 'Fleet Model R&D'],
+                        [5, 2.6, 550, 'Capacity Expansion P2'],
+                        [7, 2.3, 300, 'AtherStack Pro'],
+                        [6, 1.9, 150, 'AtherGrid Selective'],
+                        [8, 1.6, 150, 'Geographic Expansion']
+                    ],
+                    symbolSize: function (data) {
+                        return Math.sqrt(data[2]) * 2;
+                    },
+                    itemStyle: {
+                        color: '#00D26A',
+                        opacity: 0.7
+                    }
+                }]
+            };
+            roiChart.setOption(roiOption);
+
+            // Allocation Pie Chart
+            const allocationChart = echarts.init(document.getElementById('allocationChart'));
+            const allocationOption = {
+                title: {
+                    text: 'Strategic Pillar Allocation',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                series: [{
+                    type: 'pie',
+                    radius: '70%',
+                    data: [
+                        { value: 42, name: 'Cost Reduction', itemStyle: { color: '#EF4444' } },
+                        { value: 38, name: 'Revenue Expansion', itemStyle: { color: '#10B981' } },
+                        { value: 20, name: 'Technology Moat', itemStyle: { color: '#3B82F6' } }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+            allocationChart.setOption(allocationOption);
+
+            // Sunburst Chart
+            const sunburstChart = echarts.init(document.getElementById('sunburstChart'));
+            const sunburstOption = {
+                title: {
+                    text: 'Detailed Investment Breakdown',
+                    left: 'center'
+                },
+                series: {
+                    type: 'sunburst',
+                    data: [{
+                        name: 'Cost Reduction',
+                        value: 1050,
+                        itemStyle: { color: '#EF4444' },
+                        children: [
+                            { name: 'Supply Chain', value: 550, itemStyle: { color: '#FCA5A5' } },
+                            { name: 'Capacity Efficiency', value: 500, itemStyle: { color: '#FECACA' } }
+                        ]
+                    }, {
+                        name: 'Revenue Expansion',
+                        value: 950,
+                        itemStyle: { color: '#10B981' },
+                        children: [
+                            { name: 'Capacity Growth', value: 550, itemStyle: { color: '#6EE7B7' } },
+                            { name: 'Fleet Development', value: 350, itemStyle: { color: '#A7F3D0' } },
+                            { name: 'Geographic', value: 50, itemStyle: { color: '#D1FAE5' } }
+                        ]
+                    }, {
+                        name: 'Technology Moat',
+                        value: 500,
+                        itemStyle: { color: '#3B82F6' },
+                        children: [
+                            { name: 'AtherStack', value: 300, itemStyle: { color: '#93C5FD' } },
+                            { name: 'AtherGrid', value: 150, itemStyle: { color: '#BFDBFE' } },
+                            { name: 'Next-Gen R&D', value: 50, itemStyle: { color: '#DBEAFE' } }
+                        ]
+                    }],
+                    radius: ['20%', '90%'],
+                    label: {
+                        rotate: 'radial'
+                    }
+                }
+            };
+            sunburstChart.setOption(sunburstOption);
+
+            // Handle window resize for all charts
+            window.addEventListener('resize', () => {
+                roiChart.resize();
+                allocationChart.resize();
+                sunburstChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>

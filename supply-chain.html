@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Chain Deep Dive | Project Volt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@300;400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --electric-green: #00D26A;
+            --charcoal: #1A1A2E;
+            --golden: #FFB800;
+            --light-gray: #F5F5F5;
+            --medium-gray: #6B7280;
+            --dark-gray: #2C2C2C;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            color: var(--dark-gray);
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid #E5E7EB;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-container:hover {
+            box-shadow: 0 12px 48px rgba(0, 210, 106, 0.15);
+            transform: translateY(-4px);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-green);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--electric-green), var(--golden));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-xl font-bold">
+                        <span class="text-gradient">Project Volt</span>
+                    </a>
+                    <div class="text-sm text-gray-600">Supply Chain</div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-700 hover:text-green-600">Overview</a>
+                    <a href="analysis.html" class="nav-link text-gray-700 hover:text-green-600">Analysis</a>
+                    <a href="framework.html" class="nav-link text-gray-700 hover:text-green-600">Framework</a>
+                    <a href="capital.html" class="nav-link text-gray-700 hover:text-green-600">Capital</a>
+                    <a href="financials.html" class="nav-link text-gray-700 hover:text-green-600">Financials</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6">Supply Chain Deep Dive</h1>
+            <p class="text-xl text-gray-300 max-w-4xl mx-auto">
+                Vertical integration unlocks ₹4,200 per unit savings through strategic localization and manufacturing optimization
+            </p>
+        </div>
+    </section>
+
+    <!-- Cost Breakdown Treemap -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Cost Breakdown Analysis</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Component-level cost structure revealing localization opportunities
+                </p>
+            </div>
+
+            <div class="chart-container">
+                <div id="treemapChart" style="height: 500px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Make vs Buy Analysis -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Make vs Buy Decision Matrix</h2>
+                <p class="text-xl text-gray-600 max-w-4xl mx-auto">
+                    Strategic recommendations for component manufacturing and sourcing
+                </p>
+            </div>
+
+            <div class="chart-container">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="text-left py-3 px-4 font-semibold text-gray-900">Component</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Current</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Recommendation</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Savings/Unit</th>
+                                <th class="text-center py-3 px-4 font-semibold text-gray-900">Investment</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">Battery Cells</td>
+                                <td class="text-center py-3 px-4 text-gray-600">Import</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-semibold">JV Partnership</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">₹1,800</td>
+                                <td class="text-center py-3 px-4 text-gray-900">₹180 Cr</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">Motor Assembly</td>
+                                <td class="text-center py-3 px-4 text-gray-600">Import</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-semibold">In-house</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">₹1,200</td>
+                                <td class="text-center py-3 px-4 text-gray-900">₹120 Cr</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">BMS Electronics</td>
+                                <td class="text-center py-3 px-4 text-gray-600">Import</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-semibold">Licensed Mfg</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">₹800</td>
+                                <td class="text-center py-3 px-4 text-gray-900">₹80 Cr</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">Wiring Harness</td>
+                                <td class="text-center py-3 px-4 text-gray-600">Outsource</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-semibold">In-house</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">₹400</td>
+                                <td class="text-center py-3 px-4 text-gray-900">₹40 Cr</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-medium text-gray-900">Thermal Systems</td>
+                                <td class="text-center py-3 px-4 text-gray-600">Import</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-semibold">Local Supplier</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold">₹300</td>
+                                <td class="text-center py-3 px-4 text-gray-900">₹30 Cr</td>
+                            </tr>
+                            <tr class="bg-green-50">
+                                <td class="py-3 px-4 font-bold text-green-900">TOTAL</td>
+                                <td class="text-center py-3 px-4 text-green-900">-</td>
+                                <td class="text-center py-3 px-4 text-green-900 font-bold">Strategic Shift</td>
+                                <td class="text-center py-3 px-4 text-green-600 font-bold text-lg">₹4,500</td>
+                                <td class="text-center py-3 px-4 text-green-900 font-bold">₹450 Cr</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="text-2xl font-bold mb-4">
+                    <span class="text-gradient">Project Volt</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    Supply Chain Optimization & Cost Reduction Strategy
+                </p>
+                <div class="text-sm text-gray-500">
+                    © 2025 Strategic Analysis Report. Supply chain recommendations based on component-level analysis and localization potential.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Supply chain page specific functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cost Breakdown Treemap
+            const treemapChart = echarts.init(document.getElementById('treemapChart'));
+            const treemapOption = {
+                title: {
+                    text: 'Component Cost Breakdown (450S Model)',
+                    left: 'center'
+                },
+                tooltip: {
+                    formatter: function(info) {
+                        const value = info.value;
+                        const treePathInfo = info.treePathInfo;
+                        const treePath = [];
+                        
+                        for (let i = 1; i < treePathInfo.length; i++) {
+                            treePath.push(treePathInfo[i].name);
+                        }
+                        
+                        return [
+                            '<div class="tooltip-title">' + treePath.join(' > ') + '</div>',
+                            'Cost: ₹' + value.toLocaleString(),
+                            'Percentage: ' + ((value / 89000) * 100).toFixed(1) + '%'
+                        ].join('');
+                    }
+                },
+                series: [{
+                    type: 'treemap',
+                    data: [{
+                        name: 'Battery Pack',
+                        value: 31500,
+                        itemStyle: {color: '#EF4444'},
+                        children: [
+                            {name: 'Battery Cells', value: 22000, itemStyle: {color: '#FCA5A5'}},
+                            {name: 'BMS', value: 6500, itemStyle: {color: '#FECACA'}},
+                            {name: 'Pack Assembly', value: 3000, itemStyle: {color: '#FEE2E2'}}
+                        ]
+                    }, {
+                        name: 'Motor & Controller',
+                        value: 15600,
+                        itemStyle: {color: '#F59E0B'},
+                        children: [
+                            {name: 'Motor Assembly', value: 10000, itemStyle: {color: '#FCD34D'}},
+                            {name: 'Controller', value: 5600, itemStyle: {color: '#FDE68A'}}
+                        ]
+                    }, {
+                        name: 'Chassis & Body',
+                        value: 12400,
+                        itemStyle: {color: '#10B981'},
+                        children: [
+                            {name: 'Frame', value: 7000, itemStyle: {color: '#6EE7B7'}},
+                            {name: 'Body Panels', value: 3400, itemStyle: {color: '#A7F3D0'}},
+                            {name: 'Paint', value: 2000, itemStyle: {color: '#D1FAE5'}}
+                        ]
+                    }, {
+                        name: 'Electronics/BMS',
+                        value: 11200,
+                        itemStyle: {color: '#3B82F6'},
+                        children: [
+                            {name: 'Display Unit', value: 4000, itemStyle: {color: '#93C5FD'}},
+                            {name: 'Sensors', value: 3200, itemStyle: {color: '#BFDBFE'}},
+                            {name: 'Wiring', value: 4000, itemStyle: {color: '#DBEAFE'}}
+                        ]
+                    }, {
+                        name: 'Display & Software',
+                        value: 6200,
+                        itemStyle: {color: '#8B5CF6'}
+                    }, {
+                        name: 'Suspension & Brakes',
+                        value: 5800,
+                        itemStyle: {color: '#6B7280'}
+                    }, {
+                        name: 'Miscellaneous',
+                        value: 6300,
+                        itemStyle: {color: '#9CA3AF'}
+                    }]
+                }]
+            };
+            treemapChart.setOption(treemapOption);
+        });
+    </script>
+</body>
+</html>

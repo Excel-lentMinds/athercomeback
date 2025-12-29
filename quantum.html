@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ather Energy Strategic Transformation Blueprint - From Premium Pioneer to Profitable Market Leader">
+    <meta name="keywords" content="Ather Energy, Electric Vehicles, EV Strategy, Financial Transformation">
+    <title>Project Quantum Leap | Ather Energy Strategic Blueprint</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Montserrat:wght@600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="quantum.css">
+
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/odometer@0.4.8/odometer.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/odometer@0.4.8/themes/odometer-theme-default.css">
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Loading Quantum Leap...</div>
+    </div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- KPI Vital Signs Ribbon -->
+    <nav class="kpi-ribbon" id="kpiRibbon" aria-label="Key Performance Indicators">
+        <div class="kpi-item">
+            <span class="kpi-label">Units Sold</span>
+            <span class="kpi-value odometer" id="kpiUnits">65595</span>
+            <span class="kpi-delta positive">▲ 340K</span>
+        </div>
+        <div class="kpi-item">
+            <span class="kpi-label">Revenue</span>
+            <span class="kpi-value">₹<span class="odometer" id="kpiRevenue">1154</span> Cr</span>
+            <span class="kpi-delta positive">▲ ₹5,880 Cr</span>
+        </div>
+        <div class="kpi-item">
+            <span class="kpi-label">EBITDA</span>
+            <span class="kpi-value"><span class="odometer" id="kpiEbitda">-13.4</span>%</span>
+            <span class="kpi-delta positive">▲ +2.5%</span>
+        </div>
+        <div class="kpi-item">
+            <span class="kpi-label">Cash</span>
+            <span class="kpi-value">₹<span class="odometer" id="kpiCash">0</span> Cr</span>
+            <span class="kpi-delta positive">▲ ₹1,314 Cr</span>
+        </div>
+    </nav>
+
+    <!-- Team Branding - Always Visible -->
+    <div class="team-branding" aria-label="Team Excel-lent Minds">
+        <span>Excel-lent Minds</span>
+    </div>
+
+    <!-- ========== SECTION 1: HERO ========== -->
+    <section id="hero" class="section section-hero">
+        <div class="hero-3d-container">
+            <!-- 3D Scooter Composition -->
+            <div class="scooter-3d" id="scooter3d">
+                <!-- Scooter Silhouette with CSS 3D -->
+                <div class="scooter-silhouette">
+                    <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Stylized Scooter Shape -->
+                        <defs>
+                            <linearGradient id="scooterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00E5FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#6CC24A;stop-opacity:1" />
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <!-- Body -->
+                        <path d="M80 200 L120 120 L280 120 L320 180 L280 200 L120 200 Z" fill="url(#scooterGradient)"
+                            filter="url(#glow)" opacity="0.9" />
+                        <!-- Wheels -->
+                        <circle cx="100" cy="220" r="40" stroke="#00E5FF" stroke-width="6" fill="none"
+                            filter="url(#glow)" />
+                        <circle cx="300" cy="220" r="40" stroke="#00E5FF" stroke-width="6" fill="none"
+                            filter="url(#glow)" />
+                        <!-- Handlebar -->
+                        <path d="M280 120 L300 60 L340 50" stroke="#6CC24A" stroke-width="8" stroke-linecap="round"
+                            fill="none" filter="url(#glow)" />
+                        <!-- Seat -->
+                        <path d="M150 120 Q180 90 220 120" stroke="#00E5FF" stroke-width="8" stroke-linecap="round"
+                            fill="none" />
+                    </svg>
+                </div>
+
+                <!-- Floating Cost Tags -->
+                <div class="cost-tag" style="top: 20%; left: 10%; animation-delay: 0s;" data-component="Battery">
+                    45,000
+                    <small>Battery Pack</small>
+                </div>
+                <div class="cost-tag" style="top: 50%; left: 5%; animation-delay: 0.5s;" data-component="Motor">
+                    18,000
+                    <small>Motor</small>
+                </div>
+                <div class="cost-tag" style="top: 30%; right: 10%; animation-delay: 1s;" data-component="Software">
+                    8,500
+                    <small>Software</small>
+                </div>
+                <div class="cost-tag" style="top: 70%; right: 15%; animation-delay: 1.5s;" data-component="Chassis">
+                    22,000
+                    <small>Chassis</small>
+                </div>
+                <div class="cost-tag" style="bottom: 15%; left: 30%; animation-delay: 2s;" data-component="Service">
+                    12,000
+                    <small>Service Network</small>
+                </div>
+            </div>
+
+            <!-- Hero Headline -->
+            <div class="hero-headline">
+                <p class="hero-stat-line">
+                    <span class="highlight">65,595</span> scooters.
+                    <span class="highlight">₹1,154 Cr</span> revenue.
+                    <span class="negative">−13.4%</span> EBITDA.
+                </p>
+                <h1 class="hero-tagline">One mission: flip the axis.</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 2: RESEARCHER WALL OF FAME ========== -->
+    <section id="researchers" class="section section-alt">
+        <h2 class="section-title center" style="text-align: center;">The Strategists</h2>
+        <p
+            style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            The minds behind Project Quantum Leap
+        </p>
+
+        <div class="researcher-grid">
+            <div class="researcher-card glass-card" data-researcher="DS">
+                <div class="researcher-avatar">
+                    <div class="researcher-initials">DS</div>
+                </div>
+                <div class="researcher-name">DEEPANSHU SHARMA</div>
+                <div class="researcher-quote">"The ₹4,200 per-unit savings unlocks everything."</div>
+            </div>
+
+            <div class="researcher-card glass-card" data-researcher="AS">
+                <div class="researcher-avatar">
+                    <div class="researcher-initials">AS</div>
+                </div>
+                <div class="researcher-name">ANU SHARMA</div>
+                <div class="researcher-quote">"Capital velocity beats capital volume every time."</div>
+            </div>
+
+            <div class="researcher-card glass-card" data-researcher="MM">
+                <div class="researcher-avatar">
+                    <div class="researcher-initials">MM</div>
+                </div>
+                <div class="researcher-name">MRIGESH MOHANTY</div>
+                <div class="researcher-quote">"55% utilization is bleeding ₹180 Cr annually."</div>
+            </div>
+
+            <div class="researcher-card glass-card" data-researcher="RB">
+                <div class="researcher-avatar">
+                    <div class="researcher-initials">RB</div>
+                </div>
+                <div class="researcher-name">RIKSHITA BARUA</div>
+                <div class="researcher-quote">"16 billion data points = ₹740 Cr opportunity."</div>
+            </div>
+
+            <div class="researcher-card glass-card" data-researcher="KS">
+                <div class="researcher-avatar">
+                    <div class="researcher-initials">KS</div>
+                </div>
+                <div class="researcher-name">KUNAL SAXENA</div>
+                <div class="researcher-quote">"B2B LTV is 4x higher than B2C."</div>
+            </div>
+
+            <div class="researcher-card glass-card" data-researcher="S">
+                <div class="researcher-avatar">
+                    <div class="researcher-initials">S</div>
+                </div>
+                <div class="researcher-name">SHUBHANGI</div>
+                <div class="researcher-quote">"90 days to first wins, 18 months to break-even."</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 3: KPI DETAIL (Visible on scroll) ========== -->
+    <!-- KPI ribbon is sticky at top, this section triggers updates -->
+
+    <!-- ========== SECTION 4: 3-P PIVOT GALAXY ========== -->
+    <section id="galaxy" class="section">
+        <h2 class="section-title center" style="text-align: center;">The 3-P Pivot Galaxy</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+            Hover on stars to explore strategic moves
+        </p>
+
+        <div class="galaxy-container" id="galaxyContainer">
+            <!-- Stars will be generated by JavaScript -->
+            <canvas id="galaxyCanvas"></canvas>
+
+            <!-- Legend -->
+            <div
+                style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; gap: 2rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 16px; height: 16px; background: #3B82F6; border-radius: 50%;"></div>
+                    <span style="font-size: 0.875rem;">Product</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 16px; height: 16px; background: var(--ather-green); border-radius: 50%;"></div>
+                    <span style="font-size: 0.875rem;">Profit</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 16px; height: 16px; background: #FBBF24; border-radius: 50%;"></div>
+                    <span style="font-size: 0.875rem;">Partnership</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 5: CURRENT-STATE DASHBOARD ========== -->
+    <section id="dashboard" class="section section-alt">
+        <h2 class="section-title center" style="text-align: center;">Current State Dashboard</h2>
+
+        <div class="dashboard-grid">
+            <div class="chart-card glass-card fade-in">
+                <h4>Revenue vs Loss Trajectory</h4>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card glass-card fade-in">
+                <h4>Market Share Race (Jan-Nov 2025)</h4>
+                <div class="chart-container">
+                    <canvas id="marketShareChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card glass-card fade-in">
+                <h4>Per-Unit Cost Waterfall</h4>
+                <div class="chart-container">
+                    <canvas id="costWaterfallChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card glass-card fade-in">
+                <h4>Factory Utilization</h4>
+                <div class="chart-container" style="display: flex; align-items: center; justify-content: center;">
+                    <div class="utilization-gauge" id="utilizationGauge">
+                        <svg viewBox="0 0 200 120" width="100%">
+                            <defs>
+                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#E17055" />
+                                    <stop offset="50%" style="stop-color:#FBBF24" />
+                                    <stop offset="100%" style="stop-color:#6CC24A" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Background arc -->
+                            <path d="M 20 100 A 80 80 0 0 1 180 100" stroke="#203436" stroke-width="20" fill="none"
+                                stroke-linecap="round" />
+                            <!-- Value arc -->
+                            <path id="gaugeValue" d="M 20 100 A 80 80 0 0 1 180 100" stroke="url(#gaugeGradient)"
+                                stroke-width="20" fill="none" stroke-linecap="round" stroke-dasharray="251.2"
+                                stroke-dashoffset="113" />
+                            <!-- Value text -->
+                            <text x="100" y="90" text-anchor="middle" fill="#00E5FF" font-size="32" font-weight="bold"
+                                font-family="JetBrains Mono">55%</text>
+                            <text x="100" y="110" text-anchor="middle" fill="#B2BEC3" font-size="12">→ 85% Target</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 6: ROOT-CAUSE WHACK-A-MOLE ========== -->
+    <section id="whackamole" class="section">
+        <h2 class="section-title center" style="text-align: center;">Root Cause Whack-a-Mole</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+            Click the problems to reveal savings! 🔨
+        </p>
+
+        <div class="game-container glass-card">
+            <div class="mole-grid">
+                <div class="mole-hole" data-mole="capacity" data-savings="180">
+                    <div class="mole">
+                        <span class="mole-label">Capacity</span>
+                        <span class="mole-savings">₹180 Cr</span>
+                    </div>
+                </div>
+                <div class="mole-hole" data-mole="supplier" data-savings="252">
+                    <div class="mole">
+                        <span class="mole-label">Supplier</span>
+                        <span class="mole-savings">₹252 Cr</span>
+                    </div>
+                </div>
+                <div class="mole-hole" data-mole="experience" data-savings="85">
+                    <div class="mole">
+                        <span class="mole-label">Experience</span>
+                        <span class="mole-savings">₹85 Cr</span>
+                    </div>
+                </div>
+                <div class="mole-hole" data-mole="grid" data-savings="67">
+                    <div class="mole">
+                        <span class="mole-label">Grid Debt</span>
+                        <span class="mole-savings">₹67 Cr</span>
+                    </div>
+                </div>
+                <div class="mole-hole" data-mole="interest" data-savings="32">
+                    <div class="mole">
+                        <span class="mole-label">Interest</span>
+                        <span class="mole-savings">₹32 Cr</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-score">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Annual Savings Unlocked</p>
+                <div class="total">₹<span id="moleScore">0</span> Cr</div>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">Target: ₹616 Cr</p>
+            </div>
+
+            <button id="startMoleGame"
+                style="display: block; margin: 2rem auto 0; padding: 1rem 2rem; background: var(--electric-cyan); color: var(--bg-primary); border: none; border-radius: 0.5rem; font-weight: 700; cursor: pointer; font-size: 1rem;">
+                Start Game
+            </button>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 7: CAPITAL ALLOCATION BUBBLEVERSE ========== -->
+    <section id="bubbles" class="section section-alt">
+        <h2 class="section-title center" style="text-align: center;">Capital Allocation Bubbleverse</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+            Size = ROI, Height = Impact, Color = Complexity
+        </p>
+
+        <div class="galaxy-container" style="height: 500px; position: relative;">
+            <canvas id="bubbleCanvas"></canvas>
+
+            <!-- Side Panel for Selected Bubble -->
+            <div id="bubbleSidePanel" class="glass-card"
+                style="position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); width: 280px; padding: 1.5rem; opacity: 0; transition: opacity 0.3s;">
+                <h4 id="bubbleTitle" style="color: var(--electric-cyan); margin-bottom: 1rem;">Select a bubble</h4>
+                <div id="bubbleContent">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: var(--text-secondary);">FY25 Investment</span>
+                        <span id="bubbleFY25" class="mono">-</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="color: var(--text-secondary);">FY27 Target</span>
+                        <span id="bubbleFY27" class="mono">-</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="color: var(--text-secondary);">ROI</span>
+                        <span id="bubbleROI" class="mono text-green">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 8: PRODUCT MIX PYRAMID ========== -->
+    <section id="pyramid" class="section">
+        <h2 class="section-title center" style="text-align: center;">Product Mix Transformation</h2>
+
+        <div class="pyramid-container">
+            <div class="pyramid-visual">
+                <div class="pyramid-layer apex" id="pyramidApex" style="opacity: 0.9;">
+                    <span>Apex Premium</span>
+                </div>
+                <div class="pyramid-layer core" id="pyramidCore">
+                    <span>Core Mass Market</span>
+                </div>
+                <div class="pyramid-layer fleet" id="pyramidFleet">
+                    <span>Fleet / Utility</span>
+                </div>
+            </div>
+
+            <div class="pyramid-controls glass-card" style="padding: 2rem;">
+                <h4 style="margin-bottom: 1.5rem;">Time Machine: Drag to FY27</h4>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                    <span class="mono">FY25</span>
+                    <input type="range" id="timeSlider" class="time-slider" min="0" max="100" value="0">
+                    <span class="mono">FY27</span>
+                </div>
+
+                <div id="pyramidMetrics">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <div>
+                            <div style="color: var(--text-secondary); font-size: 0.75rem;">Volume</div>
+                            <div class="mono text-cyan" id="metricVolume">65,600</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-secondary); font-size: 0.75rem;">ASP</div>
+                            <div class="mono text-cyan" id="metricASP">₹1,08,000</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-secondary); font-size: 0.75rem;">Margin</div>
+                            <div class="mono text-orange" id="metricMargin">-13.4%</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-secondary); font-size: 0.75rem;">Absolute Profit</div>
+                            <div class="mono text-green" id="metricProfit">-₹154 Cr</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pyramidTooltip"
+                    style="margin-top: 1.5rem; padding: 1rem; background: rgba(0,229,255,0.1); border-radius: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                    Drag slider to see transformation impact
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 9: B2B REVENUE ROCKET ========== -->
+    <section id="rocket" class="rocket-section section-alt">
+        <h2 class="section-title center" style="text-align: center; padding-top: 4rem;">B2B Revenue Rocket</h2>
+
+        <div class="rocket-track">
+            <div class="stage-label" style="top: 70%;" data-stage="tier1">Tier-1: Outright Lease</div>
+            <div class="stage-label" style="top: 45%;" data-stage="tier2">Tier-2: Subscription</div>
+            <div class="stage-label" style="top: 20%;" data-stage="tier3">Tier-3: Full-Service</div>
+        </div>
+
+        <div class="rocket" id="rocket">
+            <div class="rocket-body"></div>
+            <div class="rocket-flame"></div>
+        </div>
+
+        <!-- Ground Dashboard -->
+        <div class="glass-card"
+            style="position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); padding: 1.5rem 3rem; text-align: center;">
+            <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">B2B Pipeline</div>
+            <div class="mono" style="font-size: 2.5rem; color: var(--electric-cyan);">₹2,800 Cr</div>
+            <div style="margin-top: 1rem; display: flex; gap: 2rem; justify-content: center;">
+                <div>
+                    <div style="color: var(--text-secondary); font-size: 0.75rem;">Current</div>
+                    <div class="mono text-orange">5%</div>
+                </div>
+                <div>
+                    <div style="color: var(--text-secondary); font-size: 0.75rem;">Target</div>
+                    <div class="mono text-green">25%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 10: ENHANCED INDIA MAP WITH ATHER STATISTICS ========== -->
+    <section id="geography" class="section" style="padding: 4rem 2rem;">
+        <h2 class="section-title center" style="text-align: center;">Ather Energy: India Footprint</h2>
+        <p
+            style="text-align: center; color: var(--text-secondary); margin-bottom: 1rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+            From Bangalore HQ to pan-India presence — Explore our journey, culture, and growth strategy
+        </p>
+
+        <!-- View Toggle Tabs -->
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <button class="map-tab active" id="tabCurrent"
+                style="padding: 0.75rem 2rem; margin: 0 0.25rem; background: var(--electric-cyan); border: none; border-radius: 2rem 0 0 2rem; color: var(--bg-primary); font-weight: 700; cursor: pointer; transition: all 0.3s;">
+                📊 Current State
+            </button>
+            <button class="map-tab" id="tabFuture"
+                style="padding: 0.75rem 2rem; margin: 0 0.25rem; background: var(--bg-secondary); border: 1px solid var(--ather-green); border-radius: 0 2rem 2rem 0; color: var(--ather-green); font-weight: 700; cursor: pointer; transition: all 0.3s;">
+                🚀 FY27 Vision
+            </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 400px; gap: 2rem; max-width: 1400px; margin: 0 auto;">
+            <!-- India Map Container -->
+            <div class="india-map-enhanced glass-card" style="position: relative; padding: 2rem; min-height: 600px;">
+                <!-- Enhanced India SVG Map -->
+                <svg id="indiaMapEnhanced" viewBox="0 0 600 700" style="width: 100%; height: 100%;">
+                    <defs>
+                        <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#162022" />
+                            <stop offset="100%" style="stop-color:#203436" />
+                        </linearGradient>
+                        <filter id="mapGlow">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                            <feMerge>
+                                <feMergeNode in="coloredBlur" />
+                                <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                        </filter>
+                        <radialGradient id="cityPulse" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#00E5FF;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00E5FF;stop-opacity:0" />
+                        </radialGradient>
+                    </defs>
+
+                    <!-- REALISTIC INDIA MAP WITH STATE BOUNDARIES -->
+                    <g id="indiaOutline">
+                        <!-- Jammu & Kashmir -->
+                        <path class="state"
+                            d="M168 45 L175 38 L185 35 L198 32 L215 35 L228 42 L238 38 L252 42 L260 55 L255 68 L245 75 L232 72 L218 78 L205 72 L192 75 L178 68 L172 58 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="1" opacity="0.85" />
+
+                        <!-- Himachal Pradesh -->
+                        <path class="state"
+                            d="M218 78 L232 72 L245 75 L252 85 L248 95 L238 100 L225 98 L215 92 L210 85 Z"
+                            fill="url(#mapGradient)" stroke="#6CC24A" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Punjab & Haryana -->
+                        <path class="state"
+                            d="M192 75 L205 72 L218 78 L215 92 L225 98 L222 108 L210 115 L195 112 L182 105 L178 92 L185 82 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Uttarakhand -->
+                        <path class="state"
+                            d="M245 75 L260 76 L275 82 L280 95 L272 105 L258 108 L248 100 L248 95 L252 85 Z"
+                            fill="url(#mapGradient)" stroke="#6CC24A" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Rajasthan -->
+                        <path class="state"
+                            d="M120 125 L145 115 L168 110 L182 105 L195 112 L205 125 L198 145 L188 168 L175 188 L155 195 L130 188 L108 172 L95 150 L102 132 Z"
+                            fill="url(#mapGradient)" stroke="#FBBF24" stroke-width="1" opacity="0.85" />
+
+                        <!-- Uttar Pradesh -->
+                        <path class="state"
+                            d="M210 115 L222 108 L238 100 L258 108 L280 118 L305 125 L325 135 L338 152 L332 172 L315 185 L290 188 L265 185 L242 178 L228 168 L218 152 L205 140 L198 125 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="1" opacity="0.85" />
+
+                        <!-- Bihar -->
+                        <path class="state"
+                            d="M338 152 L360 148 L382 155 L395 168 L388 185 L372 195 L352 192 L335 185 L332 172 Z"
+                            fill="url(#mapGradient)" stroke="#6CC24A" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- West Bengal -->
+                        <path class="state"
+                            d="M385 175 L402 168 L418 175 L428 195 L432 218 L425 242 L415 265 L398 278 L382 272 L372 252 L368 228 L372 205 L378 188 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Northeast States (Grouped) -->
+                        <path class="state"
+                            d="M418 175 L442 165 L468 172 L488 182 L502 198 L508 218 L498 238 L478 248 L455 252 L435 248 L425 235 L428 218 L432 195 Z"
+                            fill="url(#mapGradient)" stroke="#8B5CF6" stroke-width="1" opacity="0.85" />
+
+                        <!-- Gujarat -->
+                        <path class="state"
+                            d="M62 215 L85 198 L108 188 L130 188 L155 195 L165 212 L158 235 L148 258 L130 275 L108 282 L85 275 L68 258 L55 238 L58 222 Z"
+                            fill="url(#mapGradient)" stroke="#FBBF24" stroke-width="1" opacity="0.85" />
+
+                        <!-- Madhya Pradesh -->
+                        <path class="state"
+                            d="M155 195 L188 188 L218 178 L248 182 L278 188 L305 195 L318 215 L312 242 L295 262 L268 275 L238 278 L208 272 L178 262 L158 245 L155 222 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="1" opacity="0.85" />
+
+                        <!-- Jharkhand -->
+                        <path class="state"
+                            d="M335 185 L352 192 L372 195 L378 212 L372 232 L355 248 L335 252 L318 242 L315 222 L322 202 Z"
+                            fill="url(#mapGradient)" stroke="#6CC24A" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Chhattisgarh -->
+                        <path class="state"
+                            d="M305 235 L322 232 L340 242 L355 258 L352 282 L335 302 L312 312 L288 308 L272 292 L275 268 L288 248 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Odisha -->
+                        <path class="state"
+                            d="M352 258 L372 252 L392 262 L408 282 L412 308 L398 332 L372 345 L345 342 L325 325 L318 302 L325 278 Z"
+                            fill="url(#mapGradient)" stroke="#FBBF24" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Maharashtra -->
+                        <path class="state"
+                            d="M108 282 L130 275 L158 278 L188 285 L218 292 L248 298 L272 308 L278 332 L268 358 L242 378 L208 388 L172 382 L138 368 L112 345 L98 318 L102 295 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="1.2" opacity="0.85" />
+
+                        <!-- Telangana -->
+                        <path class="state"
+                            d="M248 335 L272 332 L298 342 L318 358 L322 382 L308 402 L282 412 L255 408 L235 392 L232 368 L238 348 Z"
+                            fill="url(#mapGradient)" stroke="#6CC24A" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Andhra Pradesh -->
+                        <path class="state"
+                            d="M272 365 L298 358 L325 368 L352 378 L378 395 L392 418 L385 448 L365 472 L335 485 L302 488 L272 478 L252 458 L245 432 L252 408 L262 385 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="1" opacity="0.85" />
+
+                        <!-- Karnataka -->
+                        <path class="state"
+                            d="M172 382 L208 388 L242 398 L252 425 L248 458 L235 488 L218 515 L192 528 L162 522 L135 505 L118 478 L115 448 L125 418 L145 395 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="1.2" opacity="0.85" />
+
+                        <!-- Goa -->
+                        <path class="state"
+                            d="M118 412 L132 405 L145 412 L148 428 L138 442 L122 445 L112 435 L115 422 Z"
+                            fill="url(#mapGradient)" stroke="#FBBF24" stroke-width="0.8" opacity="0.85" />
+
+                        <!-- Kerala -->
+                        <path class="state"
+                            d="M162 522 L178 515 L192 528 L198 555 L188 585 L172 612 L155 632 L138 642 L125 632 L118 608 L128 578 L142 548 Z"
+                            fill="url(#mapGradient)" stroke="#6CC24A" stroke-width="1" opacity="0.85" />
+
+                        <!-- Tamil Nadu -->
+                        <path class="state"
+                            d="M192 528 L220 518 L252 512 L282 518 L305 535 L318 562 L312 592 L292 618 L262 635 L228 642 L195 632 L172 612 L178 578 L185 548 Z"
+                            fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="1" opacity="0.85" />
+
+                        <!-- Sri Lanka (for reference) -->
+                        <path d="M278 665 L295 658 L312 665 L318 685 L305 702 L285 705 L268 695 L272 678 Z" fill="none"
+                            stroke="#B2BEC3" stroke-width="0.5" stroke-dasharray="3,3" opacity="0.4" />
+
+                        <!-- Andaman & Nicobar (small) -->
+                        <g transform="translate(520, 420)">
+                            <ellipse cx="0" cy="0" rx="12" ry="35" fill="url(#mapGradient)" stroke="#00E5FF"
+                                stroke-width="0.5" opacity="0.7" />
+                            <text x="20" y="5" fill="#B2BEC3" font-size="7">A&N</text>
+                        </g>
+
+                        <!-- Lakshadweep (small) -->
+                        <g transform="translate(95, 545)">
+                            <circle cx="0" cy="0" r="8" fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="0.5"
+                                opacity="0.7" />
+                            <circle cx="5" cy="15" r="5" fill="url(#mapGradient)" stroke="#00E5FF" stroke-width="0.5"
+                                opacity="0.7" />
+                            <text x="-25" y="5" fill="#B2BEC3" font-size="6">Lakshad.</text>
+                        </g>
+                    </g>
+
+                    <!-- State Boundary Glow Effect -->
+                    <g id="stateGlowEffect" opacity="0.15">
+                        <path
+                            d="M120 125 L145 115 L168 110 L182 105 L195 112 L205 125 L198 145 L188 168 L175 188 L155 195 L130 188 L108 172 L95 150 L102 132 Z"
+                            stroke="#FBBF24" stroke-width="4" fill="none" filter="url(#mapGlow)" />
+                        <path
+                            d="M172 382 L208 388 L242 398 L252 425 L248 458 L235 488 L218 515 L192 528 L162 522 L135 505 L118 478 L115 448 L125 418 L145 395 Z"
+                            stroke="#00E5FF" stroke-width="4" fill="none" filter="url(#mapGlow)" />
+                    </g>
+
+                    <!-- Zone Labels -->
+                    <text x="175" y="105" fill="#B2BEC3" font-size="9" font-weight="600" opacity="0.7">NORTH</text>
+                    <text x="85" y="310" fill="#B2BEC3" font-size="9" font-weight="600" opacity="0.7">WEST</text>
+                    <text x="420" y="230" fill="#B2BEC3" font-size="9" font-weight="600" opacity="0.7">EAST</text>
+                    <text x="245" y="565" fill="#B2BEC3" font-size="9" font-weight="600" opacity="0.7">SOUTH</text>
+                    <text x="460" y="215" fill="#8B5CF6" font-size="7" font-weight="600" opacity="0.6">NORTHEAST</text>
+
+                    <!-- Bangalore HQ Marker (Special) - Positioned in Karnataka -->
+                    <g id="hqMarker" class="city-marker" data-city="Bangalore" transform="translate(205, 485)">
+                        <circle r="28" fill="none" stroke="#00E5FF" stroke-width="2" opacity="0.3">
+                            <animate attributeName="r" values="18;35;18" dur="2s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values="0.5;0;0.5" dur="2s" repeatCount="indefinite" />
+                        </circle>
+                        <circle r="14" fill="#00E5FF" filter="url(#mapGlow)" />
+                        <text y="5" text-anchor="middle" fill="#0D1B1E" font-size="9" font-weight="bold">HQ</text>
+                        <text y="32" text-anchor="middle" fill="#00E5FF" font-size="10"
+                            font-weight="700">BANGALORE</text>
+                        <text y="44" text-anchor="middle" fill="#6CC24A" font-size="7">Hosur Factory</text>
+                    </g>
+
+                    <!-- Major Cities with Stats -->
+                    <g id="cityMarkers">
+                        <!-- Delhi NCR (positioned in Haryana/Delhi area) -->
+                        <g class="city-marker" data-city="Delhi" transform="translate(208, 128)">
+                            <circle r="11" fill="#6CC24A" filter="url(#mapGlow)" />
+                            <text y="-18" text-anchor="middle" fill="#ffffff" font-size="9" font-weight="600">Delhi
+                                NCR</text>
+                            <text y="28" text-anchor="middle" fill="#00E5FF" font-size="8" class="city-stat">12,400
+                                units</text>
+                        </g>
+
+                        <!-- Mumbai (positioned on Maharashtra coast) -->
+                        <g class="city-marker" data-city="Mumbai" transform="translate(132, 355)">
+                            <circle r="10" fill="#6CC24A" filter="url(#mapGlow)" />
+                            <text x="-35" y="5" text-anchor="middle" fill="#ffffff" font-size="9"
+                                font-weight="600">Mumbai</text>
+                            <text y="26" text-anchor="middle" fill="#00E5FF" font-size="8" class="city-stat">9,850
+                                units</text>
+                        </g>
+
+                        <!-- Chennai (positioned on Tamil Nadu coast) -->
+                        <g class="city-marker" data-city="Chennai" transform="translate(292, 545)">
+                            <circle r="9" fill="#6CC24A" filter="url(#mapGlow)" />
+                            <text x="35" y="5" text-anchor="middle" fill="#ffffff" font-size="9"
+                                font-weight="600">Chennai</text>
+                            <text y="25" text-anchor="middle" fill="#00E5FF" font-size="8" class="city-stat">8,200
+                                units</text>
+                        </g>
+
+                        <!-- Hyderabad (positioned in Telangana) -->
+                        <g class="city-marker" data-city="Hyderabad" transform="translate(278, 385)">
+                            <circle r="9" fill="#6CC24A" filter="url(#mapGlow)" />
+                            <text y="-15" text-anchor="middle" fill="#ffffff" font-size="9"
+                                font-weight="600">Hyderabad</text>
+                            <text y="25" text-anchor="middle" fill="#00E5FF" font-size="8" class="city-stat">7,100
+                                units</text>
+                        </g>
+
+                        <!-- Pune (positioned in Maharashtra) -->
+                        <g class="city-marker" data-city="Pune" transform="translate(165, 388)">
+                            <circle r="8" fill="#FBBF24" filter="url(#mapGlow)" />
+                            <text y="-14" text-anchor="middle" fill="#ffffff" font-size="8"
+                                font-weight="600">Pune</text>
+                            <text y="22" text-anchor="middle" fill="#00E5FF" font-size="7" class="city-stat">5,600
+                                units</text>
+                        </g>
+
+                        <!-- Kolkata (positioned in West Bengal) -->
+                        <g class="city-marker" data-city="Kolkata" transform="translate(402, 255)">
+                            <circle r="7" fill="#FBBF24" filter="url(#mapGlow)" />
+                            <text x="30" y="5" text-anchor="middle" fill="#ffffff" font-size="8"
+                                font-weight="600">Kolkata</text>
+                            <text y="22" text-anchor="middle" fill="#00E5FF" font-size="7" class="city-stat">4,200
+                                units</text>
+                        </g>
+
+                        <!-- Ahmedabad (positioned in Gujarat) -->
+                        <g class="city-marker" data-city="Ahmedabad" transform="translate(118, 248)">
+                            <circle r="7" fill="#FBBF24" filter="url(#mapGlow)" />
+                            <text x="-35" y="5" text-anchor="middle" fill="#ffffff" font-size="8"
+                                font-weight="600">Ahmedabad</text>
+                            <text y="22" text-anchor="middle" fill="#00E5FF" font-size="7" class="city-stat">3,800
+                                units</text>
+                        </g>
+
+                        <!-- Jaipur (positioned in Rajasthan) -->
+                        <g class="city-marker" data-city="Jaipur" transform="translate(165, 162)">
+                            <circle r="6" fill="#E17055" filter="url(#mapGlow)" />
+                            <text y="-12" text-anchor="middle" fill="#ffffff" font-size="8"
+                                font-weight="600">Jaipur</text>
+                            <text y="20" text-anchor="middle" fill="#00E5FF" font-size="7" class="city-stat">2,100
+                                units</text>
+                        </g>
+
+                        <!-- Kochi (positioned on Kerala coast) -->
+                        <g class="city-marker" data-city="Kochi" transform="translate(168, 575)">
+                            <circle r="6" fill="#E17055" filter="url(#mapGlow)" />
+                            <text x="-28" y="5" text-anchor="middle" fill="#ffffff" font-size="8"
+                                font-weight="600">Kochi</text>
+                            <text y="20" text-anchor="middle" fill="#00E5FF" font-size="7" class="city-stat">1,850
+                                units</text>
+                        </g>
+
+                        <!-- Coimbatore (positioned in Tamil Nadu) -->
+                        <g class="city-marker" data-city="Coimbatore" transform="translate(220, 555)">
+                            <circle r="5" fill="#E17055" filter="url(#mapGlow)" />
+                            <text y="-10" text-anchor="middle" fill="#ffffff" font-size="7"
+                                font-weight="600">Coimbatore</text>
+                            <text y="18" text-anchor="middle" fill="#00E5FF" font-size="6" class="city-stat">1,650
+                                units</text>
+                        </g>
+
+                        <!-- Lucknow (new city in UP) -->
+                        <g class="city-marker" data-city="Lucknow" transform="translate(288, 168)">
+                            <circle r="5" fill="#E17055" filter="url(#mapGlow)" />
+                            <text y="-10" text-anchor="middle" fill="#ffffff" font-size="7"
+                                font-weight="600">Lucknow</text>
+                            <text y="18" text-anchor="middle" fill="#00E5FF" font-size="6" class="city-stat">1,450
+                                units</text>
+                        </g>
+
+                        <!-- Chandigarh (new city) -->
+                        <g class="city-marker" data-city="Chandigarh" transform="translate(205, 98)">
+                            <circle r="4" fill="#E17055" filter="url(#mapGlow)" />
+                            <text x="35" y="5" text-anchor="middle" fill="#ffffff" font-size="7"
+                                font-weight="600">Chandigarh</text>
+                        </g>
+
+                        <!-- Indore (new city in MP) -->
+                        <g class="city-marker" data-city="Indore" transform="translate(178, 265)">
+                            <circle r="5" fill="#E17055" filter="url(#mapGlow)" />
+                            <text y="18" text-anchor="middle" fill="#ffffff" font-size="7"
+                                font-weight="600">Indore</text>
+                        </g>
+
+                        <!-- Nagpur (new city in Maharashtra) -->
+                        <g class="city-marker" data-city="Nagpur" transform="translate(262, 318)">
+                            <circle r="4" fill="#E17055" filter="url(#mapGlow)" />
+                            <text y="16" text-anchor="middle" fill="#ffffff" font-size="7"
+                                font-weight="600">Nagpur</text>
+                        </g>
+
+                        <!-- Visakhapatnam (new city in AP) -->
+                        <g class="city-marker" data-city="Vizag" transform="translate(355, 405)">
+                            <circle r="4" fill="#E17055" filter="url(#mapGlow)" />
+                            <text x="25" y="5" text-anchor="middle" fill="#ffffff" font-size="7"
+                                font-weight="600">Vizag</text>
+                        </g>
+
+                        <!-- Bhubaneswar (new city in Odisha) -->
+                        <g class="city-marker" data-city="Bhubaneswar" transform="translate(378, 325)">
+                            <circle r="4" fill="#E17055" filter="url(#mapGlow)" />
+                            <text x="38" y="5" text-anchor="middle" fill="#ffffff" font-size="7"
+                                font-weight="600">Bhubaneswar</text>
+                        </g>
+
+                        <!-- Thiruvananthapuram (new city in Kerala) -->
+                        <g class="city-marker" data-city="Trivandrum" transform="translate(175, 625)">
+                            <circle r="4" fill="#E17055" filter="url(#mapGlow)" />
+                            <text x="42" y="5" text-anchor="middle" fill="#ffffff" font-size="6"
+                                font-weight="600">Trivandrum</text>
+                        </g>
+                    </g>
+
+                    <!-- Connection Lines (Network Effect) - From Bangalore HQ -->
+                    <g id="networkLines" opacity="0.25">
+                        <line x1="205" y1="485" x2="208" y2="128" stroke="#00E5FF" stroke-width="1"
+                            stroke-dasharray="4,4">
+                            <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite" />
+                        </line>
+                        <line x1="205" y1="485" x2="132" y2="355" stroke="#00E5FF" stroke-width="1"
+                            stroke-dasharray="4,4">
+                            <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite" />
+                        </line>
+                        <line x1="205" y1="485" x2="292" y2="545" stroke="#00E5FF" stroke-width="1"
+                            stroke-dasharray="4,4">
+                            <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite" />
+                        </line>
+                        <line x1="205" y1="485" x2="278" y2="385" stroke="#00E5FF" stroke-width="1"
+                            stroke-dasharray="4,4">
+                            <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite" />
+                        </line>
+                        <line x1="205" y1="485" x2="402" y2="255" stroke="#00E5FF" stroke-width="1"
+                            stroke-dasharray="4,4">
+                            <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite" />
+                        </line>
+                        <line x1="205" y1="485" x2="168" y2="575" stroke="#6CC24A" stroke-width="1"
+                            stroke-dasharray="4,4">
+                            <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite" />
+                        </line>
+                    </g>
+
+                    <!-- Ather Grid Charging Network Indicator -->
+                    <g id="chargingNetwork" transform="translate(480, 620)">
+                        <rect x="0" y="0" width="100" height="65" fill="rgba(13,27,30,0.95)" rx="8" stroke="#6CC24A"
+                            stroke-width="1" />
+                        <text x="50" y="18" text-anchor="middle" fill="#6CC24A" font-size="9" font-weight="700">⚡ ATHER
+                            GRID</text>
+                        <text x="50" y="35" text-anchor="middle" fill="#00E5FF" font-size="14" font-weight="700"
+                            class="mono">2,200+</text>
+                        <text x="50" y="50" text-anchor="middle" fill="#B2BEC3" font-size="8">Fast Chargers</text>
+                        <text x="50" y="62" text-anchor="middle" fill="#FBBF24" font-size="7">Largest EV Network</text>
+                    </g>
+
+                    <!-- Map Legend -->
+                    <g transform="translate(15, 635)">
+                        <rect x="0" y="0" width="200" height="60" fill="rgba(13,27,30,0.95)" rx="8" stroke="#00E5FF"
+                            stroke-width="0.5" />
+                        <text x="100" y="14" text-anchor="middle" fill="#B2BEC3" font-size="8"
+                            font-weight="600">PRESENCE BY UNITS SOLD</text>
+                        <circle cx="25" cy="30" r="6" fill="#6CC24A" />
+                        <text x="38" y="33" fill="#B2BEC3" font-size="8">5000+</text>
+                        <circle cx="85" cy="30" r="5" fill="#FBBF24" />
+                        <text x="98" y="33" fill="#B2BEC3" font-size="8">2K-5K</text>
+                        <circle cx="145" cy="30" r="4" fill="#E17055" />
+                        <text x="158" y="33" fill="#B2BEC3" font-size="8">&lt;2000</text>
+                        <circle cx="25" cy="48" r="8" fill="#00E5FF" />
+                        <text x="38" y="51" fill="#B2BEC3" font-size="8">HQ (Bangalore)</text>
+                        <line x1="100" y1="45" x2="130" y2="45" stroke="#00E5FF" stroke-width="1"
+                            stroke-dasharray="3,3" />
+                        <text x="138" y="48" fill="#B2BEC3" font-size="7">Network</text>
+                    </g>
+                </svg>
+
+                <!-- Animated Scooter on Route -->
+                <div id="routeScooter"
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; opacity: 0; transition: all 2s ease;">
+                    🛵
+                </div>
+            </div>
+
+            <!-- Stats Sidebar -->
+            <div class="map-stats-sidebar">
+                <!-- Current State Panel -->
+                <div id="panelCurrent" class="stats-panel glass-card" style="padding: 1.5rem; margin-bottom: 1rem;">
+                    <h3
+                        style="color: var(--electric-cyan); margin-bottom: 1.5rem; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>📊</span> Current State (Q2 FY26)
+                    </h3>
+
+                    <!-- Key Metrics Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="stat-box"
+                            style="background: rgba(0,229,255,0.1); padding: 1rem; border-radius: 0.75rem; text-align: center;">
+                            <div
+                                style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">
+                                Total Units Sold</div>
+                            <div class="mono" style="font-size: 1.5rem; color: var(--electric-cyan); font-weight: 700;">
+                                65,595</div>
+                        </div>
+                        <div class="stat-box"
+                            style="background: rgba(108,194,74,0.1); padding: 1rem; border-radius: 0.75rem; text-align: center;">
+                            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">
+                                Revenue</div>
+                            <div class="mono" style="font-size: 1.5rem; color: var(--ather-green); font-weight: 700;">
+                                ₹1,154 Cr</div>
+                        </div>
+                        <div class="stat-box"
+                            style="background: rgba(225,112,85,0.1); padding: 1rem; border-radius: 0.75rem; text-align: center;">
+                            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">
+                                Cities Present</div>
+                            <div class="mono"
+                                style="font-size: 1.5rem; color: var(--warning-orange); font-weight: 700;">125+</div>
+                        </div>
+                        <div class="stat-box"
+                            style="background: rgba(139,92,246,0.1); padding: 1rem; border-radius: 0.75rem; text-align: center;">
+                            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">
+                                Experience Centers</div>
+                            <div class="mono" style="font-size: 1.5rem; color: #8B5CF6; font-weight: 700;">210</div>
+                        </div>
+                    </div>
+
+                    <!-- Regional Breakdown -->
+                    <h4 style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Regional
+                        Sales Distribution</h4>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.8rem;">South India</span>
+                            <span class="mono text-cyan" style="font-size: 0.8rem;">42%</span>
+                        </div>
+                        <div
+                            style="height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                            <div
+                                style="width: 42%; height: 100%; background: linear-gradient(90deg, var(--electric-cyan), var(--ather-green)); border-radius: 3px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.8rem;">West India</span>
+                            <span class="mono text-cyan" style="font-size: 0.8rem;">28%</span>
+                        </div>
+                        <div
+                            style="height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                            <div
+                                style="width: 28%; height: 100%; background: linear-gradient(90deg, #FBBF24, #F59E0B); border-radius: 3px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.8rem;">North India</span>
+                            <span class="mono text-cyan" style="font-size: 0.8rem;">22%</span>
+                        </div>
+                        <div
+                            style="height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                            <div
+                                style="width: 22%; height: 100%; background: linear-gradient(90deg, #3B82F6, #0EA5E9); border-radius: 3px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                            <span style="font-size: 0.8rem;">East India</span>
+                            <span class="mono text-cyan" style="font-size: 0.8rem;">8%</span>
+                        </div>
+                        <div
+                            style="height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                            <div
+                                style="width: 8%; height: 100%; background: linear-gradient(90deg, #E17055, #DC2626); border-radius: 3px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Culture & People Panel -->
+                <div id="panelCulture" class="stats-panel glass-card" style="padding: 1.5rem; margin-bottom: 1rem;">
+                    <h3
+                        style="color: var(--ather-green); margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>👥</span> People & Culture
+                    </h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+                        <div
+                            style="text-align: center; padding: 0.75rem; background: rgba(0,229,255,0.05); border-radius: 0.5rem;">
+                            <div class="mono" style="font-size: 1.5rem; color: var(--electric-cyan);">1,400+</div>
+                            <div style="font-size: 0.7rem; color: var(--text-secondary);">Employees</div>
+                        </div>
+                        <div
+                            style="text-align: center; padding: 0.75rem; background: rgba(108,194,74,0.05); border-radius: 0.5rem;">
+                            <div class="mono" style="font-size: 1.5rem; color: var(--ather-green);">32</div>
+                            <div style="font-size: 0.7rem; color: var(--text-secondary);">Avg Age</div>
+                        </div>
+                    </div>
+
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                        <div
+                            style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span>🔧 R&D Engineers</span>
+                            <span class="mono text-cyan">420+</span>
+                        </div>
+                        <div
+                            style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span>🏭 Manufacturing</span>
+                            <span class="mono text-cyan">380+</span>
+                        </div>
+                        <div
+                            style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span>📈 Sales & Marketing</span>
+                            <span class="mono text-cyan">350+</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                            <span>🛠️ Service Network</span>
+                            <span class="mono text-cyan">250+</span>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: rgba(139,92,246,0.1); padding: 0.75rem; border-radius: 0.5rem; text-align: center;">
+                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.25rem;">
+                            Industry-Leading NPS Score</div>
+                        <div class="mono" style="font-size: 2rem; color: #8B5CF6; font-weight: 700;">72</div>
+                    </div>
+                </div>
+
+                <!-- Future Vision Panel (Hidden by default) -->
+                <div id="panelFuture" class="stats-panel glass-card" style="padding: 1.5rem; display: none;">
+                    <h3
+                        style="color: var(--ather-green); margin-bottom: 1.5rem; font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>🚀</span> FY27 Vision
+                    </h3>
+
+                    <!-- Target Metrics -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="stat-box"
+                            style="background: rgba(0,229,255,0.1); padding: 1rem; border-radius: 0.75rem; text-align: center; position: relative;">
+                            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">
+                                Target Units</div>
+                            <div class="mono" style="font-size: 1.5rem; color: var(--electric-cyan); font-weight: 700;">
+                                340,000</div>
+                            <div
+                                style="position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.65rem; color: var(--ather-green);">
+                                ▲ 418%</div>
+                        </div>
+                        <div class="stat-box"
+                            style="background: rgba(108,194,74,0.1); padding: 1rem; border-radius: 0.75rem; text-align: center; position: relative;">
+                            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">
+                                Target Revenue</div>
+                            <div class="mono" style="font-size: 1.5rem; color: var(--ather-green); font-weight: 700;">
+                                ₹5,880 Cr</div>
+                            <div
+                                style="position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.65rem; color: var(--ather-green);">
+                                ▲ 410%</div>
+                        </div>
+                        <div class="stat-box"
+                            style="background: rgba(108,194,74,0.15); padding: 1rem; border-radius: 0.75rem; text-align: center; position: relative;">
+                            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">
+                                Cities</div>
+                            <div class="mono" style="font-size: 1.5rem; color: var(--ather-green); font-weight: 700;">
+                                250+</div>
+                            <div
+                                style="position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.65rem; color: var(--ather-green);">
+                                ▲ 100%</div>
+                        </div>
+                        <div class="stat-box"
+                            style="background: rgba(139,92,246,0.15); padding: 1rem; border-radius: 0.75rem; text-align: center; position: relative;">
+                            <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">
+                                Experience Centers</div>
+                            <div class="mono" style="font-size: 1.5rem; color: #8B5CF6; font-weight: 700;">500+</div>
+                            <div
+                                style="position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.65rem; color: var(--ather-green);">
+                                ▲ 138%</div>
+                        </div>
+                    </div>
+
+                    <!-- Expansion Strategy -->
+                    <h4 style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Expansion
+                        Strategy</h4>
+                    <div style="margin-bottom: 1rem;">
+                        <div
+                            style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; padding: 0.75rem; background: rgba(0,229,255,0.05); border-radius: 0.5rem; border-left: 3px solid var(--electric-cyan);">
+                            <span>🏪</span>
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.875rem;">Franchise-Led Model</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary);">70% new outlets via
+                                    franchise partners</div>
+                            </div>
+                        </div>
+                        <div
+                            style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; padding: 0.75rem; background: rgba(108,194,74,0.05); border-radius: 0.5rem; border-left: 3px solid var(--ather-green);">
+                            <span>⚡</span>
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.875rem;">Ather Grid 2.0</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary);">2,500+ fast chargers
+                                    nationwide</div>
+                            </div>
+                        </div>
+                        <div
+                            style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: rgba(251,191,36,0.05); border-radius: 0.5rem; border-left: 3px solid #FBBF24;">
+                            <span>🚚</span>
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.875rem;">B2B Fleet Push</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary);">25% revenue from fleet
+                                    customers</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Target EBITDA -->
+                    <div
+                        style="background: linear-gradient(135deg, rgba(108,194,74,0.2), rgba(0,229,255,0.1)); padding: 1rem; border-radius: 0.75rem; text-align: center; border: 1px solid var(--ather-green);">
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Target
+                            EBITDA Margin</div>
+                        <div class="mono" style="font-size: 2.5rem; color: var(--ather-green); font-weight: 700;">+2.5%
+                        </div>
+                        <div style="font-size: 0.7rem; color: var(--electric-cyan);">From -13.4% → Break-even achieved
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Facts Panel -->
+                <div id="panelFacts" class="stats-panel glass-card" style="padding: 1.5rem;">
+                    <h3
+                        style="color: #FBBF24; margin-bottom: 1rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>💡</span> Ather Facts
+                    </h3>
+
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                        <div
+                            style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.2rem;">🏢</span>
+                            <div>
+                                <div style="font-weight: 600; color: white;">Founded</div>
+                                <div>2013 by Tarun Mehta & Swapnil Jain</div>
+                            </div>
+                        </div>
+                        <div
+                            style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.2rem;">🏭</span>
+                            <div>
+                                <div style="font-weight: 600; color: white;">Manufacturing</div>
+                                <div>Hosur Gigafactory - 400K capacity</div>
+                            </div>
+                        </div>
+                        <div
+                            style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.2rem;">💰</span>
+                            <div>
+                                <div style="font-weight: 600; color: white;">Total Funding</div>
+                                <div>₹1,700+ Cr raised (Hero MotoCorp lead)</div>
+                            </div>
+                        </div>
+                        <div
+                            style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.2rem;">🛵</span>
+                            <div>
+                                <div style="font-weight: 600; color: white;">Product Line</div>
+                                <div>450X, 450S, Rizta, Rizta Z</div>
+                            </div>
+                        </div>
+                        <div style="padding: 0.75rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.2rem;">⚡</span>
+                            <div>
+                                <div style="font-weight: 600; color: white;">Ather Grid</div>
+                                <div>India's largest fast-charging network: 2,200+ points</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Stats Bar -->
+        <div style="display: flex; justify-content: center; gap: 3rem; margin-top: 3rem; flex-wrap: wrap;">
+            <div class="glass-card" style="padding: 1rem 2rem; text-align: center; min-width: 150px;">
+                <div class="mono" style="font-size: 2rem; color: var(--electric-cyan);">16B+</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">Daily Data Points</div>
+            </div>
+            <div class="glass-card" style="padding: 1rem 2rem; text-align: center; min-width: 150px;">
+                <div class="mono" style="font-size: 2rem; color: var(--ather-green);">200M+</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">Km Ridden</div>
+            </div>
+            <div class="glass-card" style="padding: 1rem 2rem; text-align: center; min-width: 150px;">
+                <div class="mono" style="font-size: 2rem; color: #FBBF24;">45K</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">Tonnes CO₂ Saved</div>
+            </div>
+            <div class="glass-card" style="padding: 1rem 2rem; text-align: center; min-width: 150px;">
+                <div class="mono" style="font-size: 2rem; color: #8B5CF6;">9.5%</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">R&D Spend (Industry 2x)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 11: DATA MONETIZATION PIPELINE ========== -->
+    <section id="datapipeline" class="section section-alt">
+        <h2 class="section-title center" style="text-align: center;">Data Monetization Pipeline</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 3rem;">
+            From Cost Center to ₹150 Cr ARR Revenue Engine
+        </p>
+
+        <div class="pipeline-container">
+            <div class="pipeline-stage">
+                <div class="pipeline-icon">🛵</div>
+                <div style="font-weight: 600;">Vehicles</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">16B data points/day</div>
+            </div>
+
+            <div class="pipeline-connector"></div>
+
+            <div class="pipeline-stage">
+                <div class="pipeline-icon">☁️</div>
+                <div style="font-weight: 600;">AWS Cloud</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">Real-time processing</div>
+            </div>
+
+            <div class="pipeline-connector"></div>
+
+            <div class="pipeline-stage">
+                <div class="pipeline-icon">📊</div>
+                <div style="font-weight: 600;">Intelligence</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary);">Fleet analytics</div>
+            </div>
+
+            <div class="pipeline-connector"></div>
+
+            <div class="pipeline-stage">
+                <div class="pipeline-icon">💰</div>
+                <div style="font-weight: 600;">Revenue</div>
+                <div style="font-size: 0.75rem; color: var(--ather-green);">₹150 Cr ARR</div>
+            </div>
+        </div>
+
+        <!-- Use Cases -->
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 3rem auto 0;">
+            <div class="glass-card"
+                style="padding: 1.5rem; text-align: center; cursor: pointer; transition: transform 0.3s;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛡️</div>
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">Insurance</div>
+                <div style="font-size: 0.875rem; color: var(--text-secondary);">Usage-based premiums</div>
+            </div>
+            <div class="glass-card"
+                style="padding: 1.5rem; text-align: center; cursor: pointer; transition: transform 0.3s;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔋</div>
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">Battery-as-a-Service</div>
+                <div style="font-size: 0.875rem; color: var(--text-secondary);">Health monitoring</div>
+            </div>
+            <div class="glass-card"
+                style="padding: 1.5rem; text-align: center; cursor: pointer; transition: transform 0.3s;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚚</div>
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">Fleet Intelligence</div>
+                <div style="font-size: 0.875rem; color: var(--text-secondary);">Route optimization</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 12: COMPETITIVE CHESS BOARD ========== -->
+    <section id="chess" class="section">
+        <h2 class="section-title center" style="text-align: center;">Competitive Response</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+            Click Ather to see counter-moves against competitors
+        </p>
+
+        <div class="chess-container">
+            <div class="chess-board">
+                <div class="chess-cell" data-player="ather">
+                    <span style="filter: drop-shadow(0 0 10px var(--electric-cyan));">♞</span>
+                    <span class="chess-label" style="color: var(--electric-cyan);">Ather</span>
+                </div>
+                <div class="chess-cell" data-player="tvs">
+                    <span>♜</span>
+                    <span class="chess-label">TVS</span>
+                </div>
+                <div class="chess-cell" data-player="bajaj">
+                    <span>♝</span>
+                    <span class="chess-label">Bajaj</span>
+                </div>
+                <div class="chess-cell" data-player="ola">
+                    <span>♛</span>
+                    <span class="chess-label">Ola</span>
+                </div>
+            </div>
+
+            <!-- Counter-Move Card -->
+            <div id="chessCard" class="glass-card"
+                style="margin-top: 2rem; padding: 1.5rem; opacity: 0; transition: opacity 0.3s;">
+                <h4 id="chessTitle" style="color: var(--electric-cyan); margin-bottom: 1rem;">Click Ather to strategize
+                </h4>
+                <p id="chessMessage" style="color: var(--text-secondary); margin-bottom: 1rem;"></p>
+                <div id="chessDetails"></div>
+            </div>
+
+            <!-- Scoreboard -->
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem;">
+                <div style="text-align: center;">
+                    <div style="color: var(--text-secondary); font-size: 0.75rem;">Advantages</div>
+                    <div class="mono text-green" id="chessWins">0</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: var(--text-secondary); font-size: 0.75rem;">Vulnerabilities</div>
+                    <div class="mono text-orange" id="chessLosses">0</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 13: RISK HEAT MAP ========== -->
+    <section id="risks" class="section section-alt">
+        <h2 class="section-title center" style="text-align: center;">Risk Heat Map</h2>
+        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+            Click to expand mitigation strategies
+        </p>
+
+        <div style="display: flex; align-items: flex-start; gap: 2rem; max-width: 900px; margin: 0 auto;">
+            <!-- Axis Labels -->
+            <div
+                style="writing-mode: vertical-lr; transform: rotate(180deg); color: var(--text-secondary); font-size: 0.75rem;">
+                PROBABILITY →
+            </div>
+
+            <div>
+                <div class="risk-matrix">
+                    <div class="risk-cell low" data-risk="r1">Low</div>
+                    <div class="risk-cell low" data-risk="r2">Low</div>
+                    <div class="risk-cell medium" data-risk="r3">Med</div>
+                    <div class="risk-cell medium" data-risk="r4">Med</div>
+                    <div class="risk-cell high" data-risk="r5">High</div>
+
+                    <div class="risk-cell low" data-risk="r6">Low</div>
+                    <div class="risk-cell medium" data-risk="r7">Med</div>
+                    <div class="risk-cell medium" data-risk="battery">Battery<br>Volatility</div>
+                    <div class="risk-cell high" data-risk="r9">High</div>
+                    <div class="risk-cell high" data-risk="r10">High</div>
+
+                    <div class="risk-cell low" data-risk="r11">Low</div>
+                    <div class="risk-cell medium" data-risk="r12">Med</div>
+                    <div class="risk-cell high" data-risk="competition">Competitive<br>Entry</div>
+                    <div class="risk-cell high" data-risk="r14">High</div>
+                    <div class="risk-cell critical" data-risk="r15">Critical</div>
+
+                    <div class="risk-cell medium" data-risk="r16">Med</div>
+                    <div class="risk-cell high" data-risk="r17">High</div>
+                    <div class="risk-cell high" data-risk="r18">High</div>
+                    <div class="risk-cell critical" data-risk="subsidy">Subsidy<br>Cut</div>
+                    <div class="risk-cell critical" data-risk="r20">Critical</div>
+
+                    <div class="risk-cell medium" data-risk="r21">Med</div>
+                    <div class="risk-cell high" data-risk="r22">High</div>
+                    <div class="risk-cell critical" data-risk="r23">Critical</div>
+                    <div class="risk-cell critical" data-risk="r24">Critical</div>
+                    <div class="risk-cell critical" data-risk="r25">Critical</div>
+                </div>
+                <div style="text-align: center; color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.5rem;">
+                    IMPACT →
+                </div>
+            </div>
+
+            <!-- Risk Detail Panel -->
+            <div id="riskPanel" class="glass-card"
+                style="flex: 1; padding: 1.5rem; opacity: 0; transition: opacity 0.3s;">
+                <h4 id="riskTitle" style="color: var(--warning-orange); margin-bottom: 1rem;">Select a risk</h4>
+                <p id="riskMitigation" style="color: var(--text-secondary); margin-bottom: 1rem;"></p>
+                <div id="riskOwner" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div
+                        style="width: 32px; height: 32px; background: var(--electric-cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;">
+                        ?</div>
+                    <span style="font-size: 0.875rem;">Owner TBD</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 14: FINANCIAL WATERFALL ========== -->
+    <section id="waterfall" class="section">
+        <h2 class="section-title center" style="text-align: center;">Path to +2.5% EBITDA</h2>
+
+        <div style="max-width: 1000px; margin: 0 auto;">
+            <canvas id="waterfallChart" style="height: 400px;"></canvas>
+        </div>
+
+        <!-- Cash Flow River -->
+        <div class="glass-card" style="max-width: 600px; margin: 3rem auto 0; padding: 2rem; text-align: center;">
+            <div style="color: var(--text-secondary); margin-bottom: 0.5rem;">Cash Flow Reservoir</div>
+            <div class="mono" style="font-size: 3rem; color: var(--ather-green);">₹1,314 Cr</div>
+            <div
+                style="height: 10px; background: var(--bg-secondary); border-radius: 5px; margin-top: 1rem; overflow: hidden;">
+                <div id="cashFlowBar"
+                    style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--electric-cyan), var(--ather-green)); border-radius: 5px; transition: width 2s ease;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 15: IMPLEMENTATION GANTT ========== -->
+    <section id="gantt" class="section section-alt">
+        <h2 class="section-title center" style="text-align: center;">Implementation Roadmap</h2>
+
+        <div class="gantt-container glass-card" style="padding: 2rem;">
+            <!-- Timeline Header -->
+            <div style="display: flex; margin-bottom: 1rem; padding-left: 150px;">
+                <div style="flex: 1; text-align: center; font-size: 0.75rem; color: var(--text-secondary);">Q1</div>
+                <div style="flex: 1; text-align: center; font-size: 0.75rem; color: var(--text-secondary);">Q2</div>
+                <div style="flex: 1; text-align: center; font-size: 0.75rem; color: var(--text-secondary);">Q3</div>
+                <div style="flex: 1; text-align: center; font-size: 0.75rem; color: var(--text-secondary);">Q4</div>
+                <div style="flex: 1; text-align: center; font-size: 0.75rem; color: var(--text-secondary);">Q5</div>
+                <div style="flex: 1; text-align: center; font-size: 0.75rem; color: var(--text-secondary);">Q6</div>
+            </div>
+
+            <!-- Gantt Tracks -->
+            <div class="gantt-track">
+                <div class="gantt-label">Mass-Market SKU</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar product" style="left: 0%; width: 50%;">Rizta Lite Launch</div>
+                </div>
+            </div>
+
+            <div class="gantt-track">
+                <div class="gantt-label">Fleet Pilots</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar market" style="left: 8%; width: 25%;">Pilot Phase</div>
+                </div>
+            </div>
+
+            <div class="gantt-track">
+                <div class="gantt-label">Supplier Integration</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar ops" style="left: 0%; width: 66%;">Localization</div>
+                </div>
+            </div>
+
+            <div class="gantt-track">
+                <div class="gantt-label">Franchise Rollout</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar market" style="left: 16%; width: 50%;">50 Cities</div>
+                </div>
+            </div>
+
+            <div class="gantt-track">
+                <div class="gantt-label">Data Platform</div>
+                <div class="gantt-bar-container">
+                    <div class="gantt-bar finance" style="left: 25%; width: 42%;">AtherSafe Launch</div>
+                </div>
+            </div>
+
+            <div class="gantt-track">
+                <div class="gantt-label">EBITDA Break-even</div>
+                <div class="gantt-bar-container">
+                    <div
+                        style="position: absolute; left: 66%; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; background: var(--ather-green); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        ✓</div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div style="display: flex; gap: 2rem; margin-top: 2rem; justify-content: center;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div
+                        style="width: 20px; height: 10px; background: linear-gradient(90deg, #3B82F6, #0EA5E9); border-radius: 2px;">
+                    </div>
+                    <span style="font-size: 0.75rem;">Product</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div
+                        style="width: 20px; height: 10px; background: linear-gradient(90deg, var(--ather-green), #22C55E); border-radius: 2px;">
+                    </div>
+                    <span style="font-size: 0.75rem;">Market</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div
+                        style="width: 20px; height: 10px; background: linear-gradient(90deg, #8B5CF6, #6366F1); border-radius: 2px;">
+                    </div>
+                    <span style="font-size: 0.75rem;">Operations</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div
+                        style="width: 20px; height: 10px; background: linear-gradient(90deg, #F59E0B, #FBBF24); border-radius: 2px;">
+                    </div>
+                    <span style="font-size: 0.75rem;">Finance</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <button id="exportGantt"
+                style="padding: 0.75rem 2rem; background: var(--bg-secondary); border: 1px solid var(--electric-cyan); border-radius: 0.5rem; color: var(--electric-cyan); font-weight: 600; cursor: pointer;">
+                📥 Export Timeline
+            </button>
+        </div>
+    </section>
+
+    <!-- ========== SECTION 16: STARGATE CTA ========== -->
+    <section id="stargate" class="section">
+        <h2 class="section-title center" style="text-align: center;">The Portal to Profitability</h2>
+
+        <div class="stargate-container">
+            <div class="stargate" id="stargatePortal">
+                <div class="stargate-content">
+                    <p class="stargate-text">
+                        Board approval = <span class="text-cyan">₹450 Cr</span> investment →
+                        <span class="text-green">₹800 Cr+</span> value →
+                        Break-even in <span class="text-cyan">18 months</span>
+                    </p>
+
+                    <div class="stargate-orbs">
+                        <div class="orb download" id="downloadOrb" title="Download Board Deck">
+                            📄
+                            <span class="orb-label">Download Deck</span>
+                        </div>
+                        <div class="orb book" id="bookOrb" title="Book Presentation">
+                            📅
+                            <span class="orb-label">Book Presentation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer style="padding: 4rem 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div style="margin-bottom: 2rem;">
+            <span
+                style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--electric-cyan), var(--ather-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Project Quantum Leap
+            </span>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+            Ather Energy Strategic Transformation Blueprint
+        </p>
+        <p style="color: var(--metallic-silver); font-size: 0.875rem;">
+            © 2025 Excel-lent Minds. All rights reserved.
+        </p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="quantum.js"></script>
+</body>
+
+</html>
