@@ -216,129 +216,16 @@
     <!-- ========== SECTION 1: HERO WITH 3D ATHER SCOOTER ========== -->
     <section id="hero" class="section section-hero">
         <div class="hero-3d-container">
-            <!-- 3D Scooter Canvas -->
+            <!-- 3D Scooter Viewer with Real Image -->
             <div class="scooter-3d-viewer" id="scooter3dViewer">
-                <canvas id="scooterCanvas"></canvas>
 
-                <!-- Fallback: Detailed Ather 450X SVG with 3D transforms -->
+                <!-- Realistic Ather 450X Image with 3D transforms -->
                 <div class="scooter-3d-wrapper" id="scooter3dWrapper">
-                    <svg viewBox="0 0 500 400" class="ather-scooter-svg" id="atherScooterSvg">
-                        <defs>
-                            <!-- Gradients for realistic look -->
-                            <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#1a1a2e" />
-                                <stop offset="30%" style="stop-color:#16213e" />
-                                <stop offset="70%" style="stop-color:#0f3460" />
-                                <stop offset="100%" style="stop-color:#1a1a2e" />
-                            </linearGradient>
-                            <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#00E5FF" />
-                                <stop offset="100%" style="stop-color:#6CC24A" />
-                            </linearGradient>
-                            <linearGradient id="wheelGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#2d2d2d" />
-                                <stop offset="50%" style="stop-color:#1a1a1a" />
-                                <stop offset="100%" style="stop-color:#0d0d0d" />
-                            </linearGradient>
-                            <filter id="scooterGlow" x="-50%" y="-50%" width="200%" height="200%">
-                                <feGaussianBlur stdDeviation="4" result="blur" />
-                                <feMerge>
-                                    <feMergeNode in="blur" />
-                                    <feMergeNode in="SourceGraphic" />
-                                </feMerge>
-                            </filter>
-                            <filter id="metalShine">
-                                <feSpecularLighting result="specOut" specularExponent="20" lighting-color="#ffffff">
-                                    <fePointLight x="200" y="100" z="200" />
-                                </feSpecularLighting>
-                                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1"
-                                    k4="0" />
-                            </filter>
-                        </defs>
+                    <img src="ather-450x.png" alt="Ather 450X Electric Scooter" class="ather-scooter-img"
+                        id="atherScooterImg">
 
-                        <!-- Shadow -->
-                        <ellipse cx="250" cy="370" rx="120" ry="15" fill="rgba(0,0,0,0.3)" filter="blur(10px)" />
-
-                        <!-- Rear Wheel -->
-                        <g class="wheel rear-wheel">
-                            <circle cx="130" cy="320" r="55" fill="url(#wheelGradient)" stroke="#333"
-                                stroke-width="3" />
-                            <circle cx="130" cy="320" r="45" fill="none" stroke="#444" stroke-width="8" />
-                            <circle cx="130" cy="320" r="35" fill="#1a1a1a" stroke="#00E5FF" stroke-width="2" />
-                            <circle cx="130" cy="320" r="15" fill="#00E5FF" filter="url(#scooterGlow)" />
-                            <!-- Spokes -->
-                            <line x1="130" y1="275" x2="130" y2="365" stroke="#555" stroke-width="2" />
-                            <line x1="85" y1="320" x2="175" y2="320" stroke="#555" stroke-width="2" />
-                            <line x1="98" y1="288" x2="162" y2="352" stroke="#555" stroke-width="2" />
-                            <line x1="162" y1="288" x2="98" y2="352" stroke="#555" stroke-width="2" />
-                        </g>
-
-                        <!-- Front Wheel -->
-                        <g class="wheel front-wheel">
-                            <circle cx="370" cy="320" r="55" fill="url(#wheelGradient)" stroke="#333"
-                                stroke-width="3" />
-                            <circle cx="370" cy="320" r="45" fill="none" stroke="#444" stroke-width="8" />
-                            <circle cx="370" cy="320" r="35" fill="#1a1a1a" stroke="#00E5FF" stroke-width="2" />
-                            <circle cx="370" cy="320" r="15" fill="#00E5FF" filter="url(#scooterGlow)" />
-                            <!-- Spokes -->
-                            <line x1="370" y1="275" x2="370" y2="365" stroke="#555" stroke-width="2" />
-                            <line x1="325" y1="320" x2="415" y2="320" stroke="#555" stroke-width="2" />
-                            <line x1="338" y1="288" x2="402" y2="352" stroke="#555" stroke-width="2" />
-                            <line x1="402" y1="288" x2="338" y2="352" stroke="#555" stroke-width="2" />
-                        </g>
-
-                        <!-- Main Body -->
-                        <path
-                            d="M100 280 L130 200 L180 180 L320 180 L380 200 L400 260 L380 300 L360 265 L350 265 L340 300 L160 300 L150 265 L140 265 L120 300 L100 280 Z"
-                            fill="url(#bodyGradient)" stroke="#00E5FF" stroke-width="1.5" filter="url(#scooterGlow)" />
-
-                        <!-- Battery Pack (Glowing) -->
-                        <rect x="160" y="220" width="180" height="50" rx="8" fill="#0D1B1E"
-                            stroke="url(#accentGradient)" stroke-width="2" />
-                        <rect x="170" y="230" width="160" height="30" rx="4" fill="#162022" />
-                        <text x="250" y="250" text-anchor="middle" fill="#00E5FF" font-size="10"
-                            font-weight="bold">ATHER 450X</text>
-
-                        <!-- Seat -->
-                        <path d="M180 180 Q200 150 280 150 Q320 150 340 180" fill="#1a1a1a" stroke="#333"
-                            stroke-width="2" />
-                        <path d="M185 178 Q200 155 280 155 Q315 155 335 178" fill="#222" stroke="none" />
-
-                        <!-- Front Panel / Dashboard -->
-                        <path d="M340 180 L360 140 L380 130 L400 140 L390 180" fill="url(#bodyGradient)"
-                            stroke="#00E5FF" stroke-width="1" />
-                        <rect x="355" y="145" width="30" height="20" rx="3" fill="#000" stroke="#00E5FF"
-                            stroke-width="1" />
-                        <rect x="360" y="150" width="20" height="10" rx="2" fill="#00E5FF" opacity="0.8" />
-
-                        <!-- Handlebar -->
-                        <path d="M375 130 L390 90 L440 70" stroke="#444" stroke-width="8" stroke-linecap="round"
-                            fill="none" />
-                        <path d="M375 130 L355 100 L320 75" stroke="#444" stroke-width="8" stroke-linecap="round"
-                            fill="none" />
-                        <!-- Grips -->
-                        <rect x="430" y="62" width="25" height="16" rx="4" fill="#00E5FF" />
-                        <rect x="305" y="67" width="25" height="16" rx="4" fill="#00E5FF" />
-
-                        <!-- Headlight -->
-                        <ellipse cx="395" cy="165" rx="15" ry="25" fill="#fff" opacity="0.9"
-                            filter="url(#scooterGlow)" />
-                        <ellipse cx="395" cy="165" rx="10" ry="18" fill="#00E5FF" />
-
-                        <!-- Tail Light -->
-                        <rect x="95" y="265" width="20" height="10" rx="2" fill="#E17055" opacity="0.9"
-                            filter="url(#scooterGlow)" />
-
-                        <!-- Front Fork -->
-                        <path d="M370 265 L375 200 L380 130" stroke="#333" stroke-width="6" fill="none" />
-
-                        <!-- Rear Suspension -->
-                        <path d="M130 265 L140 220" stroke="#333" stroke-width="6" fill="none" />
-
-                        <!-- Logo on body -->
-                        <text x="250" y="200" text-anchor="middle" fill="#00E5FF" font-size="14" font-weight="bold"
-                            font-family="Montserrat, sans-serif">⚡</text>
-                    </svg>
+                    <!-- Glow effect layer -->
+                    <div class="scooter-glow-effect"></div>
                 </div>
 
                 <!-- 3D Interaction Instructions -->
@@ -349,22 +236,35 @@
 
                 <!-- Component Callouts -->
                 <div class="component-callouts">
-                    <div class="callout" style="top: 25%; left: 15%;">
+                    <div class="callout" style="top: 30%; left: 20%;">
                         <div class="callout-dot"></div>
-                        <div class="callout-label">Battery Pack<span class="callout-detail">₹45,000</span></div>
+                        <div class="callout-label">Battery Pack<span class="callout-detail">3.7 kWh Li-ion</span></div>
                     </div>
-                    <div class="callout" style="top: 45%; right: 18%;">
+                    <div class="callout" style="top: 25%; right: 25%;">
                         <div class="callout-dot"></div>
-                        <div class="callout-label">Dashboard 7"<span class="callout-detail">Smart Display</span></div>
+                        <div class="callout-label">7" Touchscreen<span class="callout-detail">Smart Dashboard</span>
+                        </div>
                     </div>
-                    <div class="callout" style="bottom: 25%; left: 25%;">
+                    <div class="callout" style="bottom: 35%; left: 18%;">
                         <div class="callout-dot"></div>
-                        <div class="callout-label">BLDC Motor<span class="callout-detail">6.4 kW Peak</span></div>
+                        <div class="callout-label">BLDC Motor<span class="callout-detail">6.4 kW Peak Power</span></div>
                     </div>
-                    <div class="callout" style="bottom: 20%; right: 25%;">
+                    <div class="callout" style="bottom: 30%; right: 20%;">
                         <div class="callout-dot"></div>
-                        <div class="callout-label">Disc Brakes<span class="callout-detail">CBS System</span></div>
+                        <div class="callout-label">Alloy Wheels<span class="callout-detail">12" Front & Rear</span>
+                        </div>
                     </div>
+                    <div class="callout" style="top: 50%; left: 50%; transform: translateX(-50%);">
+                        <div class="callout-dot"></div>
+                        <div class="callout-label">Top Speed<span class="callout-detail">90 km/h</span></div>
+                    </div>
+                </div>
+
+                <!-- Floating Specs -->
+                <div class="floating-specs">
+                    <div class="spec-badge">⚡ 111 km Range</div>
+                    <div class="spec-badge">🔋 0-80% in 4.5 hrs</div>
+                    <div class="spec-badge">🏎️ 0-40 in 3.3s</div>
                 </div>
             </div>
 

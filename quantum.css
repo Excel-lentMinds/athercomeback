@@ -2553,4 +2553,81 @@ html {
     .component-callouts {
         display: none;
     }
+
+    .floating-specs {
+        display: none;
+    }
+}
+
+/* ===== REALISTIC SCOOTER IMAGE ===== */
+.ather-scooter-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 60px rgba(0, 229, 255, 0.4)) drop-shadow(0 5px 20px rgba(0, 0, 0, 0.5));
+    animation: scooterFloat 6s ease-in-out infinite;
+}
+
+.scooter-glow-effect {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0, 229, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ===== FLOATING SPECS BADGES ===== */
+.floating-specs {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+}
+
+.spec-badge {
+    padding: 0.5rem 1rem;
+    background: rgba(13, 27, 30, 0.95);
+    border: 1px solid var(--electric-cyan);
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--electric-cyan);
+    white-space: nowrap;
+    backdrop-filter: blur(10px);
+    animation: badgeFloat 3s ease-in-out infinite;
+}
+
+.spec-badge:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.spec-badge:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes badgeFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
 }
