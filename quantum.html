@@ -213,71 +213,143 @@
         <span>Excel-lent Minds</span>
     </div>
 
-    <!-- ========== SECTION 1: HERO - CARWALE-STYLE 3D TURNTABLE ========== -->
+    <!-- ========== SECTION 1: HERO - PROFESSIONAL 360° PRODUCT VIEWER ========== -->
     <section id="hero" class="section section-hero">
         <div class="hero-3d-container">
-            <!-- 3D Turntable Viewer (Like CarWale) -->
-            <div class="turntable-viewer" id="turntableViewer">
-                <!-- 3D Stage -->
-                <div class="turntable-stage">
-                    <!-- Circular Platform -->
-                    <div class="turntable-platform"></div>
-
-                    <!-- Scooter Container (rotates on drag) -->
-                    <div class="turntable-scooter" id="turntableScooter">
-                        <img src="ather-360.png" alt="Ather 450X" class="turntable-image" id="turntableImage">
+            <!-- 360° Product Viewer -->
+            <div class="product-viewer-360" id="productViewer360">
+                <!-- LAYER 1: Static Background -->
+                <div class="viewer-background">
+                    <!-- Ambient glow -->
+                    <div class="bg-ambient-glow"></div>
+                    <!-- Concentric rings -->
+                    <div class="bg-ring ring-1"></div>
+                    <div class="bg-ring ring-2"></div>
+                    <div class="bg-ring ring-3"></div>
+                    <!-- Floor platform -->
+                    <div class="bg-platform"></div>
+                    <!-- Floating particles -->
+                    <div class="bg-particles" id="bgParticles"></div>
+                </div>
+                
+                <!-- LAYER 2: Rotating Scooter -->
+                <div class="viewer-scooter-layer" id="scooterLayer">
+                    <div class="scooter-container" id="scooterContainer">
+                        <img src="ather-360.png" alt="Ather 450X Electric Scooter" class="scooter-360-img" id="scooter360Img" draggable="false">
+                        <!-- Dynamic shadow -->
+                        <div class="scooter-shadow" id="scooterShadow"></div>
                     </div>
-
-                    <!-- Floor Reflection -->
-                    <div class="turntable-reflection">
-                        <img src="ather-360.png" alt="" class="reflection-img">
+                    <!-- Floor reflection -->
+                    <div class="scooter-reflection" id="scooterReflection">
+                        <img src="ather-360.png" alt="" class="reflection-360-img" draggable="false">
                     </div>
                 </div>
-
-                <!-- Model Info -->
-                <div class="turntable-info">
-                    <div class="info-brand">ATHER</div>
-                    <div class="info-model">450X</div>
-                    <div class="info-price">₹1,49,000*</div>
+                
+                <!-- LAYER 3: Feature Hotspots -->
+                <div class="viewer-hotspots" id="viewerHotspots">
+                    <div class="hotspot" data-feature="led" style="top: 35%; left: 65%;">
+                        <div class="hotspot-dot"></div>
+                        <div class="hotspot-pulse"></div>
+                        <div class="hotspot-label">LED Headlamp<br><small>Signature Cyan Glow</small></div>
+                    </div>
+                    <div class="hotspot" data-feature="display" style="top: 28%; left: 55%;">
+                        <div class="hotspot-dot"></div>
+                        <div class="hotspot-pulse"></div>
+                        <div class="hotspot-label">7" Touchscreen<br><small>Navigation + Stats</small></div>
+                    </div>
+                    <div class="hotspot" data-feature="motor" style="top: 70%; left: 35%;">
+                        <div class="hotspot-dot"></div>
+                        <div class="hotspot-pulse"></div>
+                        <div class="hotspot-label">6 kW BLDC Motor<br><small>Instant Torque</small></div>
+                    </div>
+                    <div class="hotspot" data-feature="battery" style="top: 55%; left: 45%;">
+                        <div class="hotspot-dot"></div>
+                        <div class="hotspot-pulse"></div>
+                        <div class="hotspot-label">3.7 kWh Battery<br><small>111 km Range</small></div>
+                    </div>
                 </div>
-
-                <!-- Controls -->
-                <div class="turntable-controls">
-                    <button class="control-btn" id="rotateLeft" title="Rotate Left">◀</button>
-                    <div class="rotation-indicator">
-                        <div class="indicator-ring"></div>
-                        <div class="indicator-arrow" id="indicatorArrow"></div>
-                        <span class="indicator-text">360°</span>
+                
+                <!-- LAYER 4: UI Controls -->
+                <div class="viewer-ui">
+                    <!-- Model Info -->
+                    <div class="viewer-model-info">
+                        <div class="model-brand">ATHER</div>
+                        <div class="model-name">450X</div>
+                        <div class="model-price">₹1,49,000*</div>
                     </div>
-                    <button class="control-btn" id="rotateRight" title="Rotate Right">▶</button>
-                </div>
-
-                <!-- Drag Instructions -->
-                <div class="turntable-hint">
-                    <div class="hint-icon">↔</div>
-                    <span>Drag left or right to rotate</span>
-                </div>
-
-                <!-- Specs Row -->
-                <div class="turntable-specs">
-                    <div class="tspec">
-                        <span class="tspec-value">111 km</span>
-                        <span class="tspec-label">Range</span>
+                    
+                    <!-- Top Right Controls -->
+                    <div class="viewer-top-controls">
+                        <button class="viewer-btn" id="btnFullscreen" title="Fullscreen">
+                            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                        </button>
+                        <button class="viewer-btn" id="btnHotspots" title="Toggle Features">
+                            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        </button>
                     </div>
-                    <div class="tspec-divider"></div>
-                    <div class="tspec">
-                        <span class="tspec-value">90 km/h</span>
-                        <span class="tspec-label">Top Speed</span>
+                    
+                    <!-- Bottom Controls Bar -->
+                    <div class="viewer-bottom-controls">
+                        <!-- Rotation Controls -->
+                        <div class="control-group">
+                            <button class="ctrl-btn" id="btnRotateLeft" title="Rotate Left">◀</button>
+                            <div class="rotation-dial">
+                                <div class="dial-ring"></div>
+                                <div class="dial-pointer" id="dialPointer"></div>
+                                <span class="dial-text">360°</span>
+                            </div>
+                            <button class="ctrl-btn" id="btnRotateRight" title="Rotate Right">▶</button>
+                        </div>
+                        
+                        <!-- Auto Rotate Toggle -->
+                        <div class="control-group">
+                            <label class="toggle-switch" title="Auto Rotate">
+                                <input type="checkbox" id="toggleAutoRotate" checked>
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">Auto</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Zoom Slider -->
+                        <div class="control-group zoom-control">
+                            <span class="zoom-icon">🔍</span>
+                            <input type="range" id="zoomSlider" min="50" max="200" value="100" class="zoom-slider">
+                            <span class="zoom-value" id="zoomValue">100%</span>
+                        </div>
+                        
+                        <!-- Reset Button -->
+                        <div class="control-group">
+                            <button class="ctrl-btn reset-btn" id="btnReset" title="Reset View">↺</button>
+                        </div>
                     </div>
-                    <div class="tspec-divider"></div>
-                    <div class="tspec">
-                        <span class="tspec-value">3.3s</span>
-                        <span class="tspec-label">0-40 km/h</span>
+                    
+                    <!-- Drag Hint -->
+                    <div class="viewer-hint" id="viewerHint">
+                        <div class="hint-anim">↔</div>
+                        <span>Drag to rotate • Scroll to zoom</span>
                     </div>
-                    <div class="tspec-divider"></div>
-                    <div class="tspec">
-                        <span class="tspec-value">3.7 kWh</span>
-                        <span class="tspec-label">Battery</span>
+                    
+                    <!-- Specs Bar -->
+                    <div class="viewer-specs-bar">
+                        <div class="spec-item">
+                            <span class="spec-val">111 km</span>
+                            <span class="spec-lbl">Range</span>
+                        </div>
+                        <div class="spec-divider"></div>
+                        <div class="spec-item">
+                            <span class="spec-val">90 km/h</span>
+                            <span class="spec-lbl">Top Speed</span>
+                        </div>
+                        <div class="spec-divider"></div>
+                        <div class="spec-item">
+                            <span class="spec-val">3.3s</span>
+                            <span class="spec-lbl">0-40 km/h</span>
+                        </div>
+                        <div class="spec-divider"></div>
+                        <div class="spec-item">
+                            <span class="spec-val">3.7 kWh</span>
+                            <span class="spec-lbl">Battery</span>
+                        </div>
                     </div>
                 </div>
             </div>

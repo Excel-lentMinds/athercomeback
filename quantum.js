@@ -1929,21 +1929,84 @@ console.log('💡 Press ? for keyboard shortcuts');
 
 console.log('✨ Enhanced interactive features loaded!');
 
-// ===== CARWALE-STYLE 360° TURNTABLE =====
-(function initTurntable() {
-    const scooter = document.getElementById('turntableScooter');
-    const indicator = document.getElementById('indicatorArrow');
-    const hint = document.querySelector('.turntable-hint');
-    const leftBtn = document.getElementById('rotateLeft');
-    const rightBtn = document.getElementById('rotateRight');
+// ===== PROFESSIONAL 360° PRODUCT VIEWER =====
+(function init360ProductViewer() {
+    // Elements
+    const viewer = document.getElementById('productViewer360');
+    const scooterContainer = document.getElementById('scooterContainer');
+    const scooterLayer = document.getElementById('scooterLayer');
+    const scooterReflection = document.getElementById('scooterReflection');
+    const dialPointer = document.getElementById('dialPointer');
+    const hint = document.getElementById('viewerHint');
+    const hotspots = document.getElementById('viewerHotspots');
 
-    if (!scooter) return;
+    // Buttons
+    const btnRotateLeft = document.getElementById('btnRotateLeft');
+    const btnRotateRight = document.getElementById('btnRotateRight');
+    const btnReset = document.getElementById('btnReset');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const btnHotspots = document.getElementById('btnHotspots');
+    const toggleAutoRotate = document.getElementById('toggleAutoRotate');
+    const zoomSlider = document.getElementById('zoomSlider');
+    const zoomValue = document.getElementById('zoomValue');
 
+    if (!scooterContainer || !scooterLayer) return;
+
+    // State
+    let rotation = 0;
+    let velocity = 0;
     let isDragging = false;
     let startX = 0;
-    let currentRotation = 0;
+    let lastX = 0;
+    let lastTime = 0;
+    let zoom = 100;
+    let autoRotate = true;
+    let hotspotsVisible = true;
+    let animationFrame;
 
-    // Hide hint after first interaction
+    // Constants
+    const FRICTION = 0.95;
+    const SENSITIVITY = 0.4;
+    const AUTO_ROTATE_SPEED = 0.15;
+    const MIN_VELOCITY = 0.01;
+
+    // Update scooter rotation - ONLY scooter rotates, not background
+    function updateView() {
+        // Apply rotation ONLY to scooter container
+        scooterContainer.style.transform = `rotateY(${rotation}deg) scale(${zoom / 100})`;
+
+        // Update reflection (also rotates with scooter)
+        if (scooterReflection) {
+            scooterReflection.style.transform = `translateX(-50%) scaleY(-0.35) rotateY(${rotation}deg) scale(${zoom / 100})`;
+        }
+
+        // Update dial pointer
+        if (dialPointer) {
+            const pointerRotation = (rotation % 360);
+            dialPointer.style.transform = `translateX(-50%) rotate(${pointerRotation}deg) translateY(-21px)`;
+        }
+    }
+
+    // Animation loop with momentum physics
+    function animate() {
+        if (!isDragging) {
+            // Apply momentum
+            if (Math.abs(velocity) > MIN_VELOCITY) {
+                rotation += velocity;
+                velocity *= FRICTION;
+                updateView();
+            }
+
+            // Auto-rotate when enabled and no momentum
+            if (autoRotate && Math.abs(velocity) < MIN_VELOCITY) {
+                rotation += AUTO_ROTATE_SPEED;
+                updateView();
+            }
+        }
+        animationFrame = requestAnimationFrame(animate);
+    }
+
+    // Hide hint
     function hideHint() {
         if (hint) {
             hint.style.opacity = '0';
@@ -1951,89 +2014,144 @@ console.log('✨ Enhanced interactive features loaded!');
         }
     }
 
-    // Update scooter rotation
-    function updateRotation() {
-        scooter.style.transform = `rotateY(${currentRotation}deg)`;
-
-        // Update indicator arrow position
-        if (indicator) {
-            const indicatorRotation = (currentRotation % 360) * -1;
-            indicator.style.transform = `translateX(-50%) rotate(${indicatorRotation}deg) translateY(-26px)`;
-        }
-    }
-
-    // Mouse drag events
-    scooter.addEventListener('mousedown', (e) => {
+    // === MOUSE EVENTS (on scooter layer only) ===
+    scooterLayer.addEventListener('mousedown', (e) => {
         isDragging = true;
         startX = e.clientX;
+        lastX = e.clientX;
+        lastTime = Date.now();
+        velocity = 0;
         hideHint();
+        scooterLayer.style.cursor = 'grabbing';
     });
 
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        const deltaX = e.clientX - startX;
-        currentRotation += deltaX * 0.5;
-        updateRotation();
-        startX = e.clientX;
+
+        const deltaX = e.clientX - lastX;
+        const deltaTime = Date.now() - lastTime;
+
+        rotation += deltaX * SENSITIVITY;
+        velocity = deltaX * SENSITIVITY;
+
+        lastX = e.clientX;
+        lastTime = Date.now();
+        updateView();
     });
 
     document.addEventListener('mouseup', () => {
-        isDragging = false;
+        if (isDragging) {
+            isDragging = false;
+            scooterLayer.style.cursor = 'grab';
+        }
     });
 
-    // Touch events for mobile
-    scooter.addEventListener('touchstart', (e) => {
+    // === TOUCH EVENTS ===
+    scooterLayer.addEventListener('touchstart', (e) => {
         isDragging = true;
         startX = e.touches[0].clientX;
+        lastX = e.touches[0].clientX;
+        lastTime = Date.now();
+        velocity = 0;
         hideHint();
     }, { passive: true });
 
-    scooter.addEventListener('touchmove', (e) => {
+    scooterLayer.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-        const deltaX = e.touches[0].clientX - startX;
-        currentRotation += deltaX * 0.5;
-        updateRotation();
-        startX = e.touches[0].clientX;
+
+        const deltaX = e.touches[0].clientX - lastX;
+        rotation += deltaX * SENSITIVITY;
+        velocity = deltaX * SENSITIVITY;
+
+        lastX = e.touches[0].clientX;
+        lastTime = Date.now();
+        updateView();
     }, { passive: true });
 
-    scooter.addEventListener('touchend', () => {
+    scooterLayer.addEventListener('touchend', () => {
         isDragging = false;
     });
 
-    // Button controls
-    if (leftBtn) {
-        leftBtn.addEventListener('click', () => {
-            currentRotation -= 45;
-            updateRotation();
+    // === BUTTON CONTROLS ===
+    if (btnRotateLeft) {
+        btnRotateLeft.addEventListener('click', () => {
+            velocity = -5;
             hideHint();
         });
     }
 
-    if (rightBtn) {
-        rightBtn.addEventListener('click', () => {
-            currentRotation += 45;
-            updateRotation();
+    if (btnRotateRight) {
+        btnRotateRight.addEventListener('click', () => {
+            velocity = 5;
             hideHint();
         });
     }
 
-    // Auto-rotate slowly when not interacting
-    let autoRotateInterval;
-    function startAutoRotate() {
-        autoRotateInterval = setInterval(() => {
-            if (!isDragging) {
-                currentRotation += 0.2;
-                updateRotation();
+    if (btnReset) {
+        btnReset.addEventListener('click', () => {
+            rotation = 0;
+            velocity = 0;
+            zoom = 100;
+            if (zoomSlider) zoomSlider.value = 100;
+            if (zoomValue) zoomValue.textContent = '100%';
+            updateView();
+        });
+    }
+
+    // === FULLSCREEN ===
+    if (btnFullscreen) {
+        btnFullscreen.addEventListener('click', () => {
+            if (viewer) {
+                viewer.classList.toggle('fullscreen');
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else if (viewer.requestFullscreen) {
+                    viewer.requestFullscreen();
+                }
             }
-        }, 50);
+        });
     }
 
-    // Start auto-rotate after 5 seconds
-    setTimeout(startAutoRotate, 5000);
+    // === HOTSPOTS TOGGLE ===
+    if (btnHotspots) {
+        btnHotspots.addEventListener('click', () => {
+            hotspotsVisible = !hotspotsVisible;
+            if (hotspots) {
+                hotspots.style.display = hotspotsVisible ? 'block' : 'none';
+            }
+        });
+    }
 
-    // Stop auto-rotate on interaction
-    scooter.addEventListener('mouseenter', () => clearInterval(autoRotateInterval));
-    scooter.addEventListener('mouseleave', startAutoRotate);
+    // === AUTO-ROTATE TOGGLE ===
+    if (toggleAutoRotate) {
+        toggleAutoRotate.addEventListener('change', (e) => {
+            autoRotate = e.target.checked;
+        });
+    }
 
-    console.log('🛵 CarWale-style 360° turntable initialized!');
+    // === ZOOM CONTROL ===
+    if (zoomSlider) {
+        zoomSlider.addEventListener('input', (e) => {
+            zoom = parseInt(e.target.value);
+            if (zoomValue) zoomValue.textContent = zoom + '%';
+            updateView();
+        });
+    }
+
+    // === SCROLL TO ZOOM ===
+    viewer?.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -5 : 5;
+        zoom = Math.max(50, Math.min(200, zoom + delta));
+        if (zoomSlider) zoomSlider.value = zoom;
+        if (zoomValue) zoomValue.textContent = zoom + '%';
+        updateView();
+        hideHint();
+    }, { passive: false });
+
+    // Start animation loop
+    animate();
+
+    console.log('🛵 Professional 360° Product Viewer initialized!');
 })();
+
