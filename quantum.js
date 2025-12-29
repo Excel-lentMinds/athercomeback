@@ -1568,3 +1568,364 @@ window.matchMedia('print').addEventListener('change', (e) => {
 console.log('🛵 Project Quantum Leap initialized successfully!');
 console.log('💡 Press ? for keyboard shortcuts');
 
+// ===== ANIMATED PARTICLE BACKGROUND =====
+(function initParticles() {
+    const canvas = document.getElementById('particleCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Particle {
+        constructor() {
+            this.reset();
+        }
+
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.5;
+            this.speedY = (Math.random() - 0.5) * 0.5;
+            this.opacity = Math.random() * 0.5 + 0.2;
+            this.color = Math.random() > 0.5 ? '#00E5FF' : '#6CC24A';
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            if (this.x < 0 || this.x > canvas.width ||
+                this.y < 0 || this.y > canvas.height) {
+                this.reset();
+            }
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.opacity;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+    }
+
+    // Create particles
+    for (let i = 0; i < 80; i++) {
+        particles.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+        });
+
+        // Draw connections
+        particles.forEach((p1, i) => {
+            particles.slice(i + 1).forEach(p2 => {
+                const distance = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                if (distance < 100) {
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = '#00E5FF';
+                    ctx.globalAlpha = (1 - distance / 100) * 0.2;
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+            });
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+})();
+
+// ===== CURSOR GLOW EFFECT =====
+(function initCursorGlow() {
+    const cursorGlow = document.getElementById('cursorGlow');
+    if (!cursorGlow) return;
+
+    let mouseX = 0, mouseY = 0;
+    let glowX = 0, glowY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorGlow.classList.add('visible');
+    });
+
+    document.addEventListener('mouseleave', () => {
+        cursorGlow.classList.remove('visible');
+    });
+
+    function animateGlow() {
+        glowX += (mouseX - glowX) * 0.1;
+        glowY += (mouseY - glowY) * 0.1;
+        cursorGlow.style.left = glowX + 'px';
+        cursorGlow.style.top = glowY + 'px';
+        requestAnimationFrame(animateGlow);
+    }
+
+    animateGlow();
+})();
+
+// ===== SCROLL TO TOP BUTTON =====
+(function initScrollTop() {
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    if (!scrollTopBtn) return;
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+            scrollTopBtn.classList.add('visible');
+        } else {
+            scrollTopBtn.classList.remove('visible');
+        }
+    });
+
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+})();
+
+// ===== FLOATING ACTION BUTTON =====
+(function initFAB() {
+    const fabContainer = document.getElementById('fabContainer');
+    const fabMain = document.getElementById('fabMain');
+    const fabCalculator = document.getElementById('fabCalculator');
+    const fabShare = document.getElementById('fabShare');
+    const fabFullscreen = document.getElementById('fabFullscreen');
+    const fabSound = document.getElementById('fabSound');
+
+    if (!fabMain) return;
+
+    // Toggle FAB menu
+    fabMain.addEventListener('click', () => {
+        fabContainer.classList.toggle('open');
+    });
+
+    // Calculator button
+    fabCalculator?.addEventListener('click', () => {
+        document.getElementById('calculatorModal')?.classList.add('visible');
+        fabContainer.classList.remove('open');
+    });
+
+    // Share button
+    fabShare?.addEventListener('click', async () => {
+        const shareData = {
+            title: 'Ather Energy - Project Quantum Leap',
+            text: 'Check out Ather Energy\'s Strategic Transformation Blueprint',
+            url: window.location.href
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                console.log('Share cancelled');
+            }
+        } else {
+            navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard! 📋');
+        }
+        fabContainer.classList.remove('open');
+    });
+
+    // Fullscreen button
+    fabFullscreen?.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+        fabContainer.classList.remove('open');
+    });
+
+    // Sound toggle
+    let soundEnabled = false;
+    fabSound?.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        fabSound.textContent = soundEnabled ? '🔊' : '🔇';
+        fabContainer.classList.remove('open');
+    });
+
+    // Close FAB when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!fabContainer.contains(e.target)) {
+            fabContainer.classList.remove('open');
+        }
+    });
+})();
+
+// ===== EV SAVINGS CALCULATOR =====
+(function initCalculator() {
+    const calculatorModal = document.getElementById('calculatorModal');
+    const dailyKmSlider = document.getElementById('dailyKm');
+    const petrolPriceSlider = document.getElementById('petrolPrice');
+    const petrolMileageSlider = document.getElementById('petrolMileage');
+
+    if (!calculatorModal) return;
+
+    // Close calculator function (global)
+    window.closeCalculator = function () {
+        calculatorModal.classList.remove('visible');
+    };
+
+    // Close on overlay click
+    calculatorModal.addEventListener('click', (e) => {
+        if (e.target === calculatorModal) {
+            closeCalculator();
+        }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeCalculator();
+        }
+    });
+
+    function calculateSavings() {
+        const dailyKm = parseInt(dailyKmSlider?.value || 30);
+        const petrolPrice = parseInt(petrolPriceSlider?.value || 105);
+        const petrolMileage = parseInt(petrolMileageSlider?.value || 40);
+
+        // Update display values
+        document.getElementById('dailyKmValue').textContent = dailyKm + ' km';
+        document.getElementById('petrolPriceValue').textContent = '₹' + petrolPrice;
+        document.getElementById('petrolMileageValue').textContent = petrolMileage + ' km/L';
+
+        // Calculate costs
+        const monthlyKm = dailyKm * 30;
+        const petrolCost = Math.round((monthlyKm / petrolMileage) * petrolPrice);
+
+        // Ather: 3 km per unit, ₹7.5 per unit average
+        const atherUnits = monthlyKm / 75; // ~75 km per unit
+        const atherCost = Math.round(atherUnits * 7.5 * 3); // Approx electricity cost
+
+        const savings = petrolCost - atherCost;
+        const yearlySavings = savings * 12;
+
+        // Update display
+        document.getElementById('petrolCost').textContent = '₹' + petrolCost.toLocaleString();
+        document.getElementById('atherCost').textContent = '₹' + atherCost.toLocaleString();
+        document.getElementById('totalSavings').textContent = '₹' + savings.toLocaleString();
+        document.getElementById('yearlySavings').textContent = '₹' + yearlySavings.toLocaleString();
+    }
+
+    // Add event listeners
+    dailyKmSlider?.addEventListener('input', calculateSavings);
+    petrolPriceSlider?.addEventListener('input', calculateSavings);
+    petrolMileageSlider?.addEventListener('input', calculateSavings);
+
+    // Initial calculation
+    calculateSavings();
+})();
+
+// ===== CONFETTI CELEBRATION =====
+(function initConfetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let confetti = [];
+    let isActive = false;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    class ConfettiPiece {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = -10;
+            this.size = Math.random() * 10 + 5;
+            this.speedY = Math.random() * 3 + 2;
+            this.speedX = (Math.random() - 0.5) * 4;
+            this.rotation = Math.random() * 360;
+            this.rotationSpeed = (Math.random() - 0.5) * 10;
+            this.color = ['#00E5FF', '#6CC24A', '#FBBF24', '#F472B6', '#A78BFA'][Math.floor(Math.random() * 5)];
+        }
+
+        update() {
+            this.y += this.speedY;
+            this.x += this.speedX;
+            this.rotation += this.rotationSpeed;
+            return this.y < canvas.height;
+        }
+
+        draw() {
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.rotation * Math.PI / 180);
+            ctx.fillStyle = this.color;
+            ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size / 2);
+            ctx.restore();
+        }
+    }
+
+    function animateConfetti() {
+        if (!isActive && confetti.length === 0) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti = confetti.filter(piece => {
+            piece.draw();
+            return piece.update();
+        });
+
+        if (confetti.length > 0 || isActive) {
+            requestAnimationFrame(animateConfetti);
+        }
+    }
+
+    // Expose global confetti trigger
+    window.triggerConfetti = function () {
+        isActive = true;
+        for (let i = 0; i < 100; i++) {
+            setTimeout(() => {
+                confetti.push(new ConfettiPiece());
+            }, i * 20);
+        }
+
+        setTimeout(() => {
+            isActive = false;
+        }, 3000);
+
+        animateConfetti();
+    };
+
+    // Trigger confetti when reaching CTA section
+    const ctaSection = document.getElementById('stargate');
+    if (ctaSection) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    triggerConfetti();
+                    observer.unobserve(ctaSection);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(ctaSection);
+    }
+})();
+
+console.log('✨ Enhanced interactive features loaded!');
+

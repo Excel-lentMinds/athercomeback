@@ -28,6 +28,84 @@
 </head>
 
 <body>
+    <!-- Animated Particle Background -->
+    <canvas id="particleCanvas" class="particle-canvas"></canvas>
+
+    <!-- Cursor Glow Trail -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Scroll-to-Top Button -->
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Back to top">
+        <span>↑</span>
+    </button>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container" id="fabContainer">
+        <button class="fab-main" id="fabMain">⚡</button>
+        <div class="fab-menu" id="fabMenu">
+            <button class="fab-item" id="fabCalculator" title="EV Savings Calculator">🧮</button>
+            <button class="fab-item" id="fabShare" title="Share">📤</button>
+            <button class="fab-item" id="fabFullscreen" title="Fullscreen">⛶</button>
+            <button class="fab-item" id="fabSound" title="Toggle Sound">🔊</button>
+        </div>
+    </div>
+
+    <!-- EV Savings Calculator Modal -->
+    <div class="calculator-modal" id="calculatorModal">
+        <div class="calculator-content glass-card">
+            <button class="close-modal" onclick="closeCalculator()">✕</button>
+            <h3>🛵 EV Savings Calculator</h3>
+            <p class="calculator-subtitle">See how much you can save with Ather!</p>
+
+            <div class="calculator-grid">
+                <div class="calc-input-group">
+                    <label>Daily Commute (km)</label>
+                    <input type="range" id="dailyKm" min="5" max="100" value="30" class="calc-slider">
+                    <span class="calc-value" id="dailyKmValue">30 km</span>
+                </div>
+
+                <div class="calc-input-group">
+                    <label>Current Petrol Price (₹/L)</label>
+                    <input type="range" id="petrolPrice" min="80" max="120" value="105" class="calc-slider">
+                    <span class="calc-value" id="petrolPriceValue">₹105</span>
+                </div>
+
+                <div class="calc-input-group">
+                    <label>Your Petrol Vehicle Mileage (km/L)</label>
+                    <input type="range" id="petrolMileage" min="20" max="70" value="40" class="calc-slider">
+                    <span class="calc-value" id="petrolMileageValue">40 km/L</span>
+                </div>
+            </div>
+
+            <div class="savings-results">
+                <div class="savings-card petrol">
+                    <div class="savings-icon">⛽</div>
+                    <div class="savings-label">Petrol Cost/Month</div>
+                    <div class="savings-amount" id="petrolCost">₹2,363</div>
+                </div>
+                <div class="savings-vs">VS</div>
+                <div class="savings-card ather">
+                    <div class="savings-icon">⚡</div>
+                    <div class="savings-label">Ather Cost/Month</div>
+                    <div class="savings-amount" id="atherCost">₹270</div>
+                </div>
+            </div>
+
+            <div class="total-savings">
+                <span>Your Monthly Savings:</span>
+                <span class="savings-highlight" id="totalSavings">₹2,093</span>
+            </div>
+
+            <div class="yearly-savings">
+                That's <span id="yearlySavings">₹25,116</span> per year! 🎉
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+
     <!-- Premium Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-content">
