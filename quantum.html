@@ -137,16 +137,16 @@
             <div class="nav-content" id="navContent">
                 <div class="nav-section active" data-section="hero">Hero</div>
                 <div class="nav-section" data-section="researchers">Team</div>
-                <div class="nav-section" data-section="pivot">3-P Pivot</div>
+                <div class="nav-section" data-section="galaxy">3-P Pivot</div>
                 <div class="nav-section" data-section="dashboard">Dashboard</div>
-                <div class="nav-section" data-section="whack">Root Cause</div>
-                <div class="nav-section" data-section="capital">Capital</div>
-                <div class="nav-section" data-section="product">Products</div>
-                <div class="nav-section" data-section="b2b">B2B</div>
+                <div class="nav-section" data-section="whackamole">Root Cause</div>
+                <div class="nav-section" data-section="bubbles">Capital</div>
+                <div class="nav-section" data-section="pyramid">Products</div>
+                <div class="nav-section" data-section="rocket">B2B</div>
                 <div class="nav-section" data-section="geography">India Map</div>
-                <div class="nav-section" data-section="data">Data</div>
+                <div class="nav-section" data-section="datapipeline">Data</div>
                 <div class="nav-section" data-section="chess">Competition</div>
-                <div class="nav-section" data-section="risk">Risk</div>
+                <div class="nav-section" data-section="risks">Risk</div>
                 <div class="nav-section" data-section="waterfall">Financial</div>
                 <div class="nav-section" data-section="gantt">Timeline</div>
                 <div class="nav-section" data-section="stargate">CTA</div>
@@ -231,11 +231,12 @@
                     <!-- Floating particles -->
                     <div class="bg-particles" id="bgParticles"></div>
                 </div>
-                
+
                 <!-- LAYER 2: Rotating Scooter -->
                 <div class="viewer-scooter-layer" id="scooterLayer">
                     <div class="scooter-container" id="scooterContainer">
-                        <img src="ather-360.png" alt="Ather 450X Electric Scooter" class="scooter-360-img" id="scooter360Img" draggable="false">
+                        <img src="ather-360.png" alt="Ather 450X Electric Scooter" class="scooter-360-img"
+                            id="scooter360Img" draggable="false">
                         <!-- Dynamic shadow -->
                         <div class="scooter-shadow" id="scooterShadow"></div>
                     </div>
@@ -244,7 +245,7 @@
                         <img src="ather-360.png" alt="" class="reflection-360-img" draggable="false">
                     </div>
                 </div>
-                
+
                 <!-- LAYER 3: Feature Hotspots -->
                 <div class="viewer-hotspots" id="viewerHotspots">
                     <div class="hotspot" data-feature="led" style="top: 35%; left: 65%;">
@@ -268,7 +269,7 @@
                         <div class="hotspot-label">3.7 kWh Battery<br><small>111 km Range</small></div>
                     </div>
                 </div>
-                
+
                 <!-- LAYER 4: UI Controls -->
                 <div class="viewer-ui">
                     <!-- Model Info -->
@@ -277,17 +278,23 @@
                         <div class="model-name">450X</div>
                         <div class="model-price">₹1,49,000*</div>
                     </div>
-                    
+
                     <!-- Top Right Controls -->
                     <div class="viewer-top-controls">
                         <button class="viewer-btn" id="btnFullscreen" title="Fullscreen">
-                            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor"
+                                    d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                            </svg>
                         </button>
                         <button class="viewer-btn" id="btnHotspots" title="Toggle Features">
-                            <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor"
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                            </svg>
                         </button>
                     </div>
-                    
+
                     <!-- Bottom Controls Bar -->
                     <div class="viewer-bottom-controls">
                         <!-- Rotation Controls -->
@@ -300,7 +307,7 @@
                             </div>
                             <button class="ctrl-btn" id="btnRotateRight" title="Rotate Right">▶</button>
                         </div>
-                        
+
                         <!-- Auto Rotate Toggle -->
                         <div class="control-group">
                             <label class="toggle-switch" title="Auto Rotate">
@@ -309,26 +316,26 @@
                                 <span class="toggle-label">Auto</span>
                             </label>
                         </div>
-                        
+
                         <!-- Zoom Slider -->
                         <div class="control-group zoom-control">
                             <span class="zoom-icon">🔍</span>
                             <input type="range" id="zoomSlider" min="50" max="200" value="100" class="zoom-slider">
                             <span class="zoom-value" id="zoomValue">100%</span>
                         </div>
-                        
+
                         <!-- Reset Button -->
                         <div class="control-group">
                             <button class="ctrl-btn reset-btn" id="btnReset" title="Reset View">↺</button>
                         </div>
                     </div>
-                    
+
                     <!-- Drag Hint -->
                     <div class="viewer-hint" id="viewerHint">
                         <div class="hint-anim">↔</div>
                         <span>Drag to rotate • Scroll to zoom</span>
                     </div>
-                    
+
                     <!-- Specs Bar -->
                     <div class="viewer-specs-bar">
                         <div class="spec-item">
