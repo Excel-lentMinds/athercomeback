@@ -17,13 +17,36 @@ class QuantumLeap {
     }
 
     init() {
-        // Hide loading screen after content loads
+        // Hide loading screen with multiple fallback mechanisms
+        let loadingHidden = false;
+        
+        const hideLoadingScreen = () => {
+            if (loadingHidden) return;
+            loadingHidden = true;
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+            }
+            this.startAnimations();
+        };
+
+        // Primary: Hide after window fully loads
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loadingScreen').classList.add('hidden');
-                this.startAnimations();
-            }, 1000);
+            setTimeout(hideLoadingScreen, 1000);
         });
+
+        // Fallback 1: If DOMContentLoaded fires but load doesn't, hide after 3 seconds
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(hideLoadingScreen, 3000);
+            });
+        } else {
+            // DOM is already loaded
+            setTimeout(hideLoadingScreen, 3000);
+        }
+
+        // Fallback 2: Absolute timeout - always hide after 5 seconds no matter what
+        setTimeout(hideLoadingScreen, 5000);
 
         this.setupScrollEffects();
         this.setupKPIRibbon();

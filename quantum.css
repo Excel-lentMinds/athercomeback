@@ -319,7 +319,7 @@ h4 {
 /* ===== 3D HERO SCENE ===== */
 .hero-3d-container {
     width: 100%;
-    min-height: 80vh;
+    min-height: 65vh;
     height: auto;
     perspective: 1500px;
     position: relative;
@@ -384,6 +384,9 @@ h4 {
 /* ===== HERO HEADLINE ===== */
 .hero-headline {
     margin-top: var(--space-lg);
+    padding-bottom: 2rem;
+    position: relative;
+    z-index: 2;
 }
 
 .hero-stat-line {
