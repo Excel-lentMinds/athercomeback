@@ -4,6 +4,28 @@
  * Team: Excel-lent Minds
  */
 
+// EMERGENCY LOADER DISMISSAL - Runs IMMEDIATELY, before any other code
+// This guarantees the loading screen will hide even if other code fails
+(function emergencyLoaderDismissal() {
+    const hideLoader = () => {
+        const loader = document.getElementById('loadingScreen');
+        if (loader && !loader.classList.contains('hidden')) {
+            loader.classList.add('hidden');
+            console.log('EMERGENCY: Loading screen dismissed by fallback');
+        }
+    };
+
+    // Hide after 4 seconds no matter what
+    setTimeout(hideLoader, 4000);
+
+    // Also try when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(hideLoader, 2000));
+    } else {
+        setTimeout(hideLoader, 2000);
+    }
+})();
+
 class QuantumLeap {
     constructor() {
         this.charts = {};
@@ -19,7 +41,7 @@ class QuantumLeap {
     init() {
         // Hide loading screen with multiple fallback mechanisms
         let loadingHidden = false;
-        
+
         const hideLoadingScreen = () => {
             if (loadingHidden) return;
             loadingHidden = true;
@@ -2486,5 +2508,5 @@ viewer?.addEventListener('wheel', (e) => {
 animate();
 
 console.log('🛵 Professional 360° Product Viewer initialized!');
-}) ();
+})();
 
