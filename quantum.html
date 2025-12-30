@@ -85,7 +85,6 @@
         <button class="fab-main" id="fabMain">⚡</button>
         <div class="fab-menu" id="fabMenu">
             <button class="fab-item" id="fabCalculator" title="EV Savings Calculator">🧮</button>
-            <button class="fab-item" onclick="openQuiz()" title="Take Quiz">❓</button>
             <button class="fab-item" id="fabShare" title="Share">📤</button>
             <button class="fab-item" id="fabFullscreen" title="Fullscreen">⛶</button>
             <button class="fab-item" id="fabSound" title="Toggle Sound">🔊</button>
@@ -221,26 +220,6 @@
         </div>
     </div>
 
-    <!-- Quiz Modal -->
-    <div class="quiz-modal" id="quizModal">
-        <div class="quiz-content glass-card">
-            <button class="close-modal" onclick="closeQuiz()">✕</button>
-            <h3 style="text-align: center; margin-bottom: 2rem;">🚀 Which Ather is for you?</h3>
-
-            <div id="quizQuestionContainer">
-                <!-- Questions injected via JS -->
-            </div>
-
-            <div id="quizResult" class="hidden" style="text-align: center;">
-                <h4 style="color: var(--electric-cyan); margin-bottom: 1rem;">Your Perfect Match:</h4>
-                <div id="quizMatchName" style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">Ather 450X</div>
-                <p id="quizMatchDesc" style="color: var(--text-secondary); margin-bottom: 2rem;"></p>
-                <div id="quizMatchImage" style="margin-bottom: 1.5rem; font-size: 3rem;">🛵</div>
-                <button class="nav-theme-btn" onclick="closeQuiz()" style="width: 100%;">Checking
-                    Availability...</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Scroll Progress -->
     <div class="scroll-progress" id="scrollProgress"></div>
