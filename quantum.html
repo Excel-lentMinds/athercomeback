@@ -9,6 +9,32 @@
     <meta name="keywords" content="Ather Energy, Electric Vehicles, EV Strategy, Financial Transformation">
     <title>Project Quantum Leap | Ather Energy Strategic Blueprint</title>
 
+    <!-- JSON-LD SEO Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Ather Energy",
+      "url": "https://excel-lentminds.github.io/athercomeback/quantum.html",
+      "logo": "https://excel-lentminds.github.io/athercomeback/logo.png",
+      "description": "Strategic Transformation Blueprint - From Premium Pioneer to Profitable Market Leader. Project Quantum Leap outlines the roadmap for FY25-27.",
+      "founders": [
+        {
+          "@type": "Person",
+          "name": "Tarun Mehta"
+        },
+        {
+          "@type": "Person",
+          "name": "Swapnil Jain"
+        }
+      ],
+      "sameAs": [
+        "https://twitter.com/atherenergy",
+        "https://www.linkedin.com/company/ather-energy"
+      ]
+    }
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,6 +54,18 @@
 
     <!-- Three.js for 3D Scooter -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(reg => console.log('SW registered!', reg))
+                    .catch(err => console.log('SW registration failed: ', err));
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -47,6 +85,7 @@
         <button class="fab-main" id="fabMain">⚡</button>
         <div class="fab-menu" id="fabMenu">
             <button class="fab-item" id="fabCalculator" title="EV Savings Calculator">🧮</button>
+            <button class="fab-item" onclick="openQuiz()" title="Take Quiz">❓</button>
             <button class="fab-item" id="fabShare" title="Share">📤</button>
             <button class="fab-item" id="fabFullscreen" title="Fullscreen">⛶</button>
             <button class="fab-item" id="fabSound" title="Toggle Sound">🔊</button>
@@ -155,6 +194,7 @@
                 <div class="nav-progress-bar">
                     <div class="nav-progress-fill" id="navProgressFill"></div>
                 </div>
+                <button class="nav-theme-btn" id="navThemeBtn" title="Toggle Theme">🌙</button>
                 <button class="nav-hide-btn" id="navHideBtn" title="Hide navigation (Press H)">✕</button>
             </div>
         </div>
@@ -178,6 +218,27 @@
                 <div class="shortcut"><kbd>Home</kbd> Go to top</div>
             </div>
             <button class="close-modal" onclick="closeKeyboardModal()">✕</button>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-content glass-card">
+            <button class="close-modal" onclick="closeQuiz()">✕</button>
+            <h3 style="text-align: center; margin-bottom: 2rem;">🚀 Which Ather is for you?</h3>
+
+            <div id="quizQuestionContainer">
+                <!-- Questions injected via JS -->
+            </div>
+
+            <div id="quizResult" class="hidden" style="text-align: center;">
+                <h4 style="color: var(--electric-cyan); margin-bottom: 1rem;">Your Perfect Match:</h4>
+                <div id="quizMatchName" style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">Ather 450X</div>
+                <p id="quizMatchDesc" style="color: var(--text-secondary); margin-bottom: 2rem;"></p>
+                <div id="quizMatchImage" style="margin-bottom: 1.5rem; font-size: 3rem;">🛵</div>
+                <button class="nav-theme-btn" onclick="closeQuiz()" style="width: 100%;">Checking
+                    Availability...</button>
+            </div>
         </div>
     </div>
 
@@ -205,6 +266,11 @@
             <span class="kpi-label">Cash</span>
             <span class="kpi-value">₹<span class="odometer" id="kpiCash">0</span> Cr</span>
             <span class="kpi-delta positive">▲ ₹1,314 Cr</span>
+        </div>
+        <div class="kpi-item" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: 2rem;">
+            <span class="kpi-label" style="color: var(--electric-cyan);">FY27 Valuation</span>
+            <span class="kpi-value">₹<span class="odometer" id="kpiValuation">8500</span> Cr</span>
+            <span class="kpi-delta positive" style="animation: pulse 2s infinite;">GUIDANCE UP</span>
         </div>
     </nav>
 
@@ -235,14 +301,15 @@
                 <!-- LAYER 2: Rotating Scooter -->
                 <div class="viewer-scooter-layer" id="scooterLayer">
                     <div class="scooter-container" id="scooterContainer">
-                        <img src="ather-360.png" alt="Ather 450X Electric Scooter" class="scooter-360-img"
-                            id="scooter360Img" draggable="false">
+                        <img src="ather-hyper-sport.png" alt="Ather 450X Electric Scooter" class="scooter-360-img"
+                            id="scooter360Img" draggable="false" loading="eager">
                         <!-- Dynamic shadow -->
                         <div class="scooter-shadow" id="scooterShadow"></div>
                     </div>
                     <!-- Floor reflection -->
                     <div class="scooter-reflection" id="scooterReflection">
-                        <img src="ather-360.png" alt="" class="reflection-360-img" draggable="false">
+                        <img src="ather-hyper-sport.png" alt="" class="reflection-360-img" draggable="false"
+                            loading="eager">
                     </div>
                 </div>
 
@@ -297,6 +364,16 @@
 
                     <!-- Bottom Controls Bar -->
                     <div class="viewer-bottom-controls">
+                        <!-- Color Picker -->
+                        <div class="color-picker">
+                            <button class="color-btn active" data-color="grey" style="background: #373737;"
+                                title="Space Grey"></button>
+                            <button class="color-btn" data-color="white" style="background: #f0f0f0;"
+                                title="White"></button>
+                            <button class="color-btn" data-color="mint" style="background: #caffd8;"
+                                title="Mint Green"></button>
+                        </div>
+
                         <!-- Rotation Controls -->
                         <div class="control-group">
                             <button class="ctrl-btn" id="btnRotateLeft" title="Rotate Left">◀</button>
@@ -1528,6 +1605,63 @@
                     <div class="mono text-orange" id="chessLosses">0</div>
                 </div>
             </div>
+
+            <!-- Comparison Table -->
+            <div class="glass-card" style="margin-top: 3rem; padding: 2rem; overflow-x: auto;">
+                <h4 style="text-align: center; margin-bottom: 2rem; color: var(--text-primary);">Spec Supremacy</h4>
+                <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--electric-cyan);">
+                            <th style="text-align: left; padding: 1rem; color: var(--text-secondary);">Feature</th>
+                            <th style="padding: 1rem; color: var(--electric-cyan); font-size: 1.2rem;">Ather 450X</th>
+                            <th style="padding: 1rem; color: var(--text-secondary);">Ola S1 Pro</th>
+                            <th style="padding: 1rem; color: var(--text-secondary);">TVS iQube S</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-family: var(--font-mono); font-size: 0.9rem;">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 1rem; color: var(--text-primary);">TrueRange™</td>
+                            <td style="padding: 1rem; text-align: center; color: var(--ather-green);">110 km (Real)</td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">170 km (IDC)
+                            </td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">100 km</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 1rem; color: var(--text-primary);">Chassis</td>
+                            <td style="padding: 1rem; text-align: center; color: var(--ather-green);">Aluminium Cast
+                            </td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">Tubular Steel
+                            </td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">Tubular Steel
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 1rem; color: var(--text-primary);">Dashboard</td>
+                            <td style="padding: 1rem; text-align: center; color: var(--ather-green);">Snapdragon 212
+                            </td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">Octa-core</td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">TFT</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 1rem; color: var(--text-primary);">Balance</td>
+                            <td style="padding: 1rem; text-align: center; color: var(--ather-green);">50:50 Weight Dist.
+                            </td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">Front Heavy
+                            </td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">Rear Heavy</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 1rem; color: var(--text-primary);">Charging</td>
+                            <td style="padding: 1rem; text-align: center; color: var(--ather-green);">Ather Grid (Fast)
+                            </td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">Hypercharger
+                            </td>
+                            <td style="padding: 1rem; text-align: center; color: var(--text-secondary);">Slow Charge
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
@@ -1615,6 +1749,63 @@
                     style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--electric-cyan), var(--ather-green)); border-radius: 5px; transition: width 2s ease;">
                 </div>
             </div>
+        </div>
+    </section>
+
+    </div>
+    </section>
+
+    <!-- ========== SOCIAL PROOF: TESTIMONIALS ========== -->
+    <section class="section" style="padding: 4rem 2rem;">
+        <h2 class="section-title center" style="text-align: center;">Market Sentiment</h2>
+        <div class="testimonials-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 3rem auto;">
+
+            <div class="glass-card testimonial-card">
+                <div style="font-size: 2rem; color: var(--electric-cyan); margin-bottom: 1rem;">"</div>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-style: italic;">
+                    "Ather's pivot to mass market with Rizta while maintaining premium margins on 450X is a masterclass
+                    in strategic scaling."
+                </p>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #333; border-radius: 50%;"></div>
+                    <div>
+                        <div style="font-weight: 700; color: var(--text-primary);">Rajeev Mantri</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">CFO, Trans-India VC</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card testimonial-card">
+                <div style="font-size: 2rem; color: var(--ather-green); margin-bottom: 1rem;">"</div>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-style: italic;">
+                    "The data monetization pipeline is the hidden gem here. ₹150 Cr ARR from fleet intelligence
+                    basically covers their R&D burn."
+                </p>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #333; border-radius: 50%;"></div>
+                    <div>
+                        <div style="font-weight: 700; color: var(--text-primary);">Sarah Chen</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Analyst, Bloomberg NEF</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card testimonial-card">
+                <div style="font-size: 2rem; color: var(--warning-orange); margin-bottom: 1rem;">"</div>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-style: italic;">
+                    "Finally, a roadmap that addresses the profitability question head-on. The 3-P Pivot strategy is
+                    exactly what the board needed."
+                </p>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #333; border-radius: 50%;"></div>
+                    <div>
+                        <div style="font-weight: 700; color: var(--text-primary);">Amit Shah</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Partner, Sequoia India</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -1747,7 +1938,7 @@
     <footer style="padding: 4rem 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.1);">
         <div style="margin-bottom: 2rem;">
             <span
-                style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--electric-cyan), var(--ather-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, var(--electric-cyan), var(--ather-green)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                 Project Quantum Leap
             </span>
         </div>

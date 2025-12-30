@@ -39,6 +39,25 @@ class QuantumLeap {
         this.setupStargate();
         this.setupEasterEggs();
         this.setupFadeInAnimations();
+        this.setupThemeToggle();
+    }
+
+    setupThemeToggle() {
+        const themeBtn = document.getElementById('navThemeBtn');
+        if (themeBtn) {
+            // Check local storage
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-mode');
+                themeBtn.textContent = '☀️';
+            }
+
+            themeBtn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                const isLight = document.body.classList.contains('light-mode');
+                localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                themeBtn.textContent = isLight ? '☀️' : '🌙';
+            });
+        }
     }
 
     // ===== SCROLL EFFECTS =====
@@ -1369,9 +1388,238 @@ document.getElementById('exportGantt')?.addEventListener('click', () => {
             const targetElement = document.getElementById(sectionId);
             if (targetElement) {
                 targetElement.scrollIntoView({ behavior: 'smooth' });
+                // Close mobile menu if open
+                if (window.innerWidth <= 768) {
+                    navTopbar.classList.remove('mobile-visible');
+                    navShowBtn?.classList.add('visible');
+                }
             }
         });
     });
+
+    // Mobile Menu Toggle Logic
+    navShowBtn?.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            navTopbar.classList.add('mobile-visible');
+            navShowBtn.classList.remove('visible');
+        } else {
+            navTopbar.classList.remove('hidden');
+            navShowBtn.classList.remove('visible');
+        }
+    });
+
+    navHideBtn?.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            navTopbar.classList.remove('mobile-visible');
+            navShowBtn?.classList.add('visible');
+        } else {
+            navTopbar.classList.add('hidden');
+            navShowBtn?.classList.add('visible');
+        }
+    });
+
+    // Color Picker Logic
+    const colorBtns = document.querySelectorAll('.color-btn');
+    const scooterImg = document.getElementById('scooter360Img');
+
+    colorBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all
+            colorBtns.forEach(b => b.classList.remove('active'));
+            // Add active to clicked
+            btn.classList.add('active');
+
+            // Apply filter
+            const color = btn.dataset.color;
+            scooterImg.className = 'scooter-360-img'; // Reset classes
+
+            if (color === 'white') scooterImg.classList.add('filter-white');
+            if (color === 'mint') scooterImg.classList.add('filter-mint');
+        });
+    });
+
+    navHideBtn?.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            navTopbar.classList.remove('mobile-visible');
+            navShowBtn?.classList.add('visible');
+        } else {
+            navTopbar.classList.add('hidden');
+            navShowBtn?.classList.add('visible');
+        }
+    });
+
+    // ===== CALCULATOR LOGIC =====
+    const calcModal = document.getElementById('calculatorModal');
+    const fabCalculator = document.getElementById('fabCalculator');
+
+    // Open Modal
+    fabCalculator?.addEventListener('click', () => {
+        calcModal?.classList.add('visible');
+    });
+
+    // Close Modal via function (for HTML onclick)
+    window.closeCalculator = () => {
+        calcModal?.classList.remove('visible');
+    };
+
+    // Calculator inputs
+    const dailyKmInput = document.getElementById('dailyKm');
+    const petrolPriceInput = document.getElementById('petrolPrice');
+    const petrolMileageInput = document.getElementById('petrolMileage');
+
+    const dailyKmValue = document.getElementById('dailyKmValue');
+    const petrolPriceValue = document.getElementById('petrolPriceValue');
+    const petrolMileageValue = document.getElementById('petrolMileageValue');
+
+    const updateCalculator = () => {
+        const dailyKm = parseInt(dailyKmInput?.value || 30);
+        const petrolPrice = parseInt(petrolPriceInput?.value || 105);
+        const petrolMileage = parseInt(petrolMileageInput?.value || 40);
+
+        // Update value labels
+        if (dailyKmValue) dailyKmValue.textContent = `${dailyKm} km`;
+        if (petrolPriceValue) petrolPriceValue.textContent = `₹${petrolPrice}`;
+        if (petrolMileageValue) petrolMileageValue.textContent = `${petrolMileage} km/L`;
+
+        // Calculations (Monthly)
+        const days = 30;
+        const monthlyKm = dailyKm * days;
+
+        // Petrol Cost
+        const petrolLiters = monthlyKm / petrolMileage;
+        const petrolCost = Math.round(petrolLiters * petrolPrice);
+
+        // Ather Cost (approx ₹0.25 per km for electricity)
+        const atherCost = Math.round(monthlyKm * 0.25);
+
+        // Savings
+        const savings = petrolCost - atherCost;
+        const yearlySavings = savings * 12;
+
+        // Update DOM
+        document.getElementById('petrolCost').textContent = `₹${petrolCost.toLocaleString()}`;
+        document.getElementById('atherCost').textContent = `₹${atherCost.toLocaleString()}`;
+        document.getElementById('totalSavings').textContent = `₹${savings.toLocaleString()}`;
+        document.getElementById('yearlySavings').textContent = `₹${yearlySavings.toLocaleString()}`;
+    };
+
+    // Attach listeners
+    dailyKmInput?.addEventListener('input', updateCalculator);
+    petrolPriceInput?.addEventListener('input', updateCalculator);
+    petrolMileageInput?.addEventListener('input', updateCalculator);
+
+    // Initial run
+    updateCalculator();
+
+    // ===== QUIZ LOGIC =====
+    const quizModal = document.getElementById('quizModal');
+    const quizQuestionContainer = document.getElementById('quizQuestionContainer');
+    const quizResult = document.getElementById('quizResult');
+
+    // Quiz State
+    let currentQuestion = 0;
+    let quizScore = { performance: 0, comfort: 0, budget: 0 };
+
+    const questions = [
+        {
+            text: "What matters most to you?",
+            options: [
+                { text: "🚀 Speed & Performance", type: "performance" },
+                { text: "🛋️ Comfort & Space", type: "comfort" },
+                { text: "💰 Value for Money", type: "budget" }
+            ]
+        },
+        {
+            text: "How far do you travel daily?",
+            options: [
+                { text: "🏎️ Short, fast sprints (<20km)", type: "performance" },
+                { text: "👨‍👩‍👧‍👦 Family trips (30-40km)", type: "comfort" },
+                { text: "🏢 Just office commute (20-30km)", type: "budget" }
+            ]
+        },
+        {
+            text: "Pick a feature you can't live without:",
+            options: [
+                { text: "🗺️ Google Maps Navigation", type: "performance" },
+                { text: "💺 Huge Seat & Storage", type: "comfort" },
+                { text: "📱 Essential Bluetooth", type: "budget" }
+            ]
+        }
+    ];
+
+    window.openQuiz = () => {
+        quizModal.classList.add('visible');
+        currentQuestion = 0;
+        quizScore = { performance: 0, comfort: 0, budget: 0 };
+        showQuestion();
+        quizResult.classList.add('hidden');
+        quizQuestionContainer.style.display = 'block';
+    };
+
+    window.closeQuiz = () => {
+        quizModal.classList.remove('visible');
+    };
+
+    const showQuestion = () => {
+        const q = questions[currentQuestion];
+        quizQuestionContainer.innerHTML = `
+            <h4 style="margin-bottom: 1.5rem; color: var(--text-primary);">${q.text}</h4>
+            <div class="quiz-options">
+                ${q.options.map((opt, idx) => `
+                    <button class="quiz-option" onclick="answerQuiz('${opt.type}')">
+                        ${opt.text}
+                    </button>
+                `).join('')}
+            </div>
+            <div style="margin-top: 1rem; text-align: right; color: var(--text-secondary); font-size: 0.8rem;">
+                Question ${currentQuestion + 1} of ${questions.length}
+            </div>
+        `;
+    };
+
+    window.answerQuiz = (type) => {
+        quizScore[type]++;
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    };
+
+    const showResult = () => {
+        quizQuestionContainer.style.display = 'none';
+        quizResult.classList.remove('hidden');
+
+        // Determine winner
+        let winner = 'performance';
+        let maxScore = 0;
+        for (const [key, value] of Object.entries(quizScore)) {
+            if (value > maxScore) {
+                maxScore = value;
+                winner = key;
+            }
+        }
+
+        const matchName = document.getElementById('quizMatchName');
+        const matchDesc = document.getElementById('quizMatchDesc');
+        const matchImg = document.getElementById('quizMatchImage');
+
+        if (winner === 'performance') {
+            matchName.textContent = "Ather 450X";
+            matchDesc.textContent = "The performance beast. 0-40 in 3.3s. Warp mode on!";
+            matchImg.textContent = "⚡";
+        } else if (winner === 'comfort') {
+            matchName.textContent = "Ather Rizta";
+            matchDesc.textContent = "Your family's best friend. Biggest seat, biggest boot.";
+            matchImg.textContent = "🛋️";
+        } else {
+            matchName.textContent = "Ather 450S";
+            matchDesc.textContent = "The essential electric smart scooter. Performance on a budget.";
+            matchImg.textContent = "💰";
+        }
+    };
 
     // Update active section on scroll
     let sections = [];
@@ -2048,110 +2296,172 @@ console.log('✨ Enhanced interactive features loaded!');
 
     // === TOUCH EVENTS ===
     scooterLayer.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        startX = e.touches[0].clientX;
-        lastX = e.touches[0].clientX;
-        lastTime = Date.now();
-        velocity = 0;
-        hideHint();
-    }, { passive: true });
+        if (e.touches.length === 1) {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            lastX = e.touches[0].clientX;
+            lastTime = Date.now();
+            velocity = 0;
+            hideHint();
+        } else if (e.touches.length === 2) {
+            // Pincht to Zoom Start
+            isDragging = false; // Disable rotation drag
+            initialPinchDist = Math.hypot(
+                e.touches[0].pageX - e.touches[1].pageX,
+                e.touches[0].pageY - e.touches[1].pageY
+            );
+            initialZoom = zoom;
+        }
+    });
 
     scooterLayer.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
+        if (e.touches.length === 1 && isDragging) {
+            e.preventDefault(); // Prevent scroll
+            const deltaX = e.touches[0].clientX - lastX;
+            rotation += deltaX * SENSITIVITY;
+            velocity = deltaX * SENSITIVITY;
+            lastX = e.touches[0].clientX;
+            lastTime = Date.now();
+            updateView();
+        } else if (e.touches.length === 2 && initialPinchDist > 0) {
+            // Pinch to Zoom Move
+            e.preventDefault();
+            const dist = Math.hypot(
+                e.touches[0].pageX - e.touches[1].pageX,
+                e.touches[0].pageY - e.touches[1].pageY
+            );
+            const scale = dist / initialPinchDist;
+            zoom = Math.min(Math.max(50, initialZoom * scale), 200); // 50% to 200% zoom
+            updateView();
 
-        const deltaX = e.touches[0].clientX - lastX;
-        rotation += deltaX * SENSITIVITY;
-        velocity = deltaX * SENSITIVITY;
-
-        lastX = e.touches[0].clientX;
-        lastTime = Date.now();
-        updateView();
-    }, { passive: true });
+            // Update slider UI if exists
+            if (zoomSlider) zoomSlider.value = zoom;
+            if (zoomValue) zoomValue.textContent = Math.round(zoom) + '%';
+        }
+    });
 
     scooterLayer.addEventListener('touchend', () => {
         isDragging = false;
     });
 
-    // === BUTTON CONTROLS ===
-    if (btnRotateLeft) {
-        btnRotateLeft.addEventListener('click', () => {
-            velocity = -5;
-            hideHint();
-        });
-    }
+    // ===== PINCH VARS =====
+    let initialPinchDist = 0;
+    let initialZoom = 100;
 
-    if (btnRotateRight) {
-        btnRotateRight.addEventListener('click', () => {
-            velocity = 5;
-            hideHint();
-        });
-    }
+    // ===== HOTSPOT LOGIC =====
+    document.querySelectorAll('.hotspot').forEach(hotspot => {
+        hotspot.addEventListener('click', (e) => {
+            e.stopPropagation();
 
-    if (btnReset) {
-        btnReset.addEventListener('click', () => {
-            rotation = 0;
+            // Zoom to 1.5x
+            zoom = 150;
+            updateView();
+
+            // Rotate to show feature (simplified)
+            // In a real 360 sequence, we'd jump to specific frame
+            // Here we just ensure we aren't spinning fast
             velocity = 0;
-            zoom = 100;
-            if (zoomSlider) zoomSlider.value = 100;
-            if (zoomValue) zoomValue.textContent = '100%';
-            updateView();
-        });
-    }
+            autoRotate = false;
 
-    // === FULLSCREEN ===
-    if (btnFullscreen) {
-        btnFullscreen.addEventListener('click', () => {
-            if (viewer) {
-                viewer.classList.toggle('fullscreen');
-                if (document.fullscreenElement) {
-                    document.exitFullscreen();
-                } else if (viewer.requestFullscreen) {
-                    viewer.requestFullscreen();
-                }
-            }
-        });
-    }
-
-    // === HOTSPOTS TOGGLE ===
-    if (btnHotspots) {
-        btnHotspots.addEventListener('click', () => {
-            hotspotsVisible = !hotspotsVisible;
-            if (hotspots) {
-                hotspots.style.display = hotspotsVisible ? 'block' : 'none';
-            }
-        });
-    }
-
-    // === AUTO-ROTATE TOGGLE ===
-    if (toggleAutoRotate) {
-        toggleAutoRotate.addEventListener('change', (e) => {
-            autoRotate = e.target.checked;
-        });
-    }
-
-    // === ZOOM CONTROL ===
-    if (zoomSlider) {
-        zoomSlider.addEventListener('input', (e) => {
-            zoom = parseInt(e.target.value);
+            // Update UI
+            if (zoomSlider) zoomSlider.value = zoom;
             if (zoomValue) zoomValue.textContent = zoom + '%';
-            updateView();
-        });
-    }
 
-    // === SCROLL TO ZOOM ===
-    viewer?.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        const delta = e.deltaY > 0 ? -5 : 5;
-        zoom = Math.max(50, Math.min(200, zoom + delta));
-        if (zoomSlider) zoomSlider.value = zoom;
+            // Hide hotspots temporarily
+            if (hotspots) {
+                hotspots.style.opacity = '0';
+                setTimeout(() => {
+                    hotspots.style.opacity = '1';
+                }, 2000);
+            }
+        });
+    });
+
+    // Start animation
+    animate();
+})();
+
+
+// === BUTTON CONTROLS ===
+if (btnRotateLeft) {
+    btnRotateLeft.addEventListener('click', () => {
+        velocity = -5;
+        hideHint();
+    });
+}
+
+if (btnRotateRight) {
+    btnRotateRight.addEventListener('click', () => {
+        velocity = 5;
+        hideHint();
+    });
+}
+
+if (btnReset) {
+    btnReset.addEventListener('click', () => {
+        rotation = 0;
+        velocity = 0;
+        zoom = 100;
+        if (zoomSlider) zoomSlider.value = 100;
+        if (zoomValue) zoomValue.textContent = '100%';
+        updateView();
+    });
+}
+
+// === FULLSCREEN ===
+if (btnFullscreen) {
+    btnFullscreen.addEventListener('click', () => {
+        if (viewer) {
+            viewer.classList.toggle('fullscreen');
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else if (viewer.requestFullscreen) {
+                viewer.requestFullscreen();
+            }
+        }
+    });
+}
+
+// === HOTSPOTS TOGGLE ===
+if (btnHotspots) {
+    btnHotspots.addEventListener('click', () => {
+        hotspotsVisible = !hotspotsVisible;
+        if (hotspots) {
+            hotspots.style.display = hotspotsVisible ? 'block' : 'none';
+        }
+    });
+}
+
+// === AUTO-ROTATE TOGGLE ===
+if (toggleAutoRotate) {
+    toggleAutoRotate.addEventListener('change', (e) => {
+        autoRotate = e.target.checked;
+    });
+}
+
+// === ZOOM CONTROL ===
+if (zoomSlider) {
+    zoomSlider.addEventListener('input', (e) => {
+        zoom = parseInt(e.target.value);
         if (zoomValue) zoomValue.textContent = zoom + '%';
         updateView();
-        hideHint();
-    }, { passive: false });
+    });
+}
 
-    // Start animation loop
-    animate();
+// === SCROLL TO ZOOM ===
+viewer?.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -5 : 5;
+    zoom = Math.max(50, Math.min(200, zoom + delta));
+    if (zoomSlider) zoomSlider.value = zoom;
+    if (zoomValue) zoomValue.textContent = zoom + '%';
+    updateView();
+    hideHint();
+}, { passive: false });
 
-    console.log('🛵 Professional 360° Product Viewer initialized!');
-})();
+// Start animation loop
+animate();
+
+console.log('🛵 Professional 360° Product Viewer initialized!');
+}) ();
 
