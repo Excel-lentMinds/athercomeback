@@ -2424,89 +2424,88 @@ console.log('✨ Enhanced interactive features loaded!');
 
     // Start animation
     animate();
-})();
 
 
-// === BUTTON CONTROLS ===
-if (btnRotateLeft) {
-    btnRotateLeft.addEventListener('click', () => {
-        velocity = -5;
-        hideHint();
-    });
-}
+    // === BUTTON CONTROLS ===
+    if (btnRotateLeft) {
+        btnRotateLeft.addEventListener('click', () => {
+            velocity = -5;
+            hideHint();
+        });
+    }
 
-if (btnRotateRight) {
-    btnRotateRight.addEventListener('click', () => {
-        velocity = 5;
-        hideHint();
-    });
-}
+    if (btnRotateRight) {
+        btnRotateRight.addEventListener('click', () => {
+            velocity = 5;
+            hideHint();
+        });
+    }
 
-if (btnReset) {
-    btnReset.addEventListener('click', () => {
-        rotation = 0;
-        velocity = 0;
-        zoom = 100;
-        if (zoomSlider) zoomSlider.value = 100;
-        if (zoomValue) zoomValue.textContent = '100%';
-        updateView();
-    });
-}
+    if (btnReset) {
+        btnReset.addEventListener('click', () => {
+            rotation = 0;
+            velocity = 0;
+            zoom = 100;
+            if (zoomSlider) zoomSlider.value = 100;
+            if (zoomValue) zoomValue.textContent = '100%';
+            updateView();
+        });
+    }
 
-// === FULLSCREEN ===
-if (btnFullscreen) {
-    btnFullscreen.addEventListener('click', () => {
-        if (viewer) {
-            viewer.classList.toggle('fullscreen');
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            } else if (viewer.requestFullscreen) {
-                viewer.requestFullscreen();
+    // === FULLSCREEN ===
+    if (btnFullscreen) {
+        btnFullscreen.addEventListener('click', () => {
+            if (viewer) {
+                viewer.classList.toggle('fullscreen');
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else if (viewer.requestFullscreen) {
+                    viewer.requestFullscreen();
+                }
             }
-        }
-    });
-}
+        });
+    }
 
-// === HOTSPOTS TOGGLE ===
-if (btnHotspots) {
-    btnHotspots.addEventListener('click', () => {
-        hotspotsVisible = !hotspotsVisible;
-        if (hotspots) {
-            hotspots.style.display = hotspotsVisible ? 'block' : 'none';
-        }
-    });
-}
+    // === HOTSPOTS TOGGLE ===
+    if (btnHotspots) {
+        btnHotspots.addEventListener('click', () => {
+            hotspotsVisible = !hotspotsVisible;
+            if (hotspots) {
+                hotspots.style.display = hotspotsVisible ? 'block' : 'none';
+            }
+        });
+    }
 
-// === AUTO-ROTATE TOGGLE ===
-if (toggleAutoRotate) {
-    toggleAutoRotate.addEventListener('change', (e) => {
-        autoRotate = e.target.checked;
-    });
-}
+    // === AUTO-ROTATE TOGGLE ===
+    if (toggleAutoRotate) {
+        toggleAutoRotate.addEventListener('change', (e) => {
+            autoRotate = e.target.checked;
+        });
+    }
 
-// === ZOOM CONTROL ===
-if (zoomSlider) {
-    zoomSlider.addEventListener('input', (e) => {
-        zoom = parseInt(e.target.value);
+    // === ZOOM CONTROL ===
+    if (zoomSlider) {
+        zoomSlider.addEventListener('input', (e) => {
+            zoom = parseInt(e.target.value);
+            if (zoomValue) zoomValue.textContent = zoom + '%';
+            updateView();
+        });
+    }
+
+    // === SCROLL TO ZOOM ===
+    viewer?.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -5 : 5;
+        zoom = Math.max(50, Math.min(200, zoom + delta));
+        if (zoomSlider) zoomSlider.value = zoom;
         if (zoomValue) zoomValue.textContent = zoom + '%';
         updateView();
-    });
-}
+        hideHint();
+    }, { passive: false });
 
-// === SCROLL TO ZOOM ===
-viewer?.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? -5 : 5;
-    zoom = Math.max(50, Math.min(200, zoom + delta));
-    if (zoomSlider) zoomSlider.value = zoom;
-    if (zoomValue) zoomValue.textContent = zoom + '%';
-    updateView();
-    hideHint();
-}, { passive: false });
+    // Start animation loop
+    animate();
 
-// Start animation loop
-animate();
-
-console.log('🛵 Professional 360° Product Viewer initialized!');
+    console.log('🛵 Professional 360° Product Viewer initialized!');
 })();
 
